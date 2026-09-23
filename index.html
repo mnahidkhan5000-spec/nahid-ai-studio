@@ -135,17 +135,17 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Perfect Framing Engine, Anti-Blur Upscaling & Zero Watermark</p>
+            <p>⚡ Wide-Angle Masterpiece Engine, True High-Resolution & Formats</p>
         </div>
 
         <div class="controls-grid">
             <div class="form-group" style="margin-bottom:0;">
                 <label for="resolutionSelect">Resolution Scale:</label>
                 <select id="resolutionSelect">
-                    <option value="1920">4K Ultra (1920x1080)</option>
-                    <option value="2560" selected>8K Supreme (2560x1440)</option>
-                    <option value="3200">12K Crystal (3200x1800)</option>
-                    <option value="3840">16K Ultimate (3840x2160)</option>
+                    <option value="3840">4K Ultra (3840x2160)</option>
+                    <option value="7680" selected>8K Supreme (7680x4320)</option>
+                    <option value="11520">12K Crystal (11520x6480)</option>
+                    <option value="15360">16K Ultimate (15360x8640)</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom:0;">
@@ -178,7 +178,7 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Rendering perfect frame framing, anti-blur processing... Please wait.</div>
+            <div class="loading-text" id="loadingText">Rendering wide-angle high-resolution masterpiece... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
@@ -233,31 +233,24 @@
             let formatVal = document.getElementById('formatSelect').value;
 
             let targetWidth = resVal;
-            let targetHeight = Math.round(resVal * 9 / 16);
+            let targetHeight = resVal;
 
-            if (aspectVal === "square") {
-                targetWidth = resVal;
-                targetHeight = resVal;
+            if (aspectVal === "wide") {
+                targetHeight = Math.round(resVal * (9 / 16));
             } else if (aspectVal === "tall") {
-                targetWidth = Math.round(resVal * 9 / 16);
-                targetHeight = resVal;
+                targetWidth = Math.round(resVal * (9 / 16));
             } else {
                 targetWidth = resVal;
-                targetHeight = Math.round(resVal * 9 / 16);
+                targetHeight = resVal;
             }
 
-            // Balanced API fetch dimensions to prevent server zoom/cropping issues
             let apiWidth = 1024;
-            let apiHeight = 576;
-            if (aspectVal === "square") {
-                apiWidth = 1024;
-                apiHeight = 1024;
-            } else if (aspectVal === "tall") {
-                apiWidth = 576;
-                apiHeight = 1024;
-            }
+            let apiHeight = 1024;
+            if (aspectVal === "wide") { apiHeight = 576; }
+            else if (aspectVal === "tall") { apiWidth = 576; }
 
-            let eliteEnhancers = ", wide-angle shot, professional composition, full object visible, highly detailed, photorealistic, 8k resolution, masterpiece, sharp focus";
+            // Anti-zoom & Wide-angle framing enhancers to keep full object inside view
+            let eliteEnhancers = ", wide-angle shot, full object in frame, professional studio framing, no extreme close-up, photorealistic, 8k resolution, masterpiece, sharp focus";
             let fullPrompt = encodeURIComponent(promptText + eliteEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
