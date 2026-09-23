@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Ultimate Edition</title>
+    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -18,87 +18,87 @@
         }
         .studio-card {
             width: 100%;
-            max-width: 650px;
-            background: rgba(15, 23, 42, 0.98);
+            max-width: 780px;
+            background: rgba(15, 23, 42, 0.99);
             border: 2px solid #3b82f6;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
         }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { color: #60a5fa; font-size: 22px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .header p { color: #94a3b8; font-size: 12px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; color: #93c5fd; font-size: 12px; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; }
-        textarea, select {
+        .header { text-align: center; margin-bottom: 24px; }
+        .header h1 { color: #60a5fa; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; text-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
+        .header p { color: #94a3b8; font-size: 13px; font-weight: 500; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; color: #93c5fd; font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        textarea {
             width: 100%;
             background: #020617;
-            border: 1px solid #334155;
-            border-radius: 10px;
+            border: 2px solid #334155;
+            border-radius: 12px;
             color: #ffffff;
-            padding: 12px;
+            padding: 15px;
             font-size: 14px;
+            resize: vertical;
+            min-height: 110px;
             outline: none;
+            transition: all 0.3s ease;
         }
-        textarea { resize: vertical; min-height: 90px; }
-        textarea:focus, select:focus { border-color: #60a5fa; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
+        textarea:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
         .generate-btn {
             width: 100%;
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
             color: white;
             border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 15px;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: opacity 0.2s;
+            letter-spacing: 1.5px;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+            transition: transform 0.2s;
         }
-        .generate-btn:hover { opacity: 0.9; }
-        .result-container {
-            margin-top: 20px;
-            text-align: center;
+        .generate-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+        .output-section { margin-top: 25px; text-align: center; }
+        .spinner {
             display: none;
+            width: 50px; height: 50px;
+            border: 5px solid #1e293b;
+            border-top: 5px solid #60a5fa;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto;
         }
-        .loader {
-            color: #60a5fa;
-            font-size: 14px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        .output-image {
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: #60a5fa; font-size: 13px; display: none; margin-bottom: 12px; font-weight: 600; letter-spacing: 0.5px; }
+        .result-image {
             width: 100%;
-            max-height: 400px;
+            max-height: 620px;
             object-fit: contain;
-            border-radius: 12px;
-            border: 2px solid #22c55e;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-            margin-bottom: 15px;
+            border-radius: 14px;
+            border: 2px solid #475569;
+            display: none;
+            margin-bottom: 18px;
+            background: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         .download-btn {
-            display: inline-block;
-            background: #22c55e;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 8px;
+            display: none;
+            width: 100%;
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 15px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
         }
-        .download-btn:hover { background: #16a34a; }
-        .engine-badge {
-            background: #1e293b;
-            color: #38bdf8;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            margin-bottom: 12px;
-            display: inline-block;
-            border: 1px solid #334155;
-        }
+        .download-btn:hover { opacity: 0.95; }
     </style>
 </head>
 <body>
@@ -106,53 +106,81 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Ultimate Image Generator & Upscale Engine</p>
+            <p>⚡ World's Most Powerful Midjourney V6, DSLR, Cinematic Lighting & High-Scale Crystal Engine</p>
         </div>
 
         <div class="form-group">
-            <label>Enter Your Masterpiece Prompt:</label>
-            <textarea id="promptInput">A professional business team collaborating in a modern office, hyper-realistic, 8k resolution</textarea>
+            <label for="promptInput">Enter Any Masterpiece Prompt (3D, 4D, Portrait, Cyberpunk, etc.):</label>
+            <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
         </div>
 
-        <div class="form-group">
-            <label>Select High-Scale Upscale Engine:</label>
-            <select id="engineSelect">
-                <option value="4K Ultra Resolution, sharp details">4K Ultra Resolution Engine</option>
-                <option value="8K Hyper-Detailed Crystal, photorealistic masterpiece" selected>8K Hyper-Detailed Crystal Engine</option>
-                <option value="16K Masterpiece Maximum Scale, extreme sharpness, unreal engine 5">16K Masterpiece Maximum Scale Engine</option>
-            </select>
-        </div>
+        <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate World's Most Powerful Masterpiece</button>
 
-        <button class="generate-btn" id="genBtn" onclick="generateMasterpieceImage()">🚀 Generate Masterpiece</button>
-
-        <div class="result-container" id="resultContainer">
-            <div class="loader" id="loaderText">⚙️ Applying Upscale Engine & Rendering Image...</div>
-            <div id="engineInfo" class="engine-badge"></div>
-            <br>
-            <img id="outputImg" class="output-image" alt="Upscaled AI Masterpiece" style="display:none;" onload="imageReady()">
-            <br>
-            <a id="downloadLink" class="download-btn" style="display:none;" target="_blank">📥 Download High-Res Image</a>
+        <div class="output-section">
+            <div class="spinner" id="loadingSpinner"></div>
+            <div class="loading-text" id="loadingText">Applying high-scale neural upscaling, Midjourney V6 rendering, cinematic volumetric lighting, DSLR 85mm sharpness & crystal refinement... Please wait.</div>
+            <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
+            <a id="downloadLink" class="download-btn" download="nahid-ai-studio-pro-plus-masterpiece.jpg">📥 Download Ultra HD Crystal Clear Image</a>
         </div>
     </div>
 
     <script>
-        function generateMasterpieceImage() {
-            const promptText = document.getElementById('promptInput').value.trim();
-            const engineSelect = document.getElementById('engineSelect');
-            const selectedEngineName = engineSelect.options[engineSelect.selectedIndex].text;
-            const engineValue = engineSelect.value;
-            
-            const container = document.getElementById('resultContainer');
-            const loader = document.getElementById('loaderText');
-            const imgElement = document.getElementById('outputImg');
-            const downloadLink = document.getElementById('downloadLink');
-            const engineBadge = document.getElementById('engineInfo');
-            const btn = document.getElementById('genBtn');
-
+        function generateWorldBestImage() {
+            let promptText = document.getElementById('promptInput').value.trim();
             if (!promptText) {
-                alert('দয়া করে একটি প্রম্পট লিখুন!');
+                alert('Please enter a prompt in the text box!');
                 return;
             }
+
+            let spinner = document.getElementById('loadingSpinner');
+            let text = document.getElementById('loadingText');
+            let img = document.getElementById('outputImage');
+            let downloadBtn = document.getElementById('downloadLink');
+
+            spinner.style.display = 'block';
+            text.style.display = 'block';
+            img.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
+            // Master parameter enhancers integrated with High-Scale Neural Upscaling parameters
+            let worldEliteEnhancers = ", Midjourney style, photorealistic, 3d render, hyper-depth, crystal clear details, extreme sharpness, high-scale neural upscaling, ultra-high resolution processing, DSLR photography, 85mm lens, volumetric dramatic cinematic lighting, ray tracing, 16k resolution, unreal engine render, flawless composition, masterpiece";
+            
+            let fullPrompt = promptText + worldEliteEnhancers;
+            let encodedPrompt = encodeURIComponent(fullPrompt);
+            let randomSeed = Math.floor(Math.random() * 999999999);
+            
+            // Stable and highly responsive rendering pipeline endpoint
+            let finalImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${randomSeed}`;
+
+            let loadTimeout = setTimeout(function() {
+                if (spinner.style.display === 'block') {
+                    spinner.style.display = 'none';
+                    text.style.display = 'none';
+                    alert('Server response is taking longer than expected. Please try again.');
+                }
+            }, 45000);
+
+            img.onload = function() {
+                clearTimeout(loadTimeout);
+                spinner.style.display = 'none';
+                text.style.display = 'none';
+                img.style.display = 'block';
+                downloadBtn.style.display = 'block';
+            };
+
+            img.onerror = function() {
+                clearTimeout(loadTimeout);
+                spinner.style.display = 'none';
+                text.style.display = 'none';
+                alert('An error occurred during high-scale frame rendering. Please try again.');
+            };
+
+            img.src = finalImageUrl;
+            downloadLink.href = finalImageUrl;
+        }
+    </script>
+</body>
+</html>            }
 
             container.style.display = 'block';
             loader.style.display = 'block';
