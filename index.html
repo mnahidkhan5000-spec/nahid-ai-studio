@@ -3,129 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
+    <title>Nahid AI Studio Pro Plus</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             background-color: #020617;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #f8fafc;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            margin: 0;
             padding: 15px;
         }
-        .studio-card {
+        .card {
             width: 100%;
-            max-width: 780px;
-            background: rgba(15, 23, 42, 0.99);
+            max-width: 600px;
+            background: #0f172a;
             border: 2px solid #3b82f6;
-            border-radius: 22px;
-            padding: 30px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        .header { text-align: center; margin-bottom: 24px; }
-        .header h1 { color: #60a5fa; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
-        .header p { color: #94a3b8; font-size: 13px; font-weight: 500; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; color: #93c5fd; font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        h2 { color: #60a5fa; text-align: center; margin-bottom: 5px; }
+        p { color: #94a3b8; text-align: center; font-size: 12px; margin-bottom: 20px; }
+        label { display: block; color: #93c5fd; font-size: 12px; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; }
         textarea, select {
             width: 100%;
             background: #020617;
-            border: 2px solid #334155;
-            border-radius: 12px;
-            color: #ffffff;
-            padding: 15px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #fff;
+            padding: 12px;
             font-size: 14px;
+            margin-bottom: 15px;
             outline: none;
-            transition: all 0.3s ease;
+            box-sizing: border-box;
         }
-        textarea { resize: vertical; min-height: 110px; }
-        textarea:focus, select:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
-        .generate-btn {
+        textarea { resize: vertical; min-height: 90px; }
+        button {
             width: 100%;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
             color: white;
             border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 16px;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
-            transition: transform 0.2s, opacity 0.2s;
         }
-        .generate-btn:hover { transform: translateY(-2px); opacity: 0.95; }
-        .generate-btn:active { transform: translateY(0); }
-        .output-box {
-            margin-top: 20px;
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
-            padding: 15px;
+        button:hover { opacity: 0.9; }
+        .result {
+            margin-top: 15px;
+            background: #020617;
+            border: 1px solid #22c55e;
+            border-radius: 8px;
+            padding: 12px;
+            color: #4ade80;
             font-size: 13px;
-            color: #38bdf8;
             display: none;
-            word-break: break-all;
         }
     </style>
 </head>
 <body>
 
-    <div class="studio-card">
-        <div class="header">
-            <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ World's Most Powerful Midjourney V6, DSLR, Cinematic Lighting & High-Scale Crystal Engine</p>
-        </div>
+    <div class="card">
+        <h2>Nahid AI Studio Pro Plus</h2>
+        <p>⚡ Ultimate Midjourney V6 & High-Scale Crystal Engine</p>
 
-        <div class="form-group">
-            <label>Enter Any Masterpiece Prompt (3D, 4D, Portrait, Cyberpunk, etc.):</label>
-            <textarea id="promptInput" placeholder="A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait of a futuristic cyberpunk warrior in neon lighting, highly detailed cinematic atmosphere</textarea>
-        </div>
+        <label>Enter Your Masterpiece Prompt:</label>
+        <textarea id="myPrompt">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
 
-        <div class="form-group">
-            <label>Select High-Scale Upscale Engine:</label>
-            <select id="upscaleEngine">
-                <option value="4K Ultra Resolution">4K Ultra Resolution Engine</option>
-                <option value="8K Hyper-Detailed Crystal" selected>8K Hyper-Detailed Crystal Engine</option>
-                <option value="16K Masterpiece Maximum Scale">16K Masterpiece Maximum Scale</option>
-            </select>
-        </div>
+        <label>Select High-Scale Upscale Engine:</label>
+        <select id="myEngine">
+            <option value="4K Ultra Resolution">4K Ultra Resolution Engine</option>
+            <option value="8K Hyper-Detailed Crystal" selected>8K Hyper-Detailed Crystal Engine</option>
+            <option value="16K Masterpiece Maximum Scale">16K Masterpiece Maximum Scale</option>
+        </select>
 
-        <button class="generate-btn" id="generateBtn" onclick="generateMasterpiece()">🚀 Generate World's Most Powerful Masterpiece</button>
-        
-        <div class="output-box" id="outputBox"></div>
+        <button onclick="runMasterpiece()">🚀 Generate Masterpiece</button>
+
+        <div class="result" id="resBox"></div>
     </div>
 
     <script>
-        function generateMasterpiece() {
-            const btn = document.getElementById('generateBtn');
-            const prompt = document.getElementById('promptInput').value;
-            const engine = document.getElementById('upscaleEngine').value;
-            const outputBox = document.getElementById('outputBox');
+        function runMasterpiece() {
+            const p = document.getElementById('myPrompt').value;
+            const e = document.getElementById('myEngine').value;
+            const box = document.getElementById('resBox');
 
-            if (!prompt.trim()) {
-                alert('দয়া করে একটি প্রম্পট লিখুন!');
+            if(!p.trim()) {
+                alert('দয়া করে কিছু লিখুন!');
                 return;
             }
 
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-            btn.innerText = '⚙️ Rendering High-Scale Masterpiece...';
-
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.innerText = "🚀 Generate World's Most Powerful Masterpiece";
-
-                outputBox.style.display = 'block';
-                outputBox.innerHTML = `<strong>✨ Successfully Rendered!</strong><br><strong>Engine:</strong> ${engine}<br><strong>Optimized Prompt:</strong> ${prompt} --v 6.0 --ar 16:9 --style raw`;
-            }, 1200);
+            box.style.display = 'block';
+            box.innerHTML = `<strong>✨ Success!</strong><br><strong>Engine:</strong> ${e}<br><strong>Prompt:</strong> ${p} --v 6.0`;
         }
     </script>
 
 </body>
-    </html>
+            </html>
