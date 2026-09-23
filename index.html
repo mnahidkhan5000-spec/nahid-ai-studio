@@ -135,7 +135,7 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Wide-Angle Masterpiece Engine, True High-Resolution & Formats</p>
+            <p>⚡ Zero Watermark, Wide-Angle Full Frame, True High-Resolution & Formats</p>
         </div>
 
         <div class="controls-grid">
@@ -178,7 +178,7 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Rendering wide-angle high-resolution masterpiece... Please wait.</div>
+            <div class="loading-text" id="loadingText">Removing provider watermarks & rendering ultra-wide HD frame... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
@@ -249,8 +249,8 @@
             if (aspectVal === "wide") { apiHeight = 576; }
             else if (aspectVal === "tall") { apiWidth = 576; }
 
-            // Anti-zoom & Wide-angle framing enhancers to keep full object inside view
-            let eliteEnhancers = ", wide-angle shot, full object in frame, professional studio framing, no extreme close-up, photorealistic, 8k resolution, masterpiece, sharp focus";
+            // Anti-zoom & Wide shot modifiers
+            let eliteEnhancers = ", ultra wide angle shot, macro product photography, full object fully visible in center frame, professional studio lighting, 8k resolution, masterpiece, sharp focus";
             let fullPrompt = encodeURIComponent(promptText + eliteEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
@@ -280,6 +280,21 @@
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
+
+                // Advanced Watermark Eraser: Automatically covers the bottom-right watermark area with surrounding background color
+                let wmWidth = Math.floor(canvas.width * 0.22);
+                let wmHeight = Math.floor(canvas.height * 0.08);
+                let wmX = canvas.width - wmWidth - 20;
+                let wmY = canvas.height - wmHeight - 20;
+
+                try {
+                    let sampleColor = ctx.getImageData(wmX - 15, wmY - 15, 1, 1).data;
+                    ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
+                    ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+                } catch(e) {
+                    ctx.fillStyle = "#020617";
+                    ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+                }
 
                 let mimeType = 'image/jpeg';
                 let fileExt = 'jpg';
@@ -316,6 +331,20 @@
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
                     ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
+
+                    // Watermark eraser for backup engine too
+                    let wmWidth = Math.floor(canvas.width * 0.22);
+                    let wmHeight = Math.floor(canvas.height * 0.08);
+                    let wmX = canvas.width - wmWidth - 20;
+                    let wmY = canvas.height - wmHeight - 20;
+                    try {
+                        let sampleColor = ctx.getImageData(wmX - 15, wmY - 15, 1, 1).data;
+                        ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
+                        ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+                    } catch(e) {
+                        ctx.fillStyle = "#020617";
+                        ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+                    }
 
                     let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
                     let fileExt = formatVal === 'jpeg' ? 'jpg' : formatVal;
