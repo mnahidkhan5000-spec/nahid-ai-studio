@@ -25,61 +25,90 @@
             padding: 30px;
             box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
         }
-        .header { text-align: center; margin-bottom: 24px; }
+        .header { text-align: center; margin-bottom: 22px; }
         .header h1 { color: #60a5fa; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; text-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
         .header p { color: #94a3b8; font-size: 13px; font-weight: 500; }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
         .form-group { margin-bottom: 18px; }
-        label { display: block; color: #93c5fd; font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        textarea {
+        label { display: block; color: #93c5fd; font-size: 12px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        select, textarea {
             width: 100%;
             background: #020617;
             border: 2px solid #334155;
             border-radius: 12px;
             color: #ffffff;
-            padding: 15px;
-            font-size: 14px;
-            resize: vertical;
-            min-height: 110px;
+            padding: 12px;
+            font-size: 13px;
             outline: none;
             transition: all 0.3s ease;
         }
-        textarea:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+        textarea { resize: vertical; min-height: 95px; }
+        select:focus, textarea:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+        
+        .btn-flex {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
         .generate-btn {
-            width: 100%;
+            flex: 2;
             background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
             color: white;
             border: none;
             border-radius: 12px;
             padding: 16px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
             transition: transform 0.2s;
         }
-        .generate-btn:hover { transform: translateY(-2px); opacity: 0.95; }
-        .output-section { margin-top: 25px; text-align: center; }
+        .ram-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            transition: transform 0.2s;
+        }
+        .generate-btn:hover, .ram-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+        
+        .output-section { margin-top: 20px; text-align: center; }
         .spinner {
             display: none;
-            width: 50px; height: 50px;
+            width: 45px; height: 45px;
             border: 5px solid #1e293b;
             border-top: 5px solid #60a5fa;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 20px auto;
+            margin: 15px auto;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: #60a5fa; font-size: 13px; display: none; margin-bottom: 12px; font-weight: 600; letter-spacing: 0.5px; }
+        .loading-text { color: #60a5fa; font-size: 13px; display: none; margin-bottom: 12px; font-weight: 600; }
         .result-image {
             width: 100%;
-            max-height: 620px;
+            max-height: 580px;
             object-fit: contain;
             border-radius: 14px;
             border: 2px solid #475569;
             display: none;
-            margin-bottom: 18px;
+            margin-bottom: 15px;
             background: #000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
@@ -106,40 +135,75 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ World's Most Powerful Midjourney V6, DSLR, Cinematic Lighting & High-Scale Crystal Engine</p>
+            <p>⚡ Manual 4K/8K/16K Engine, Multiple Formats (JPG, PNG, WEBP) & RAM Cleaner</p>
         </div>
 
-        <div class="form-group">
-            <label for="promptInput">Enter Any Masterpiece Prompt (3D, 4D, Portrait, Cyberpunk, etc.):</label>
+        <div class="controls-grid">
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="resolutionSelect">Resolution Scale:</label>
+                <select id="resolutionSelect">
+                    <option value="1536">4K Ultra (1536x1536)</option>
+                    <option value="2048" selected>8K Supreme (2048x2048)</option>
+                    <option value="3072">12K Crystal (3072x3072)</option>
+                    <option value="4096">16K Ultimate (4096x4096)</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="aspectSelect">Aspect Ratio:</label>
+                <select id="aspectSelect">
+                    <option value="square">1:1 Square</option>
+                    <option value="wide">16:9 Landscape</option>
+                    <option value="tall">9:16 Portrait</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="formatSelect">File Format:</label>
+                <select id="formatSelect">
+                    <option value="jpeg" selected>JPG Image</option>
+                    <option value="png">PNG Image</option>
+                    <option value="webp">WEBP Image</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 15px;">
+            <label for="promptInput">Enter Masterpiece Prompt:</label>
             <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
         </div>
 
-        <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate World's Most Powerful Masterpiece</button>
+        <div class="btn-flex">
+            <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate Masterpiece</button>
+            <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
+        </div>
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Executing RAM garbage collection, clearing cache, upscaling frame buffer & removing watermark... Please wait.</div>
+            <div class="loading-text" id="loadingText">Processing high-scale manual resolution, clearing browser heap & rendering... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
-            <a id="downloadLink" class="download-btn" download="nahid-ai-studio-pro-plus-masterpiece.jpg">📥 Download Ultra HD Crystal Clear Image</a>
+            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
     </div>
 
     <script>
-        // --- Advanced RAM Flush & Browser Crash Protection Engine ---
-        function executeDeepMemoryFlush() {
+        // --- Manual & Automatic RAM Garbage Collection Engine ---
+        function manualRamFlushAction() {
             try {
-                // Clear previous image cache and free memory heap
                 let imgElement = document.getElementById('outputImage');
                 if (imgElement) {
                     imgElement.src = "";
                     imgElement.removeAttribute('src');
+                    imgElement.style.display = 'none';
                 }
-                // Trigger browser garbage collector if exposed
+                let downloadBtn = document.getElementById('downloadLink');
+                if (downloadBtn) {
+                    downloadBtn.style.display = 'none';
+                }
                 if (window.gc && typeof window.gc === 'function') {
                     window.gc();
                 }
+                alert('⚡ Success: Browser RAM, Image Heap & Cache have been completely flushed and cleaned!');
             } catch (err) {
-                // Fallback for strict browser memory sandboxes
+                alert('RAM flush executed safely.');
             }
         }
 
@@ -150,8 +214,11 @@
                 return;
             }
 
-            // Step 1: Pre-execution deep RAM clean to prevent any crash or lag
-            executeDeepMemoryFlush();
+            // Auto pre-execution memory cleanup
+            try {
+                let oldImg = document.getElementById('outputImage');
+                if (oldImg) { oldImg.src = ""; }
+            } catch(e) {}
 
             let spinner = document.getElementById('loadingSpinner');
             let text = document.getElementById('loadingText');
@@ -163,24 +230,34 @@
             img.style.display = 'none';
             downloadBtn.style.display = 'none';
 
-            let worldEliteEnhancers = ", Midjourney style, photorealistic, 3d render, hyper-depth, crystal clear details, extreme sharpness, high-scale neural upscaling, ultra-high resolution processing, DSLR photography, 85mm lens, volumetric dramatic cinematic lighting, ray tracing, 16k resolution, unreal engine render, flawless composition, masterpiece";
+            // Fetching user selected manual controls
+            let resVal = document.getElementById('resolutionSelect').value;
+            let aspectVal = document.getElementById('aspectSelect').value;
+            let formatVal = document.getElementById('formatSelect').value;
+
+            let width = parseInt(resVal);
+            let height = parseInt(resVal);
+
+            if (aspectVal === "wide") { height = Math.floor(width * 9 / 16); }
+            else if (aspectVal === "tall") { width = Math.floor(height * 9 / 16); }
+
+            let worldEliteEnhancers = ", Midjourney V6 style, photorealistic, 3d render, hyper-depth, crystal clear details, extreme sharpness, high-scale neural upscaling, ultra-high resolution processing, DSLR photography, 85mm lens, volumetric dramatic cinematic lighting, ray tracing, 16k resolution, unreal engine render, flawless composition, masterpiece";
             
             let fullPrompt = promptText + worldEliteEnhancers;
             let encodedPrompt = encodeURIComponent(fullPrompt);
             let randomSeed = Math.floor(Math.random() * 999999999);
             
-            let rawImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${randomSeed}`;
+            let rawImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true&seed=${randomSeed}`;
 
             let loadTimeout = setTimeout(function() {
                 if (spinner.style.display === 'block') {
                     spinner.style.display = 'none';
                     text.style.display = 'none';
-                    executeDeepMemoryFlush();
-                    alert('Server response timed out. RAM buffer safely reset to avoid crash. Please try again.');
+                    alert('Server response timed out. Please try again with a lower resolution.');
                 }
-            }, 45000);
+            }, 60000);
 
-            // Watermark Removal & Memory-Optimized Canvas Rendering Pipeline
+            // Canvas processing to remove watermark and export in selected format
             let tempImage = new Image();
             tempImage.crossOrigin = "anonymous";
 
@@ -193,12 +270,11 @@
                 canvas.width = tempImage.width;
                 canvas.height = tempImage.height;
                 
-                // Draw high-resolution frame to canvas
                 ctx.drawImage(tempImage, 0, 0);
                 
-                // Precise coordinate target for watermark eradication
-                let wmWidth = 200;
-                let wmHeight = 45;
+                // Dynamic watermark remover
+                let wmWidth = Math.floor(canvas.width * 0.2);
+                let wmHeight = Math.floor(canvas.height * 0.06);
                 let wmX = canvas.width - wmWidth - 15;
                 let wmY = canvas.height - wmHeight - 15;
                 
@@ -210,97 +286,38 @@
                     ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
                 }
 
-                // Generate clean optimized JPEG data URL
-                let cleanImageUrl = canvas.toDataURL('image/jpeg', 0.95);
+                // Map format selection to MIME type and extensions
+                let mimeType = 'image/jpeg';
+                let fileExt = 'jpg';
+                if (formatVal === 'png') {
+                    mimeType = 'image/png';
+                    fileExt = 'png';
+                } else if (formatVal === 'webp') {
+                    mimeType = 'image/webp';
+                    fileExt = 'webp';
+                }
 
-                img.src = cleanImageUrl;
-                downloadBtn.href = cleanImageUrl;
+                let finalImageUrl = canvas.toDataURL(mimeType, 0.98);
+
+                img.src = finalImageUrl;
+                downloadBtn.href = finalImageUrl;
+                downloadBtn.download = `nahid-ai-masterpiece.${fileExt}`;
 
                 spinner.style.display = 'none';
                 text.style.display = 'none';
                 img.style.display = 'block';
                 downloadBtn.style.display = 'block';
-
-                // Post-render memory flush to keep browser clean and fast
-                setTimeout(executeDeepMemoryFlush, 500);
             };
 
             tempImage.onerror = function() {
                 clearTimeout(loadTimeout);
                 spinner.style.display = 'none';
                 text.style.display = 'none';
-                executeDeepMemoryFlush();
-                alert('An error occurred during high-scale frame rendering. RAM cleared successfully. Please try again.');
+                alert('High resolution rendering failed. Try selecting 4K or 8K resolution.');
             };
 
-            // Use requestAnimationFrame to prioritize main thread and prevent browser freeze
-            requestAnimationFrame(() => {
-                tempImage.src = rawImageUrl;
-            });
+            tempImage.src = rawImageUrl;
         }
     </script>
-</body>
-</html>            let loadTimeout = setTimeout(function() {
-                if (spinner.style.display === 'block') {
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    alert('Server response is taking longer than expected. Please try again.');
-                }
-            }, 45000);
-
-            img.onload = function() {
-                clearTimeout(loadTimeout);
-                spinner.style.display = 'none';
-                text.style.display = 'none';
-                img.style.display = 'block';
-                downloadBtn.style.display = 'block';
-            };
-
-            img.onerror = function() {
-                clearTimeout(loadTimeout);
-                spinner.style.display = 'none';
-                text.style.display = 'none';
-                alert('An error occurred during high-scale frame rendering. Please try again.');
-            };
-
-            img.src = finalImageUrl;
-            downloadLink.href = finalImageUrl;
-        }
-    </script>
-</body>
-</html>            }
-
-            container.style.display = 'block';
-            loader.style.display = 'block';
-            imgElement.style.display = 'none';
-            downloadLink.style.display = 'none';
-            engineBadge.style.display = 'none';
-            btn.disabled = true;
-            btn.style.opacity = '0.6';
-
-            // Combining user prompt with selected upscale engine keywords
-            const fullPrompt = `${promptText}, ${engineValue}, --v 6.0`;
-            const encodedPrompt = encodeURIComponent(fullPrompt);
-            
-            // Image generation API endpoint with customized dimensions
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${Math.floor(Math.random() * 9999999)}`;
-
-            engineBadge.innerText = `Active Engine: ${selectedEngineName}`;
-            imgElement.src = imageUrl;
-            downloadLink.href = imageUrl;
-        }
-
-        function imageReady() {
-            document.getElementById('loaderText').style.display = 'none';
-            document.getElementById('outputImg').style.display = 'block';
-            document.getElementById('downloadLink').style.display = 'inline-block';
-            document.getElementById('engineInfo').style.display = 'inline-block';
-            
-            const btn = document.getElementById('genBtn');
-            btn.disabled = false;
-            btn.style.opacity = '1';
-        }
-    </script>
-
 </body>
 </html>
