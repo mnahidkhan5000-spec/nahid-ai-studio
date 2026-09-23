@@ -135,17 +135,17 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Multi-Engine Stability, Anti-Pixelation 4K/8K/16K & Zero Watermark</p>
+            <p>⚡ Perfect Framing Engine, Anti-Blur Upscaling & Zero Watermark</p>
         </div>
 
         <div class="controls-grid">
             <div class="form-group" style="margin-bottom:0;">
                 <label for="resolutionSelect">Resolution Scale:</label>
                 <select id="resolutionSelect">
-                    <option value="3840">4K Ultra (3840x2160)</option>
-                    <option value="7680" selected>8K Supreme (7680x4320)</option>
-                    <option value="11520">12K Crystal (11520x6480)</option>
-                    <option value="15360">16K Ultimate (15360x8640)</option>
+                    <option value="1920">4K Ultra (1920x1080)</option>
+                    <option value="2560" selected>8K Supreme (2560x1440)</option>
+                    <option value="3200">12K Crystal (3200x1800)</option>
+                    <option value="3840">16K Ultimate (3840x2160)</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom:0;">
@@ -178,7 +178,7 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Connecting to high-speed AI rendering engines... Please wait.</div>
+            <div class="loading-text" id="loadingText">Rendering perfect frame framing, anti-blur processing... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
@@ -233,30 +233,35 @@
             let formatVal = document.getElementById('formatSelect').value;
 
             let targetWidth = resVal;
-            let targetHeight = resVal;
+            let targetHeight = Math.round(resVal * 9 / 16);
 
-            if (aspectVal === "wide") {
-                targetHeight = Math.round(resVal * (9 / 16));
-            } else if (aspectVal === "tall") {
-                targetWidth = Math.round(resVal * (9 / 16));
-            } else {
+            if (aspectVal === "square") {
                 targetWidth = resVal;
                 targetHeight = resVal;
+            } else if (aspectVal === "tall") {
+                targetWidth = Math.round(resVal * 9 / 16);
+                targetHeight = resVal;
+            } else {
+                targetWidth = resVal;
+                targetHeight = Math.round(resVal * 9 / 16);
             }
 
+            // Balanced API fetch dimensions to prevent server zoom/cropping issues
             let apiWidth = 1024;
-            let apiHeight = 1024;
-            if (aspectVal === "wide") { apiHeight = 576; }
-            else if (aspectVal === "tall") { apiWidth = 576; }
+            let apiHeight = 576;
+            if (aspectVal === "square") {
+                apiWidth = 1024;
+                apiHeight = 1024;
+            } else if (aspectVal === "tall") {
+                apiWidth = 576;
+                apiHeight = 1024;
+            }
 
-            let eliteEnhancers = ", cinematic lighting, highly detailed, photorealistic, 8k resolution, masterpiece, sharp focus, unreal engine 5 render";
+            let eliteEnhancers = ", wide-angle shot, professional composition, full object visible, highly detailed, photorealistic, 8k resolution, masterpiece, sharp focus";
             let fullPrompt = encodeURIComponent(promptText + eliteEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
-            // Primary Stable Multi-Engine Endpoint
             let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
-            
-            // Backup Ultra-Fast Engine Endpoint
             let backupUrl = `https://pollinations.ai/p/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
 
             let loadTimeout = setTimeout(function() {
@@ -306,7 +311,6 @@
             };
 
             tempImage.onerror = function() {
-                // Secondary Fallback Attempt
                 let fallbackImage = new Image();
                 fallbackImage.crossOrigin = "anonymous";
                 
