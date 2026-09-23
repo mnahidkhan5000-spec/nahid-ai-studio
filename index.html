@@ -135,7 +135,7 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Dual-Engine Stability, Anti-Pixelation 4K/8K/16K & Zero Watermark</p>
+            <p>⚡ Multi-Engine Stability, Anti-Pixelation 4K/8K/16K & Zero Watermark</p>
         </div>
 
         <div class="controls-grid">
@@ -253,11 +253,11 @@
             let fullPrompt = encodeURIComponent(promptText + eliteEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
-            // Primary Engine (Pollinations Stable Endpoint - No Watermark & Highly Stable)
+            // Primary Stable Multi-Engine Endpoint
             let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
             
-            // Backup Engine (Prodia Fallback)
-            let backupUrl = `https://images.prodia.xyz/prompt/${fullPrompt}?model=v1-5-pruned-emaonly.safetensors&seed=${randomSeed}&width=${apiWidth}&height=${apiHeight}&steps=25`;
+            // Backup Ultra-Fast Engine Endpoint
+            let backupUrl = `https://pollinations.ai/p/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
 
             let loadTimeout = setTimeout(function() {
                 if (spinner.style.display === 'block') {
@@ -306,14 +306,42 @@
             };
 
             tempImage.onerror = function() {
-                // Fallback mechanism: If primary engine fails, switch to backup engine automatically
-                tempImage.onerror = function() {
+                // Secondary Fallback Attempt
+                let fallbackImage = new Image();
+                fallbackImage.crossOrigin = "anonymous";
+                
+                fallbackImage.onload = function() {
+                    clearTimeout(loadTimeout);
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
+
+                    let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
+                    let fileExt = formatVal === 'jpeg' ? 'jpg' : formatVal;
+                    let finalImageUrl = canvas.toDataURL(mimeType, 0.98);
+
+                    img.src = finalImageUrl;
+                    downloadBtn.href = finalImageUrl;
+                    downloadBtn.download = `nahid-ai-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+
+                    spinner.style.display = 'none';
+                    text.style.display = 'none';
+                    img.style.display = 'block';
+                    downloadBtn.style.display = 'block';
+                };
+
+                fallbackImage.onerror = function() {
                     clearTimeout(loadTimeout);
                     spinner.style.display = 'none';
                     text.style.display = 'none';
                     alert('Rendering failed. Please try generating again.');
                 };
-                tempImage.src = backupUrl;
+
+                fallbackImage.src = backupUrl;
             };
 
             tempImage.src = primaryUrl;
