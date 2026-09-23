@@ -135,7 +135,7 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Anti-Pixelation Engine, True 4K/8K/16K, Zero Watermark & Formats</p>
+            <p>⚡ Dual-Engine Stability, Anti-Pixelation 4K/8K/16K & Zero Watermark</p>
         </div>
 
         <div class="controls-grid">
@@ -178,7 +178,7 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Processing anti-pixelation upscaling, sharp rendering & formatting... Please wait.</div>
+            <div class="loading-text" id="loadingText">Connecting to high-speed AI rendering engines... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
@@ -244,27 +244,28 @@
                 targetHeight = resVal;
             }
 
-            let apiWidth = 1536;
-            let apiHeight = 1536;
-            if (aspectVal === "wide") {
-                apiHeight = Math.round(apiWidth * (9 / 16));
-            } else if (aspectVal === "tall") {
-                apiWidth = Math.round(apiHeight * (9 / 16));
-            }
+            let apiWidth = 1024;
+            let apiHeight = 1024;
+            if (aspectVal === "wide") { apiHeight = 576; }
+            else if (aspectVal === "tall") { apiWidth = 576; }
 
-            let eliteEnhancers = ", ultra-detailed 8k resolution, photorealistic, sharp focus, crystal clear details, HDR, studio lighting, flawless masterpiece";
+            let eliteEnhancers = ", cinematic lighting, highly detailed, photorealistic, 8k resolution, masterpiece, sharp focus, unreal engine 5 render";
             let fullPrompt = encodeURIComponent(promptText + eliteEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
-            let rawImageUrl = `https://images.prodia.xyz/prompt/${fullPrompt}?model=v1-5-pruned-emaonly.safetensors&seed=${randomSeed}&width=${apiWidth}&height=${apiHeight}&steps=30&cfg=7.5`;
+            // Primary Engine (Pollinations Stable Endpoint - No Watermark & Highly Stable)
+            let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
+            
+            // Backup Engine (Prodia Fallback)
+            let backupUrl = `https://images.prodia.xyz/prompt/${fullPrompt}?model=v1-5-pruned-emaonly.safetensors&seed=${randomSeed}&width=${apiWidth}&height=${apiHeight}&steps=25`;
 
             let loadTimeout = setTimeout(function() {
                 if (spinner.style.display === 'block') {
                     spinner.style.display = 'none';
                     text.style.display = 'none';
-                    alert('Server response timed out. Please try again.');
+                    alert('Server response timed out. Please try generating again.');
                 }
-            }, 90000);
+            }, 60000);
 
             let tempImage = new Image();
             tempImage.crossOrigin = "anonymous";
@@ -272,7 +273,6 @@
             tempImage.onload = function() {
                 clearTimeout(loadTimeout);
                 
-                // Multi-step High Quality Super-Sampling Canvas Engine (Prevents blurring & pixelation)
                 let canvas = document.createElement('canvas');
                 let ctx = canvas.getContext('2d');
                 
@@ -281,8 +281,6 @@
                 
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
-                
-                // Direct high-precision rendering to eliminate pixel cracking
                 ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
 
                 let mimeType = 'image/jpeg';
@@ -295,7 +293,7 @@
                     fileExt = 'webp';
                 }
 
-                let finalImageUrl = canvas.toDataURL(mimeType, 1.0);
+                let finalImageUrl = canvas.toDataURL(mimeType, 0.98);
 
                 img.src = finalImageUrl;
                 downloadBtn.href = finalImageUrl;
@@ -308,13 +306,17 @@
             };
 
             tempImage.onerror = function() {
-                clearTimeout(loadTimeout);
-                spinner.style.display = 'none';
-                text.style.display = 'none';
-                alert('Rendering failed. Please try generating again.');
+                // Fallback mechanism: If primary engine fails, switch to backup engine automatically
+                tempImage.onerror = function() {
+                    clearTimeout(loadTimeout);
+                    spinner.style.display = 'none';
+                    text.style.display = 'none';
+                    alert('Rendering failed. Please try generating again.');
+                };
+                tempImage.src = backupUrl;
             };
 
-            tempImage.src = rawImageUrl;
+            tempImage.src = primaryUrl;
         }
     </script>
 </body>
