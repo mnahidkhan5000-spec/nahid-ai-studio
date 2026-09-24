@@ -135,7 +135,7 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Anti-Pixelation Engine, Zero Watermark, Ultra-HD & Formats</p>
+            <p>⚡ Hyper-Sharp Ultra-HD Engine, Zero Watermark & Formats</p>
         </div>
 
         <div class="controls-grid">
@@ -178,7 +178,7 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Processing anti-pixelation crisp rendering & watermarks removal... Please wait.</div>
+            <div class="loading-text" id="loadingText">Applying hyper-sharp upscale filtering & rendering... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
@@ -244,18 +244,18 @@
                 targetHeight = resVal;
             }
 
-            // Optimized fetch size to ensure maximum clarity and prevent server artifacts
-            let apiWidth = 1536;
-            let apiHeight = 1536;
-            if (aspectVal === "wide") {
+            // High source definition for maximum sharpness
+            let apiWidth = 1920;
+            let apiHeight = 1080;
+            if (aspectVal === "square") {
                 apiWidth = 1536;
-                apiHeight = 864;
-            } else if (aspectVal === "tall") {
-                apiWidth = 864;
                 apiHeight = 1536;
+            } else if (aspectVal === "tall") {
+                apiWidth = 1080;
+                apiHeight = 1920;
             }
 
-            let eliteEnhancers = ", extreme sharpness, flawless crystal clear details, ultra-detailed 8k resolution, photorealistic, professional studio lighting, masterpiece";
+            let eliteEnhancers = ", ultra-sharp focus, hyper-detailed texture, 8k resolution, photorealistic, professional commercial studio quality, masterpiece";
             let fullPrompt = encodeURIComponent(promptText + eliteEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
@@ -284,7 +284,15 @@
                 
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
-                ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
+                
+                let hRatio = canvas.width / tempImage.width;
+                let vRatio = canvas.height / tempImage.height;
+                let ratio = Math.max(hRatio, vRatio);
+                let centerShiftX = (canvas.width - tempImage.width * ratio) / 2;
+                let centerShiftY = (canvas.height - tempImage.height * ratio) / 2;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(tempImage, 0, 0, tempImage.width, tempImage.height, centerShiftX, centerShiftY, tempImage.width * ratio, tempImage.height * ratio);
 
                 // Watermark eraser logic
                 let wmWidth = Math.floor(canvas.width * 0.20);
@@ -335,7 +343,15 @@
                     canvas.height = targetHeight;
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
+
+                    let hRatio = canvas.width / fallbackImage.width;
+                    let vRatio = canvas.height / fallbackImage.height;
+                    let ratio = Math.max(hRatio, vRatio);
+                    let centerShiftX = (canvas.width - fallbackImage.width * ratio) / 2;
+                    let centerShiftY = (canvas.height - fallbackImage.height * ratio) / 2;
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(fallbackImage, 0, 0, fallbackImage.width, fallbackImage.height, centerShiftX, centerShiftY, fallbackImage.width * ratio, fallbackImage.height * ratio);
 
                     let wmWidth = Math.floor(canvas.width * 0.20);
                     let wmHeight = Math.floor(canvas.height * 0.07);
