@@ -135,17 +135,16 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Hyper-Sharp Ultra-HD Engine, Zero Watermark & Formats</p>
+            <p>⚡ Perfect Anatomy, Crystal Clear 8K, Zero Distortion & Watermark Free</p>
         </div>
 
         <div class="controls-grid">
             <div class="form-group" style="margin-bottom:0;">
                 <label for="resolutionSelect">Resolution Scale:</label>
                 <select id="resolutionSelect">
+                    <option value="1920">Full HD (1920x1080)</option>
                     <option value="3840">4K Ultra (3840x2160)</option>
                     <option value="7680" selected>8K Supreme (7680x4320)</option>
-                    <option value="11520">12K Crystal (11520x6480)</option>
-                    <option value="15360">16K Ultimate (15360x8640)</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom:0;">
@@ -178,7 +177,7 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Applying hyper-sharp upscale filtering & rendering... Please wait.</div>
+            <div class="loading-text" id="loadingText">Synthesizing crystal clear distortion-free image... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
@@ -244,19 +243,17 @@
                 targetHeight = resVal;
             }
 
-            // High source definition for maximum sharpness
-            let apiWidth = 1920;
-            let apiHeight = 1080;
-            if (aspectVal === "square") {
-                apiWidth = 1536;
-                apiHeight = 1536;
-            } else if (aspectVal === "tall") {
-                apiWidth = 1080;
-                apiHeight = 1920;
+            let apiWidth = targetWidth;
+            let apiHeight = targetHeight;
+            if (apiWidth > 2048 || apiHeight > 2048) {
+                let scaleFactor = 2048 / Math.max(apiWidth, apiHeight);
+                apiWidth = Math.round(apiWidth * scaleFactor);
+                apiHeight = Math.round(apiHeight * scaleFactor);
             }
 
-            let eliteEnhancers = ", ultra-sharp focus, hyper-detailed texture, 8k resolution, photorealistic, professional commercial studio quality, masterpiece";
-            let fullPrompt = encodeURIComponent(promptText + eliteEnhancers);
+            // High-end enhancers to fix anatomy, remove distortion, and make it crystal clear like water
+            let perfectionEnhancers = ", perfectly detailed human anatomy, correct hands, sharp symmetrical face, crystal clear optics, flawless composition, water-clear clarity, 8k resolution, photorealistic, professional studio lighting, stock photography masterpiece --no deformed, distorted, blurry, bad anatomy, extra limbs";
+            let fullPrompt = encodeURIComponent(promptText + perfectionEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
             let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
@@ -285,16 +282,9 @@
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 
-                let hRatio = canvas.width / tempImage.width;
-                let vRatio = canvas.height / tempImage.height;
-                let ratio = Math.max(hRatio, vRatio);
-                let centerShiftX = (canvas.width - tempImage.width * ratio) / 2;
-                let centerShiftY = (canvas.height - tempImage.height * ratio) / 2;
-                
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(tempImage, 0, 0, tempImage.width, tempImage.height, centerShiftX, centerShiftY, tempImage.width * ratio, tempImage.height * ratio);
+                ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
 
-                // Watermark eraser logic
                 let wmWidth = Math.floor(canvas.width * 0.20);
                 let wmHeight = Math.floor(canvas.height * 0.07);
                 let wmX = canvas.width - wmWidth - 25;
@@ -344,14 +334,8 @@
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
 
-                    let hRatio = canvas.width / fallbackImage.width;
-                    let vRatio = canvas.height / fallbackImage.height;
-                    let ratio = Math.max(hRatio, vRatio);
-                    let centerShiftX = (canvas.width - fallbackImage.width * ratio) / 2;
-                    let centerShiftY = (canvas.height - fallbackImage.height * ratio) / 2;
-
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(fallbackImage, 0, 0, fallbackImage.width, fallbackImage.height, centerShiftX, centerShiftY, fallbackImage.width * ratio, fallbackImage.height * ratio);
+                    ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
 
                     let wmWidth = Math.floor(canvas.width * 0.20);
                     let wmHeight = Math.floor(canvas.height * 0.07);
