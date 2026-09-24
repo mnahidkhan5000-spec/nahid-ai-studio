@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Ultimate Upscale Edition</title>
+    <title>Nahid AI Studio Pro Plus - Safe Upscale Edition</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -65,10 +65,8 @@
             padding: 10px;
             font-size: 12px;
             outline: none;
-            transition: all 0.3s ease;
         }
         textarea { resize: vertical; min-height: 80px; }
-        select:focus, textarea:focus, input[type="file"]:focus { border-color: #60a5fa; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
         
         .btn-flex { display: flex; gap: 10px; }
         .action-btn {
@@ -83,8 +81,6 @@
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
-            transition: transform 0.2s;
         }
         .ram-btn {
             flex: 1;
@@ -97,10 +93,7 @@
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
         }
-        .action-btn:hover, .ram-btn:hover { transform: translateY(-2px); opacity: 0.95; }
         
         .output-area { text-align: center; margin-top: 15px; }
         .spinner {
@@ -126,7 +119,6 @@
             background: #000;
         }
         
-        /* Multi-style 4 grid layout for upscale */
         .multi-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -143,7 +135,7 @@
         }
         .multi-card img {
             width: 100%;
-            height: 200px;
+            height: 180px;
             object-fit: contain;
             border-radius: 6px;
             background: #000;
@@ -162,7 +154,6 @@
             font-weight: bold;
             text-transform: uppercase;
         }
-
         .download-btn {
             display: none;
             width: 100%;
@@ -175,7 +166,6 @@
             font-weight: bold;
             font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -184,7 +174,7 @@
     <div class="main-container">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Supreme Generator & 4-Way Multi-Style AI Upscaler Engine</p>
+            <p>⚡ Safe Memory-Optimized Upscaler Engine</p>
         </div>
 
         <!-- SECTION 1: AI IMAGE GENERATOR -->
@@ -194,9 +184,9 @@
                 <div class="form-group">
                     <label>Resolution Scale:</label>
                     <select id="genResolution">
-                        <option value="3840">4K Ultra (3840x2160)</option>
-                        <option value="7680" selected>8K Supreme (7680x4320)</option>
-                        <option value="12288">16K Extreme (12288x6912)</option>
+                        <option value="1920">Full HD (1920x1080)</option>
+                        <option value="3840" selected>4K Ultra (3840x2160)</option>
+                        <option value="7680">8K Supreme (7680x4320)</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -237,9 +227,9 @@
                 <div class="form-group">
                     <label>Upscale Resolution:</label>
                     <select id="upResolution">
-                        <option value="3840">4K Ultra Scale</option>
-                        <option value="7680" selected>8K Supreme Scale</option>
-                        <option value="12288">16K Extreme Scale</option>
+                        <option value="1920">Full HD Scale</option>
+                        <option value="3840" selected>4K Ultra Scale</option>
+                        <option value="7680">8K Supreme Scale</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -265,7 +255,7 @@
         <!-- OUTPUT SECTION -->
         <div class="output-area">
             <div class="spinner" id="appSpinner"></div>
-            <div class="loading-text" id="appLoadingText">Processing crystal clear high-resolution pixels... Please wait.</div>
+            <div class="loading-text" id="appLoadingText">Processing safe memory-optimized upscale... Please wait.</div>
             
             <img id="singleResultImage" class="result-single" alt="Generated Image">
             <a id="singleDownloadBtn" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
@@ -301,7 +291,7 @@
             document.getElementById('singleResultImage').style.display = 'none';
             document.getElementById('singleDownloadBtn').style.display = 'none';
             document.getElementById('multiGridContainer').style.display = 'none';
-            alert('⚡ Success: Cache and RAM successfully cleaned!');
+            alert('⚡ Success: RAM and memory successfully cleared!');
         }
 
         function generateNewImage() {
@@ -329,8 +319,8 @@
             if (aspectVal === "wide") targetHeight = Math.round(resVal * (9 / 16));
             else if (aspectVal === "tall") targetWidth = Math.round(resVal * (9 / 16));
 
-            let fullPrompt = encodeURIComponent(promptText + ", ultra-crisp focus, micro-contrast enhancement, 8k resolution, flawless professional stock photography");
-            let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=1920&height=1080&nologo=true&seed=${Math.floor(Math.random()*999999999)}`;
+            let fullPrompt = encodeURIComponent(promptText + ", ultra-crisp focus, micro-contrast enhancement, 8k resolution");
+            let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=1280&height=720&nologo=true&seed=${Math.floor(Math.random()*999999999)}`;
 
             let imgObj = new Image();
             imgObj.crossOrigin = "anonymous";
@@ -344,11 +334,11 @@
                 ctx.drawImage(imgObj, 0, 0, canvas.width, canvas.height);
 
                 let mime = formatVal === 'png' ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
-                let dataUrl = canvas.toDataURL(mime, 1.0);
+                let dataUrl = canvas.toDataURL(mime, 0.9);
 
                 singleImg.src = dataUrl;
                 downBtn.href = dataUrl;
-                downBtn.download = `nahid-ai-masterpiece-${targetWidth}x.${formatVal}`;
+                downBtn.download = `nahid-ai-masterpiece.${formatVal}`;
 
                 spinner.style.display = 'none';
                 text.style.display = 'none';
@@ -361,7 +351,7 @@
         function runMultiStyleUpscale() {
             let fileInput = document.getElementById('upscaleFile');
             if (!fileInput.files || fileInput.files.length === 0) {
-                alert('Please upload an image first from your gallery!');
+                alert('Please upload an image first!');
                 return;
             }
 
@@ -393,32 +383,20 @@
                     let mime = formatVal === 'png' ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
                     let ext = formatVal === 'jpeg' ? 'jpg' : formatVal;
 
-                    // Generate 4 distinct styles simultaneously
                     for (let i = 1; i <= 4; i++) {
                         let canvas = document.createElement('canvas');
                         let ctx = canvas.getContext('2d');
                         canvas.width = targetWidth;
                         canvas.height = targetHeight;
                         ctx.imageSmoothingEnabled = true;
-                        ctx.imageSmoothingQuality = 'high';
+                        ctx.imageSmoothingQuality = 'medium';
                         ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
 
-                        // Apply unique filter matrix per style variant
-                        let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        let data = imgData.data;
-                        let multiplier = 1.0 + (i * 0.02); // Different contrast/sharpness per style
-                        for (let p = 0; p < data.length; p += 4) {
-                            data[p]   = Math.min(255, data[p] * multiplier);
-                            data[p+1] = Math.min(255, data[p+1] * multiplier);
-                            data[p+2] = Math.min(255, data[p+2] * multiplier);
-                        }
-                        ctx.putImageData(imgData, 0, 0);
-
-                        let styleResultUrl = canvas.toDataURL(mime, 1.0);
+                        let styleResultUrl = canvas.toDataURL(mime, 0.85);
                         document.getElementById(`style${i}Img`).src = styleResultUrl;
                         let subDown = document.getElementById(`down${i}`);
                         subDown.href = styleResultUrl;
-                        subDown.download = `upscale-style-${i}-${targetWidth}x${targetHeight}.${ext}`;
+                        subDown.download = `upscale-style-${i}.${ext}`;
                     }
 
                     spinner.style.display = 'none';
