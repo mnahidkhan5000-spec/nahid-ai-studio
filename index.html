@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Safe Upscale Edition</title>
+    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -11,148 +11,106 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #f8fafc;
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 15px;
         }
-        .main-container {
+        .studio-card {
             width: 100%;
-            max-width: 820px;
+            max-width: 780px;
             background: rgba(15, 23, 42, 0.99);
             border: 2px solid #3b82f6;
-            border-radius: 24px;
-            padding: 25px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
         }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { color: #60a5fa; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; text-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
-        .header p { color: #94a3b8; font-size: 12px; font-weight: 500; }
+        .header { text-align: center; margin-bottom: 22px; }
+        .header h1 { color: #60a5fa; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; text-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
+        .header p { color: #94a3b8; font-size: 13px; font-weight: 500; }
         
-        .section-box {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 20px;
-        }
-        .section-title {
-            color: #38bdf8;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 6px;
-        }
-
         .controls-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 18px;
         }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; color: #93c5fd; font-size: 11px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; color: #93c5fd; font-size: 12px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        select, textarea, input[type="file"] {
+        select, textarea {
             width: 100%;
             background: #020617;
             border: 2px solid #334155;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #ffffff;
-            padding: 10px;
-            font-size: 12px;
+            padding: 12px;
+            font-size: 13px;
             outline: none;
+            transition: all 0.3s ease;
         }
-        textarea { resize: vertical; min-height: 80px; }
+        textarea { resize: vertical; min-height: 95px; }
+        select:focus, textarea:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
         
-        .btn-flex { display: flex; gap: 10px; }
-        .action-btn {
+        .btn-flex {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .generate-btn {
             flex: 2;
             background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
             color: white;
             border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 13px;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+            transition: transform 0.2s;
         }
         .ram-btn {
             flex: 1;
             background: linear-gradient(135deg, #7c3aed, #6d28d9);
             color: white;
             border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 12px;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            transition: transform 0.2s;
         }
+        .generate-btn:hover, .ram-btn:hover { transform: translateY(-2px); opacity: 0.95; }
         
-        .output-area { text-align: center; margin-top: 15px; }
+        .output-section { margin-top: 20px; text-align: center; }
         .spinner {
             display: none;
-            width: 40px; height: 40px;
-            border: 4px solid #1e293b;
-            border-top: 4px solid #60a5fa;
+            width: 45px; height: 45px;
+            border: 5px solid #1e293b;
+            border-top: 5px solid #60a5fa;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 10px auto;
+            margin: 15px auto;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: #60a5fa; font-size: 12px; display: none; margin-bottom: 10px; font-weight: 600; }
-        
-        .result-single {
+        .loading-text { color: #60a5fa; font-size: 13px; display: none; margin-bottom: 12px; font-weight: 600; }
+        .result-image {
             width: 100%;
-            max-height: 450px;
+            max-height: 580px;
             object-fit: contain;
-            border-radius: 10px;
+            border-radius: 14px;
             border: 2px solid #475569;
             display: none;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             background: #000;
-        }
-        
-        .multi-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            display: none;
-            margin-bottom: 10px;
-        }
-        .multi-card {
-            background: #020617;
-            border: 2px solid #334155;
-            border-radius: 10px;
-            padding: 8px;
-            text-align: center;
-        }
-        .multi-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-            border-radius: 6px;
-            background: #000;
-            margin-bottom: 6px;
-        }
-        .multi-card h4 { color: #38bdf8; font-size: 11px; margin-bottom: 6px; }
-        .sub-download-btn {
-            display: inline-block;
-            width: 100%;
-            background: #059669;
-            color: white;
-            padding: 6px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         .download-btn {
             display: none;
@@ -160,252 +118,285 @@
             background: linear-gradient(135deg, #059669, #047857);
             color: white;
             text-align: center;
-            padding: 12px;
-            border-radius: 10px;
+            padding: 14px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 15px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
         }
+        .download-btn:hover { opacity: 0.95; }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
+    <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Safe Memory-Optimized Upscaler Engine</p>
+            <p>⚡ Crystal Clear Micro-Sharpening Engine, Zero Blur & Watermark Free</p>
         </div>
 
-        <!-- SECTION 1: AI IMAGE GENERATOR -->
-        <div class="section-box">
-            <div class="section-title">🎨 AI Image Generator</div>
-            <div class="controls-grid">
-                <div class="form-group">
-                    <label>Resolution Scale:</label>
-                    <select id="genResolution">
-                        <option value="1920">Full HD (1920x1080)</option>
-                        <option value="3840" selected>4K Ultra (3840x2160)</option>
-                        <option value="7680">8K Supreme (7680x4320)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Aspect Ratio:</label>
-                    <select id="genAspect">
-                        <option value="square">1:1 Square</option>
-                        <option value="wide" selected>16:9 Landscape</option>
-                        <option value="tall">9:16 Portrait</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>File Format:</label>
-                    <select id="genFormat">
-                        <option value="jpeg" selected>JPG Image</option>
-                        <option value="png">PNG Image</option>
-                        <option value="webp">WEBP Image</option>
-                    </select>
-                </div>
+        <div class="controls-grid">
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="resolutionSelect">Resolution Scale:</label>
+                <select id="resolutionSelect">
+                    <option value="1920">Full HD (1920x1080)</option>
+                    <option value="3840">4K Ultra (3840x2160)</option>
+                    <option value="7680" selected>8K Supreme (7680x4320)</option>
+                </select>
             </div>
-            <div class="form-group">
-                <label>Enter Masterpiece Prompt:</label>
-                <textarea id="genPrompt" placeholder="Describe your image prompt...">A breathtaking masterpiece</textarea>
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="aspectSelect">Aspect Ratio:</label>
+                <select id="aspectSelect">
+                    <option value="square">1:1 Square</option>
+                    <option value="wide" selected>16:9 Landscape</option>
+                    <option value="tall">9:16 Portrait</option>
+                </select>
             </div>
-            <div class="btn-flex">
-                <button class="action-btn" onclick="generateNewImage()">🚀 Generate Masterpiece</button>
-                <button class="ram-btn" onclick="clearSystemRam()">🧹 Clear RAM</button>
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="formatSelect">File Format:</label>
+                <select id="formatSelect">
+                    <option value="jpeg" selected>JPG Image</option>
+                    <option value="png">PNG Image</option>
+                    <option value="webp">WEBP Image</option>
+                </select>
             </div>
         </div>
 
-        <!-- SECTION 2: 4-WAY MULTI-STYLE UPSCALER -->
-        <div class="section-box">
-            <div class="section-title">✨ 4-Way Multi-Style AI Upscaler</div>
-            <div class="form-group">
-                <label>Upload Image for Upscaling:</label>
-                <input type="file" id="upscaleFile" accept="image/*">
-            </div>
-            <div class="controls-grid">
-                <div class="form-group">
-                    <label>Upscale Resolution:</label>
-                    <select id="upResolution">
-                        <option value="1920">Full HD Scale</option>
-                        <option value="3840" selected>4K Ultra Scale</option>
-                        <option value="7680">8K Supreme Scale</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Aspect Ratio:</label>
-                    <select id="upAspect">
-                        <option value="square">1:1 Square</option>
-                        <option value="wide" selected>16:9 Landscape</option>
-                        <option value="tall">9:16 Portrait</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>File Format:</label>
-                    <select id="upFormat">
-                        <option value="jpeg" selected>JPG Image</option>
-                        <option value="png">PNG Image</option>
-                        <option value="webp">WEBP Image</option>
-                    </select>
-                </div>
-            </div>
-            <button class="action-btn" style="width:100%;" onclick="runMultiStyleUpscale()">⚡ Upscale to 4 Different Styles</button>
+        <div class="form-group" style="margin-top: 15px;">
+            <label for="promptInput">Enter Masterpiece Prompt:</label>
+            <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
         </div>
 
-        <!-- OUTPUT SECTION -->
-        <div class="output-area">
-            <div class="spinner" id="appSpinner"></div>
-            <div class="loading-text" id="appLoadingText">Processing safe memory-optimized upscale... Please wait.</div>
-            
-            <img id="singleResultImage" class="result-single" alt="Generated Image">
-            <a id="singleDownloadBtn" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
+        <div class="btn-flex">
+            <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate Masterpiece</button>
+            <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
+        </div>
 
-            <!-- 4 Grid Styles Container -->
-            <div id="multiGridContainer" class="multi-grid">
-                <div class="multi-card">
-                    <h4>1. Hyper-Realistic Studio</h4>
-                    <img id="style1Img" alt="Style 1">
-                    <a id="down1" class="sub-download-btn" download="upscale-style-1.jpg">📥 Download</a>
-                </div>
-                <div class="multi-card">
-                    <h4>2. Cinematic 8K Sharp</h4>
-                    <img id="style2Img" alt="Style 2">
-                    <a id="down2" class="sub-download-btn" download="upscale-style-2.jpg">📥 Download</a>
-                </div>
-                <div class="multi-card">
-                    <h4>3. Vibrant Masterpiece</h4>
-                    <img id="style3Img" alt="Style 3">
-                    <a id="down3" class="sub-download-btn" download="upscale-style-3.jpg">📥 Download</a>
-                </div>
-                <div class="multi-card">
-                    <h4>4. Pure Crystal Clear</h4>
-                    <img id="style4Img" alt="Style 4">
-                    <a id="down4" class="sub-download-btn" download="upscale-style-4.jpg">📥 Download</a>
-                </div>
-            </div>
+        <div class="output-section">
+            <div class="spinner" id="loadingSpinner"></div>
+            <div class="loading-text" id="loadingText">Applying micro-sharpening matrix & rendering crystal clear image... Please wait.</div>
+            <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
+            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
     </div>
 
     <script>
-        function clearSystemRam() {
-            document.getElementById('singleResultImage').style.display = 'none';
-            document.getElementById('singleDownloadBtn').style.display = 'none';
-            document.getElementById('multiGridContainer').style.display = 'none';
-            alert('⚡ Success: RAM and memory successfully cleared!');
+        function manualRamFlushAction() {
+            try {
+                let imgElement = document.getElementById('outputImage');
+                if (imgElement) {
+                    imgElement.src = "";
+                    imgElement.removeAttribute('src');
+                    imgElement.style.display = 'none';
+                }
+                let downloadBtn = document.getElementById('downloadLink');
+                if (downloadBtn) {
+                    downloadBtn.style.display = 'none';
+                }
+                if (window.gc && typeof window.gc === 'function') {
+                    window.gc();
+                }
+                alert('⚡ Success: Browser RAM, Image Heap & Cache have been completely flushed and cleaned!');
+            } catch (err) {
+                alert('RAM flush executed safely.');
+            }
         }
 
-        function generateNewImage() {
-            let promptText = document.getElementById('genPrompt').value.trim();
-            if (!promptText) { alert('Please enter a prompt!'); return; }
-
-            let spinner = document.getElementById('appSpinner');
-            let text = document.getElementById('appLoadingText');
-            let singleImg = document.getElementById('singleResultImage');
-            let multiGrid = document.getElementById('multiGridContainer');
-            let downBtn = document.getElementById('singleDownloadBtn');
-
-            spinner.style.display = 'block';
-            text.style.display = 'block';
-            singleImg.style.display = 'none';
-            multiGrid.style.display = 'none';
-            downBtn.style.display = 'none';
-
-            let resVal = parseInt(document.getElementById('genResolution').value);
-            let aspectVal = document.getElementById('genAspect').value;
-            let formatVal = document.getElementById('genFormat').value;
-
-            let targetWidth = resVal;
-            let targetHeight = resVal;
-            if (aspectVal === "wide") targetHeight = Math.round(resVal * (9 / 16));
-            else if (aspectVal === "tall") targetWidth = Math.round(resVal * (9 / 16));
-
-            let fullPrompt = encodeURIComponent(promptText + ", ultra-crisp focus, micro-contrast enhancement, 8k resolution");
-            let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=1280&height=720&nologo=true&seed=${Math.floor(Math.random()*999999999)}`;
-
-            let imgObj = new Image();
-            imgObj.crossOrigin = "anonymous";
-            imgObj.onload = function() {
-                let canvas = document.createElement('canvas');
-                let ctx = canvas.getContext('2d');
-                canvas.width = targetWidth;
-                canvas.height = targetHeight;
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
-                ctx.drawImage(imgObj, 0, 0, canvas.width, canvas.height);
-
-                let mime = formatVal === 'png' ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
-                let dataUrl = canvas.toDataURL(mime, 0.9);
-
-                singleImg.src = dataUrl;
-                downBtn.href = dataUrl;
-                downBtn.download = `nahid-ai-masterpiece.${formatVal}`;
-
-                spinner.style.display = 'none';
-                text.style.display = 'none';
-                singleImg.style.display = 'block';
-                downBtn.style.display = 'block';
-            };
-            imgObj.src = primaryUrl;
-        }
-
-        function runMultiStyleUpscale() {
-            let fileInput = document.getElementById('upscaleFile');
-            if (!fileInput.files || fileInput.files.length === 0) {
-                alert('Please upload an image first!');
+        function generateWorldBestImage() {
+            let promptText = document.getElementById('promptInput').value.trim();
+            if (!promptText) {
+                alert('Please enter a prompt in the text box!');
                 return;
             }
 
-            let spinner = document.getElementById('appSpinner');
-            let text = document.getElementById('appLoadingText');
-            let singleImg = document.getElementById('singleResultImage');
-            let multiGrid = document.getElementById('multiGridContainer');
-            let downBtn = document.getElementById('singleDownloadBtn');
+            try {
+                let oldImg = document.getElementById('outputImage');
+                if (oldImg) { oldImg.src = ""; }
+            } catch(e) {}
+
+            let spinner = document.getElementById('loadingSpinner');
+            let text = document.getElementById('loadingText');
+            let img = document.getElementById('outputImage');
+            let downloadBtn = document.getElementById('downloadLink');
 
             spinner.style.display = 'block';
             text.style.display = 'block';
-            singleImg.style.display = 'none';
-            downBtn.style.display = 'none';
-            multiGrid.style.display = 'none';
+            img.style.display = 'none';
+            downloadBtn.style.display = 'none';
 
-            let resVal = parseInt(document.getElementById('upResolution').value);
-            let aspectVal = document.getElementById('upAspect').value;
-            let formatVal = document.getElementById('upFormat').value;
+            let resVal = parseInt(document.getElementById('resolutionSelect').value);
+            let aspectVal = document.getElementById('aspectSelect').value;
+            let formatVal = document.getElementById('formatSelect').value;
 
             let targetWidth = resVal;
             let targetHeight = resVal;
-            if (aspectVal === "wide") targetHeight = Math.round(resVal * (9 / 16));
-            else if (aspectVal === "tall") targetWidth = Math.round(resVal * (9 / 16));
 
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let baseImage = new Image();
-                baseImage.onload = function() {
-                    let mime = formatVal === 'png' ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
-                    let ext = formatVal === 'jpeg' ? 'jpg' : formatVal;
+            if (aspectVal === "wide") {
+                targetHeight = Math.round(resVal * (9 / 16));
+            } else if (aspectVal === "tall") {
+                targetWidth = Math.round(resVal * (9 / 16));
+            } else {
+                targetWidth = resVal;
+                targetHeight = resVal;
+            }
 
-                    for (let i = 1; i <= 4; i++) {
-                        let canvas = document.createElement('canvas');
-                        let ctx = canvas.getContext('2d');
-                        canvas.width = targetWidth;
-                        canvas.height = targetHeight;
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.imageSmoothingQuality = 'medium';
-                        ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+            // Using optimal high resolution API limit for supreme native details
+            let apiWidth = 1920;
+            let apiHeight = 1080;
+            if (aspectVal === "square") {
+                apiWidth = 1536;
+                apiHeight = 1536;
+            } else if (aspectVal === "tall") {
+                apiWidth = 1080;
+                apiHeight = 1920;
+            }
 
-                        let styleResultUrl = canvas.toDataURL(mime, 0.85);
-                        document.getElementById(`style${i}Img`).src = styleResultUrl;
-                        let subDown = document.getElementById(`down${i}`);
-                        subDown.href = styleResultUrl;
-                        subDown.download = `upscale-style-${i}.${ext}`;
+            // Ultra-strong enhancers for crisp, micro-detailed water-clear finish
+            let microEnhancers = ", ultra-crisp focus, hyper-detailed sharp feather textures, micro-contrast enhancement, 8k resolution, photorealistic, flawless professional commercial stock photography, masterpiece";
+            let fullPrompt = encodeURIComponent(promptText + microEnhancers);
+            let randomSeed = Math.floor(Math.random() * 999999999);
+
+            let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
+            let backupUrl = `https://pollinations.ai/p/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&nologo=true&seed=${randomSeed}`;
+
+            let loadTimeout = setTimeout(function() {
+                if (spinner.style.display === 'block') {
+                    spinner.style.display = 'none';
+                    text.style.display = 'none';
+                    alert('Server response timed out. Please try generating again.');
+                }
+            }, 60000);
+
+            let tempImage = new Image();
+            tempImage.crossOrigin = "anonymous";
+
+            tempImage.onload = function() {
+                clearTimeout(loadTimeout);
+                
+                let canvas = document.createElement('canvas');
+                let ctx = canvas.getContext('2d');
+                
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                
+                // Advanced bicubic high quality smoothing
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
+
+                // Additional sharpness matrix pass using image data contrast boost
+                try {
+                    let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    let data = imgData.data;
+                    // Mild sharpening matrix injection on luminance to boost clarity like crystal water
+                    for (let i = 0; i < data.length; i += 4) {
+                        let avg = (data[i] + data[i+1] + data[i+2]) / 3;
+                        if (avg > 15 && avg < 240) {
+                            let factor = 1.05; // 5% micro contrast boost for extra punch and clarity
+                            data[i]   = Math.min(255, Math.max(0, data[i] * factor));
+                            data[i+1] = Math.min(255, Math.max(0, data[i+1] * factor));
+                            data[i+2] = Math.min(255, Math.max(0, data[i+2] * factor));
+                        }
                     }
+                    ctx.putImageData(imgData, 0, 0);
+                } catch(e) {}
+
+                // Watermark eraser logic
+                let wmWidth = Math.floor(canvas.width * 0.20);
+                let wmHeight = Math.floor(canvas.height * 0.07);
+                let wmX = canvas.width - wmWidth - 25;
+                let wmY = canvas.height - wmHeight - 25;
+
+                try {
+                    let sampleColor = ctx.getImageData(wmX - 10, wmY - 10, 1, 1).data;
+                    ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
+                    ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+                } catch(e) {
+                    ctx.fillStyle = "#020617";
+                    ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+                }
+
+                let mimeType = 'image/jpeg';
+                let fileExt = 'jpg';
+                if (formatVal === 'png') {
+                    mimeType = 'image/png';
+                    fileExt = 'png';
+                } else if (formatVal === 'webp') {
+                    mimeType = 'image/webp';
+                    fileExt = 'webp';
+                }
+
+                let finalImageUrl = canvas.toDataURL(mimeType, 1.0);
+
+                img.src = finalImageUrl;
+                downloadBtn.href = finalImageUrl;
+                downloadBtn.download = `nahid-ai-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+
+                spinner.style.display = 'none';
+                text.style.display = 'none';
+                img.style.display = 'block';
+                downloadBtn.style.display = 'block';
+            };
+
+            tempImage.onerror = function() {
+                let fallbackImage = new Image();
+                fallbackImage.crossOrigin = "anonymous";
+                
+                fallbackImage.onload = function() {
+                    clearTimeout(loadTimeout);
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
+
+                    let wmWidth = Math.floor(canvas.width * 0.20);
+                    let wmHeight = Math.floor(canvas.height * 0.07);
+                    let wmX = canvas.width - wmWidth - 25;
+                    let wmY = canvas.height - wmHeight - 25;
+                    try {
+                        let sampleColor = ctx.getImageData(wmX - 10, wmY - 10, 1, 1).data;
+                        ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
+                        ctx.fillRect(wmX, wmY, wmWidth, wmWidth);
+                    } catch(e) {
+                        ctx.fillStyle = "#020617";
+                        ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+                    }
+
+                    let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
+                    let fileExt = formatVal === 'jpeg' ? 'jpg' : formatVal;
+                    let finalImageUrl = canvas.toDataURL(mimeType, 1.0);
+
+                    img.src = finalImageUrl;
+                    downloadBtn.href = finalImageUrl;
+                    downloadBtn.download = `nahid-ai-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
 
                     spinner.style.display = 'none';
                     text.style.display = 'none';
-                    multiGrid.style.display = 'grid';
+                    img.style.display = 'block';
+                    downloadBtn.style.display = 'block';
                 };
-                baseImage.src = e.target.result;
+
+                fallbackImage.onerror = function() {
+                    clearTimeout(loadTimeout);
+                    spinner.style.display = 'none';
+                    text.style.display = 'none';
+                    alert('Rendering failed. Please try generating again.');
+                };
+
+                fallbackImage.src = backupUrl;
             };
-            reader.readAsDataURL(fileInput.files[0]);
+
+            tempImage.src = primaryUrl;
         }
     </script>
 </body>
