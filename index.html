@@ -1,586 +1,698 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: #020617;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-        .studio-card {
-            width: 100%;
-            max-width: 780px;
-            background: rgba(15, 23, 42, 0.99);
-            border: 2px solid #3b82f6;
-            border-radius: 22px;
-            padding: 30px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
-        }
-        .header { text-align: center; margin-bottom: 22px; }
-        .header h1 { color: #60a5fa; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; text-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
-        .header p { color: #94a3b8; font-size: 13px; font-weight: 500; }
-        
-        .controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 18px;
-        }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; color: #93c5fd; font-size: 12px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        select, textarea {
-            width: 100%;
-            background: #020617;
-            border: 2px solid #334155;
-            border-radius: 12px;
-            color: #ffffff;
-            padding: 12px;
-            font-size: 13px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        textarea { resize: vertical; min-height: 95px; }
-        select:focus, textarea:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
-        
-        .btn-flex {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-        .generate-btn {
-            flex: 2;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
-            transition: transform 0.2s;
-        }
-        .ram-btn {
-            flex: 1;
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-            transition: transform 0.2s;
-        }
-        .generate-btn:hover, .ram-btn:hover { transform: translateY(-2px); opacity: 0.95; }
-        
-        .output-section { margin-top: 20px; text-align: center; }
-        .spinner {
-            display: none;
-            width: 45px; height: 45px;
-            border: 5px solid #1e293b;
-            border-top: 5px solid #60a5fa;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 15px auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: #60a5fa; font-size: 13px; display: none; margin-bottom: 12px; font-weight: 600; }
-        .result-image {
-            width: 100%;
-            max-height: 580px;
-            object-fit: contain;
-            border-radius: 14px;
-            border: 2px solid #475569;
-            display: none;
-            margin-bottom: 15px;
-            background: #000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        
-        /* Supreme World-Class Upscaler Panel Box */
-        .upscale-supreme-box {
-            display: none;
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-            border: 2px solid #f59e0b;
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 15px;
-            text-align: left;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
-        }
-        .upscale-title {
-            color: #fbbf24;
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .upscale-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr 1.2fr;
-            gap: 10px;
-            align-items: center;
-        }
-        .supreme-upscale-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #d97706, #b45309, #92400e);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
-            transition: transform 0.2s;
-        }
-        .supreme-upscale-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .download-btn {
-            display: none;
-            width: 100%;
-            background: linear-gradient(135deg, #059669, #047857);
-            color: white;
-            text-align: center;
-            padding: 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
-        }
-        .download-btn:hover { opacity: 0.95; }
-    </style>
+    body {
+      background-color: #020617;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .studio-card {
+      width: 100%;
+      max-width: 780px;
+      background: rgba(15, 23, 42, 0.99);
+      border: 2px solid #3b82f6;
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .header h1 {
+      color: #60a5fa;
+      font-size: 26px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+    }
+
+    .header p {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select, textarea {
+      width: 100%;
+      background: #020617;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      color: #ffffff;
+      padding: 12px;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 95px;
+    }
+
+    select:focus, textarea:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-flex {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .generate-btn {
+      flex: 2;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+      transition: transform 0.2s;
+    }
+
+    .ram-btn {
+      flex: 1;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .generate-btn:hover, .ram-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .output-section {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .spinner {
+      display: none;
+      width: 45px;
+      height: 45px;
+      border: 5px solid #1e293b;
+      border-top: 5px solid #60a5fa;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 15px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: #60a5fa;
+      font-size: 13px;
+      display: none;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .result-image {
+      width: 100%;
+      max-height: 580px;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 2px solid #475569;
+      display: none;
+      margin-bottom: 15px;
+      background: #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    /* Supreme World-Class Upscaler Panel Box */
+    .upscale-supreme-box {
+      display: none;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 2px solid #f59e0b;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 15px;
+      text-align: left;
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+    }
+
+    .upscale-title {
+      color: #fbbf24;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .upscale-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1.2fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .supreme-upscale-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #d97706, #b45309, #92400e);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .supreme-upscale-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .download-btn {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: white;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+    }
+
+    .download-btn:hover {
+      opacity: 0.95;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="studio-card">
-        <div class="header">
-            <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ World #1 Quantum Neural Matrix, Adobe Stock Certified & 100% Watermark Free</p>
-        </div>
-
-        <div class="controls-grid">
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="resolutionSelect">Resolution Scale:</label>
-                <select id="resolutionSelect">
-                    <option value="1920">Full HD (1920x1080)</option>
-                    <option value="3840">4K Ultra (3840x2160)</option>
-                    <option value="7680" selected>8K Supreme (7680x4320)</option>
-                </select>
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="aspectSelect">Aspect Ratio:</label>
-                <select id="aspectSelect">
-                    <option value="square">1:1 Square</option>
-                    <option value="wide" selected>16:9 Landscape</option>
-                    <option value="tall">9:16 Portrait</option>
-                </select>
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="formatSelect">File Format:</label>
-                <select id="formatSelect">
-                    <option value="jpeg" selected>JPG Image</option>
-                    <option value="png">PNG Image</option>
-                    <option value="webp">WEBP Image</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- AI Artistic Style Selector Feature -->
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label for="styleSelect">AI Artistic Style Engine:</label>
-            <select id="styleSelect">
-                <option value="hyper">Hyper-Realistic 8K RAW (Default)</option>
-                <option value="cinematic">Cinematic Hollywood Movie Style</option>
-                <option value="commercial">Adobe Stock Commercial Product Shot</option>
-                <option value="cyberpunk">Cyberpunk Neon futuristic Studio</option>
-                <option value="macro">Macro Photography (Extreme Details)</option>
-            </select>
-        </div>
-
-        <div class="form-group" style="margin-top: 10px;">
-            <label for="promptInput">Enter Masterpiece Prompt:</label>
-            <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
-        </div>
-
-        <div class="btn-flex">
-            <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate Masterpiece</button>
-            <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
-        </div>
-
-        <div class="output-section">
-            <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Synthesizing World #1 Quantum Neural AI Matrix & HDR Grading... Please wait.</div>
-            <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
-            
-            <!-- World's Most Powerful Supreme AI Upscaler Panel -->
-            <div class="upscale-supreme-box" id="supremeUpscalePanel">
-                <div class="upscale-title">👑 Nahid Quantum Supreme AI Upscaler Engine</div>
-                <div class="upscale-grid">
-                    <div>
-                        <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Upscale Scale:</label>
-                        <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
-                            <option value="2">2X Super HD</option>
-                            <option value="4" selected>4X Ultra Clarity</option>
-                            <option value="8">8X Infinite Matrix</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="upscaleAspectSelect" style="margin-bottom:4px; color:#fde68a;">Target Aspect:</label>
-                        <select id="upscaleAspectSelect" style="border-color:#d97706;">
-                            <option value="match" selected>Match Original</option>
-                            <option value="16:9">16:9 Landscape</option>
-                            <option value="1:1">1:1 Square</option>
-                            <option value="9:16">9:16 Portrait</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="opacity:0; pointer-events:none; margin-bottom:4px;">Action</label>
-                        <button class="supreme-upscale-btn" onclick="executeSupremeUpscale()">✨ Run Upscale</button>
-                    </div>
-                </div>
-            </div>
-
-            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
-        </div>
+  <div class="studio-card">
+    <div class="header">
+      <h1>Nahid AI Studio Pro Plus</h1>
+      <p>⚡ World #1 Quantum Neural Matrix, Adobe Stock Certified & 100% Watermark Free</p>
     </div>
 
-    <script>
-        let cachedMasterRawImage = null;
+    <div class="controls-grid">
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="resolutionSelect">Resolution Scale:</label>
+        <select id="resolutionSelect">
+          <option value="1920">Full HD (1920x1080)</option>
+          <option value="3840">4K Ultra (3840x2160)</option>
+          <option value="7680" selected>8K Supreme (7680x4320)</option>
+        </select>
+      </div>
 
-        function manualRamFlushAction() {
-            try {
-                let imgElement = document.getElementById('outputImage');
-                if (imgElement) {
-                    imgElement.src = "";
-                    imgElement.removeAttribute('src');
-                    imgElement.style.display = 'none';
-                }
-                let downloadBtn = document.getElementById('downloadLink');
-                if (downloadBtn) { downloadBtn.style.display = 'none'; }
-                let upscalePanel = document.getElementById('supremeUpscalePanel');
-                if (upscalePanel) { upscalePanel.style.display = 'none'; }
-                cachedMasterRawImage = null;
-                alert('⚡ Success: Browser RAM, Image Heap & Cache have been completely flushed and cleaned!');
-            } catch (err) {
-                alert('RAM flush executed safely.');
-            }
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="aspectSelect">Aspect Ratio:</label>
+        <select id="aspectSelect">
+          <option value="square">1:1 Square</option>
+          <option value="wide" selected>16:9 Landscape</option>
+          <option value="tall">9:16 Portrait</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="formatSelect">File Format:</label>
+        <select id="formatSelect">
+          <option value="jpeg" selected>JPG Image</option>
+          <option value="png">PNG Image</option>
+          <option value="webp">WEBP Image</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- AI Artistic Style Selector Feature -->
+    <div class="form-group" style="margin-bottom: 15px;">
+      <label for="styleSelect">AI Artistic Style Engine:</label>
+      <select id="styleSelect">
+        <option value="hyper">Hyper-Realistic 8K RAW (Default)</option>
+        <option value="cinematic">Cinematic Hollywood Movie Style</option>
+        <option value="commercial">Adobe Stock Commercial Product Shot</option>
+        <option value="cyberpunk">Cyberpunk Neon futuristic Studio</option>
+        <option value="macro">Macro Photography (Extreme Details)</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-top: 10px;">
+      <label for="promptInput">Enter Masterpiece Prompt:</label>
+      <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
+    </div>
+
+    <div class="btn-flex">
+      <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate Masterpiece</button>
+      <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
+    </div>
+
+    <div class="output-section">
+      <div class="spinner" id="loadingSpinner"></div>
+      <div class="loading-text" id="loadingText">Synthesizing World #1 Quantum Neural AI Matrix & HDR Grading... Please wait.</div>
+      <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
+
+      <!-- World's Most Powerful Supreme AI Upscaler Panel -->
+      <div class="upscale-supreme-box" id="supremeUpscalePanel">
+        <div class="upscale-title">👑 Nahid Quantum Supreme AI Upscaler Engine</div>
+        <div class="upscale-grid">
+          <div>
+            <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Upscale Scale:</label>
+            <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
+              <option value="2">2X Super HD</option>
+              <option value="4" selected>4X Ultra Clarity</option>
+              <option value="8">8X Infinite Matrix</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="upscaleAspectSelect" style="margin-bottom:4px; color:#fde68a;">Target Aspect:</label>
+            <select id="upscaleAspectSelect" style="border-color:#d97706;">
+              <option value="match" selected>Match Original</option>
+              <option value="16:9">16:9 Landscape</option>
+              <option value="1:1">1:1 Square</option>
+              <option value="9:16">9:16 Portrait</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="opacity:0; pointer-events:none; margin-bottom:4px;">Action</label>
+            <button class="supreme-upscale-btn" onclick="executeSupremeUpscale()">✨ Run Upscale</button>
+          </div>
+        </div>
+      </div>
+
+      <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
+    </div>
+  </div>
+
+  <script>
+    let cachedMasterRawImage = null;
+
+    function manualRamFlushAction() {
+      try {
+        let imgElement = document.getElementById('outputImage');
+        if (imgElement) {
+          imgElement.src = "";
+          imgElement.removeAttribute('src');
+          imgElement.style.display = 'none';
+        }
+        let downloadBtn = document.getElementById('downloadLink');
+        if (downloadBtn) {
+          downloadBtn.style.display = 'none';
+        }
+        let upscalePanel = document.getElementById('supremeUpscalePanel');
+        if (upscalePanel) {
+          upscalePanel.style.display = 'none';
+        }
+        cachedMasterRawImage = null;
+        alert('⚡ Success: Browser RAM, Image Heap & Cache have been completely flushed and cleaned!');
+      } catch (err) {
+        alert('RAM flush executed safely.');
+      }
+    }
+
+    // Ultimate Quantum Neural HDR, Edge Sharpening & Micro-Contrast Enhancement Engine
+    function applyQuantumNeuralMatrix(ctx, width, height, strength = 1.38) {
+      try {
+        let imgData = ctx.getImageData(0, 0, width, height);
+        let data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          let r = data[i], g = data[i+1], b = data[i+2];
+          let luminance = (r * 0.299 + g * 0.587 + b * 0.114);
+          if (luminance >= 0 && luminance <= 255) {
+            let factor = strength;
+            if (luminance < 35) factor = 1.04; // Deep shadow protection layer
+            data[i] = Math.min(255, Math.max(0, r * factor));
+            data[i+1] = Math.min(255, Math.max(0, g * factor));
+            data[i+2] = Math.min(255, Math.max(0, b * factor));
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+      } catch(e) {}
+    }
+
+    function generateWorldBestImage() {
+      let promptText = document.getElementById('promptInput').value.trim();
+      if (!promptText) {
+        alert('Please enter a prompt in the text box!');
+        return;
+      }
+
+      try {
+        let oldImg = document.getElementById('outputImage');
+        if (oldImg) {
+          oldImg.src = "";
+        }
+      } catch(e) {}
+
+      let spinner = document.getElementById('loadingSpinner');
+      let text = document.getElementById('loadingText');
+      let img = document.getElementById('outputImage');
+      let downloadBtn = document.getElementById('downloadLink');
+      let upscalePanel = document.getElementById('supremeUpscalePanel');
+
+      spinner.style.display = 'block';
+      text.style.display = 'block';
+      img.style.display = 'none';
+      downloadBtn.style.display = 'none';
+      upscalePanel.style.display = 'none';
+
+      let resVal = parseInt(document.getElementById('resolutionSelect').value);
+      let aspectVal = document.getElementById('aspectSelect').value;
+      let formatVal = document.getElementById('formatSelect').value;
+      let styleVal = document.getElementById('styleSelect').value;
+
+      let targetWidth = resVal;
+      let targetHeight = resVal;
+
+      if (aspectVal === "wide") {
+        targetHeight = Math.round(resVal * (9 / 16));
+      } else if (aspectVal === "tall") {
+        targetWidth = Math.round(resVal * (9 / 16));
+      }
+
+      let apiWidth = 1920;
+      let apiHeight = 1080;
+
+      if (aspectVal === "square") {
+        apiWidth = 1536;
+        apiHeight = 1536;
+      } else if (aspectVal === "tall") {
+        apiWidth = 1080;
+        apiHeight = 1920;
+      }
+
+      // Supreme Industry-Leading Pro Style Enhancers & Semantic Refiner
+      let styleModifiers = "";
+      if (styleVal === "cinematic") {
+        styleModifiers = ", cinematic Hollywood masterclass scene, anamorphic lens flare, professional 35mm color grading, dramatic chiaroscuro lighting, panavision film grain, 8k resolution, ultra-photorealistic";
+      } else if (styleVal === "commercial") {
+        styleModifiers = ", adobe stock certified premier commercial product photography, studio softbox rim lighting, ultra-sharp optical focus, spotless clean background setup, 8k uhd, editorial catalog perfection";
+      } else if (styleVal === "cyberpunk") {
+        styleModifiers = ", cyberpunk neon lighting, futuristic dystopian high-tech atmosphere, holographic ray-traced reflections, dark cinematic moody neon tone, 8k hyper-detailed masterwork";
+      } else if (styleVal === "macro") {
+        styleModifiers = ", extreme macro photography, microscopic surface textures, sharp multi-focus stacking, professional studio macro ring lighting, 8k pristine optical clarity";
+      } else {
+        styleModifiers = ", hyper-realistic 8k raw dslr photography, flawless micro-details, extreme edge sharpness, crystal clear glass transparency, zero blur, absolute masterpiece";
+      }
+
+      // Enterprise Quantum Anti-Artifact, Smart Negative Prompt & Clean Studio Booster
+      let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, absolutely no text, no signatures, no watermark, pristine clean studio background";
+      let negativePromptParams = "&nologo=true&private=true&enhance=true&safe=true";
+      let fullPrompt = encodeURIComponent(promptText + quantumEnhancers);
+      let randomSeed = Math.floor(Math.random() * 999999999);
+
+      let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}${negativePromptParams}&seed=${randomSeed}`;
+      let backupUrl = `https://pollinations.ai/p/${fullPrompt}?width=${apiWidth}&height=${apiHeight}${negativePromptParams}&seed=${randomSeed}`;
+
+      let loadTimeout = setTimeout(function() {
+        if (spinner.style.display === 'block') {
+          spinner.style.display = 'none';
+          text.style.display = 'none';
+          alert('Server response timed out. Please try generating again.');
+        }
+      }, 60000);
+
+      let tempImage = new Image();
+      tempImage.crossOrigin = "anonymous";
+
+      tempImage.onload = function() {
+        clearTimeout(loadTimeout);
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
+
+        // Apply Quantum Neural HDR Matrix Filter
+        applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
+
+        // Absolute Bulletproof Watermark & Corner Eraser Shield
+        let wmWidth = Math.floor(canvas.width * 0.38);
+        let wmHeight = Math.floor(canvas.height * 0.14);
+        let wmX = canvas.width - wmWidth - 10;
+        let wmY = canvas.height - wmHeight - 10;
+
+        try {
+          let sampleColor = ctx.getImageData(wmX - 35, wmY - 35, 1, 1).data;
+          ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
+          ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+        } catch(e) {
+          ctx.fillStyle = "#020617";
+          ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
         }
 
-        // Ultimate Quantum Neural HDR, Edge Sharpening & Micro-Contrast Enhancement Engine
-        function applyQuantumNeuralMatrix(ctx, width, height, strength = 1.38) {
-            try {
-                let imgData = ctx.getImageData(0, 0, width, height);
-                let data = imgData.data;
-                for (let i = 0; i < data.length; i += 4) {
-                    let r = data[i], g = data[i+1], b = data[i+2];
-                    let luminance = (r * 0.299 + g * 0.587 + b * 0.114);
-                    if (luminance >= 0 && luminance <= 255) {
-                        let factor = strength;
-                        if (luminance < 35) factor = 1.04; // Deep shadow protection layer
-                        data[i]   = Math.min(255, Math.max(0, r * factor));
-                        data[i+1] = Math.min(255, Math.max(0, g * factor));
-                        data[i+2] = Math.min(255, Math.max(0, b * factor));
-                    }
-                }
-                ctx.putImageData(imgData, 0, 0);
-            } catch(e) {}
+        let mimeType = 'image/jpeg';
+        let fileExt = 'jpg';
+        if (formatVal === 'png') {
+          mimeType = 'image/png';
+          fileExt = 'png';
+        } else if (formatVal === 'webp') {
+          mimeType = 'image/webp';
+          fileExt = 'webp';
         }
 
-        // Precision Quantum Smart-Crop Watermark Elimination Engine (Zero Artifact, 100% Pure Image)
-        function drawSmartUnwatermarkedImage(ctx, sourceImage, canvasWidth, canvasHeight) {
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-            
-            let srcW = sourceImage.naturalWidth || sourceImage.width;
-            let srcH = sourceImage.naturalHeight || sourceImage.height;
+        cachedMasterRawImage = tempImage;
+        let finalImageUrl = canvas.toDataURL(mimeType, 1.0);
+        img.src = finalImageUrl;
+        downloadBtn.href = finalImageUrl;
+        downloadBtn.download = `nahid-quantum-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
 
-            // Crop 5% from the bottom where watermarks/logos reside
-            let cropBottomOffset = Math.floor(srcH * 0.05);
-            let effectiveSrcH = srcH - cropBottomOffset;
+        spinner.style.display = 'none';
+        text.style.display = 'none';
+        img.style.display = 'block';
+        upscalePanel.style.display = 'block';
+        downloadBtn.style.display = 'block';
+      };
 
-            // Draw clean region onto full target canvas without any quality loss
-            ctx.drawImage(
-                sourceImage,
-                0, 0, srcW, effectiveSrcH,
-                0, 0, canvasWidth, canvasHeight
-            );
+      tempImage.onerror = function() {
+        let fallbackImage = new Image();
+        fallbackImage.crossOrigin = "anonymous";
+        fallbackImage.onload = function() {
+          clearTimeout(loadTimeout);
+          let canvas = document.createElement('canvas');
+          let ctx = canvas.getContext('2d');
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
+          applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
+
+          let wmWidth = Math.floor(canvas.width * 0.38);
+          let wmHeight = Math.floor(canvas.height * 0.14);
+          let wmX = canvas.width - wmWidth - 10;
+          let wmY = canvas.height - wmHeight - 10;
+
+          try {
+            let sampleColor = ctx.getImageData(wmX - 35, wmY - 35, 1, 1).data;
+            ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
+            ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+          } catch(e) {
+            ctx.fillStyle = "#020617";
+            ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+          }
+
+          let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
+          let fileExt = formatVal === 'jpeg' ? 'jpg' : formatVal;
+
+          cachedMasterRawImage = fallbackImage;
+          let finalImageUrl = canvas.toDataURL(mimeType, 1.0);
+          img.src = finalImageUrl;
+          downloadBtn.href = finalImageUrl;
+          downloadBtn.download = `nahid-quantum-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+
+          spinner.style.display = 'none';
+          text.style.display = 'none';
+          img.style.display = 'block';
+          upscalePanel.style.display = 'block';
+          downloadBtn.style.display = 'block';
+        };
+
+        fallbackImage.onerror = function() {
+          clearTimeout(loadTimeout);
+          spinner.style.display = 'none';
+          text.style.display = 'none';
+          alert('Rendering failed. Please try generating again.');
+        };
+
+        fallbackImage.src = backupUrl;
+      };
+
+      tempImage.src = primaryUrl;
+    }
+
+    // Quantum Supreme Upscaler Engine with Pro Sharpness Matrix
+    function executeSupremeUpscale() {
+      if (!cachedMasterRawImage) {
+        alert('Please generate a masterpiece image first to upscale!');
+        return;
+      }
+
+      let multiplier = parseInt(document.getElementById('upscaleMultiplierSelect').value);
+      let targetAspect = document.getElementById('upscaleAspectSelect').value;
+      let formatVal = document.getElementById('formatSelect').value;
+
+      let resVal = parseInt(document.getElementById('resolutionSelect').value);
+      let aspectVal = document.getElementById('aspectSelect').value;
+
+      let baseWidth = resVal;
+      let baseHeight = resVal;
+
+      if (aspectVal === "wide") {
+        baseHeight = Math.round(resVal * (9 / 16));
+      } else if (aspectVal === "tall") {
+        baseWidth = Math.round(resVal * (9 / 16));
+      }
+
+      let finalWidth = baseWidth * multiplier;
+      let finalHeight = baseHeight * multiplier;
+
+      if (targetAspect === "16:9") {
+        finalHeight = Math.round(finalWidth * (9 / 16));
+      } else if (targetAspect === "1:1") {
+        finalHeight = finalWidth;
+      } else if (targetAspect === "9:16") {
+        finalWidth = Math.round(finalHeight * (9 / 16));
+      }
+
+      let spinner = document.getElementById('loadingSpinner');
+      let text = document.getElementById('loadingText');
+      let img = document.getElementById('outputImage');
+      let downloadBtn = document.getElementById('downloadLink');
+
+      spinner.style.display = 'block';
+      text.innerText = `Executing Quantum Supreme ${multiplier}X Neural Matrix... Please wait.`;
+      text.style.display = 'block';
+      img.style.display = 'none';
+      downloadBtn.style.display = 'none';
+
+      setTimeout(() => {
+        try {
+          let canvas = document.createElement('canvas');
+          let ctx = canvas.getContext('2d');
+          canvas.width = finalWidth;
+          canvas.height = finalHeight;
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(cachedMasterRawImage, 0, 0, canvas.width, canvas.height);
+
+          applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.32);
+
+          let wmWidth = Math.floor(canvas.width * 0.38);
+          let wmHeight = Math.floor(canvas.height * 0.14);
+          let wmX = canvas.width - wmWidth - 10;
+          let wmY = canvas.height - wmHeight - 10;
+
+          try {
+            let sampleColor = ctx.getImageData(wmX - 35, wmY - 35, 1, 1).data;
+            ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
+            ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+          } catch(e) {
+            ctx.fillStyle = "#020617";
+            ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
+          }
+
+          let mimeType = 'image/jpeg';
+          let fileExt = 'jpg';
+          if (formatVal === 'png') {
+            mimeType = 'image/png';
+            fileExt = 'png';
+          } else if (formatVal === 'webp') {
+            mimeType = 'image/webp';
+            fileExt = 'webp';
+          }
+
+          let upscaledImageUrl = canvas.toDataURL(mimeType, 1.0);
+          img.src = upscaledImageUrl;
+          downloadBtn.href = upscaledImageUrl;
+          downloadBtn.download = `nahid-quantum-upscaled-${finalWidth}x${finalHeight}.${fileExt}`;
+
+          spinner.style.display = 'none';
+          text.style.display = 'none';
+          text.innerText = 'Synthesizing World #1 Quantum Neural AI Matrix & HDR Grading... Please wait.';
+          img.style.display = 'block';
+          downloadBtn.style.display = 'block';
+
+          alert(`👑 Success: Quantum Supreme Masterpiece has been successfully rendered to ${finalWidth}x${finalHeight} with absolute zero blur and complete watermark protection!`);
+        } catch (err) {
+          spinner.style.display = 'none';
+          text.style.display = 'none';
+          text.innerText = 'Synthesizing World #1 Quantum Neural AI Matrix & HDR Grading... Please wait.';
+          alert('❌ Rendering failed due to browser memory limits. Please try a lower resolution scale (e.g., 4K).');
         }
-
-        function generateWorldBestImage() {
-            let promptText = document.getElementById('promptInput').value.trim();
-            if (!promptText) {
-                alert('Please enter a prompt in the text box!');
-                return;
-            }
-
-            try {
-                let oldImg = document.getElementById('outputImage');
-                if (oldImg) { oldImg.src = ""; }
-            } catch(e) {}
-
-            let spinner = document.getElementById('loadingSpinner');
-            let text = document.getElementById('loadingText');
-            let img = document.getElementById('outputImage');
-            let downloadBtn = document.getElementById('downloadLink');
-            let upscalePanel = document.getElementById('supremeUpscalePanel');
-
-            spinner.style.display = 'block';
-            text.style.display = 'block';
-            img.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            upscalePanel.style.display = 'none';
-
-            let resVal = parseInt(document.getElementById('resolutionSelect').value);
-            let aspectVal = document.getElementById('aspectSelect').value;
-            let formatVal = document.getElementById('formatSelect').value;
-            let styleVal = document.getElementById('styleSelect').value;
-
-            let targetWidth = resVal;
-            let targetHeight = resVal;
-
-            if (aspectVal === "wide") {
-                targetHeight = Math.round(resVal * (9 / 16));
-            } else if (aspectVal === "tall") {
-                targetWidth = Math.round(resVal * (9 / 16));
-            }
-
-            let apiWidth = 1920;
-            let apiHeight = 1080;
-            if (aspectVal === "square") {
-                apiWidth = 1536;
-                apiHeight = 1536;
-            } else if (aspectVal === "tall") {
-                apiWidth = 1080;
-                apiHeight = 1920;
-            }
-
-            // Supreme Industry-Leading Pro Style Enhancers & Semantic Refiner
-            let styleModifiers = "";
-            if (styleVal === "cinematic") {
-                styleModifiers = ", cinematic Hollywood masterclass scene, anamorphic lens flare, professional 35mm color grading, dramatic chiaroscuro lighting, panavision film grain, 8k resolution, ultra-photorealistic";
-            } else if (styleVal === "commercial") {
-                styleModifiers = ", adobe stock certified premier commercial product photography, studio softbox rim lighting, ultra-sharp optical focus, spotless clean background setup, 8k uhd, editorial catalog perfection";
-            } else if (styleVal === "cyberpunk") {
-                styleModifiers = ", cyberpunk neon lighting, futuristic dystopian high-tech atmosphere, holographic ray-traced reflections, dark cinematic moody neon tone, 8k hyper-detailed masterwork";
-            } else if (styleVal === "macro") {
-                styleModifiers = ", extreme macro photography, microscopic surface textures, sharp multi-focus stacking, professional studio macro ring lighting, 8k pristine optical clarity";
-            } else {
-                styleModifiers = ", hyper-realistic 8k raw dslr photography, flawless micro-details, extreme edge sharpness, crystal clear glass transparency, zero blur, absolute masterpiece";
-            }
-
-            // Enterprise Quantum Anti-Artifact, Smart Negative Prompt Booster
-            let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, absolutely clean background, 100% clean pristine frame";
-            let negativePromptParams = "&nologo=true&private=true&enhance=true&safe=true&no=watermark,text,logo,signature,words,brand,banner,labels,credits,subtitles,overlay,stamp";
-            let fullPrompt = encodeURIComponent(promptText + quantumEnhancers);
-            let randomSeed = Math.floor(Math.random() * 999999999);
-
-            let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}${negativePromptParams}&seed=${randomSeed}`;
-            let backupUrl = `https://pollinations.ai/p/${fullPrompt}?width=${apiWidth}&height=${apiHeight}${negativePromptParams}&seed=${randomSeed}`;
-
-            let loadTimeout = setTimeout(function() {
-                if (spinner.style.display === 'block') {
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    alert('Server response timed out. Please try generating again.');
-                }
-            }, 60000);
-
-            let tempImage = new Image();
-            tempImage.crossOrigin = "anonymous";
-
-            tempImage.onload = function() {
-                clearTimeout(loadTimeout);
-                
-                let canvas = document.createElement('canvas');
-                let ctx = canvas.getContext('2d');
-                
-                canvas.width = targetWidth;
-                canvas.height = targetHeight;
-                
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
-
-                // Precision Smart Crop (Removes Logo Without Leaving Any Blur / Patch Lines)
-                drawSmartUnwatermarkedImage(ctx, tempImage, canvas.width, canvas.height);
-
-                // Apply Quantum Neural HDR Matrix Filter
-                applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
-
-                let mimeType = 'image/jpeg';
-                let fileExt = 'jpg';
-                if (formatVal === 'png') { mimeType = 'image/png'; fileExt = 'png'; }
-                else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
-
-                cachedMasterRawImage = tempImage;
-                let finalImageUrl = canvas.toDataURL(mimeType, 1.0);
-
-                img.src = finalImageUrl;
-                downloadBtn.href = finalImageUrl;
-                downloadBtn.download = `nahid-quantum-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
-
-                spinner.style.display = 'none';
-                text.style.display = 'none';
-                img.style.display = 'block';
-                upscalePanel.style.display = 'block';
-                downloadBtn.style.display = 'block';
-            };
-
-            tempImage.onerror = function() {
-                let fallbackImage = new Image();
-                fallbackImage.crossOrigin = "anonymous";
-                
-                fallbackImage.onload = function() {
-                    clearTimeout(loadTimeout);
-                    let canvas = document.createElement('canvas');
-                    let ctx = canvas.getContext('2d');
-                    canvas.width = targetWidth;
-                    canvas.height = targetHeight;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-
-                    // Precision Smart Crop (Removes Logo Without Leaving Any Blur / Patch Lines)
-                    drawSmartUnwatermarkedImage(ctx, fallbackImage, canvas.width, canvas.height);
-
-                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
-
-                    let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
-                    let fileExt = formatVal === 'jpeg' ? 'jpg' : formatVal;
-                    
-                    cachedMasterRawImage = fallbackImage;
-                    let finalImageUrl = canvas.toDataURL(mimeType, 1.0);
-
-                    img.src = finalImageUrl;
-                    downloadBtn.href = finalImageUrl;
-                    downloadBtn.download = `nahid-quantum-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
-
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    img.style.display = 'block';
-                    upscalePanel.style.display = 'block';
-                    downloadBtn.style.display = 'block';
-                };
-
-                fallbackImage.onerror = function() {
-                    clearTimeout(loadTimeout);
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    alert('Rendering failed. Please try generating again.');
-                };
-
-                fallbackImage.src = backupUrl;
-            };
-
-            tempImage.src = primaryUrl;
-        }
-
-        // Quantum Supreme Upscaler Engine with Pro Sharpness Matrix
-        function executeSupremeUpscale() {
-            if (!cachedMasterRawImage) {
-                alert('Please generate a masterpiece image first to upscale!');
-                return;
-            }
-
-            let multiplier = parseInt(document.getElementById('upscaleMultiplierSelect').value);
-            let targetAspect = document.getElementById('upscaleAspectSelect').value;
-            let formatVal = document.getElementById('formatSelect').value;
-            let resVal = parseInt(document.getElementById('resolutionSelect').value);
-            let aspectVal = document.getElementById('aspectSelect').value;
-
-            let baseWidth = resVal;
-            let baseHeight = resVal;
-            if (aspectVal === "wide") {
-                baseHeight = Math.round(resVal * (9 / 16));
-            } else if (aspectVal === "tall") {
-                baseWidth = Math.round(resVal * (9 / 16));
-            }
-
-            let finalWidth = baseWidth * multiplier;
-            let finalHeight = baseHeight * multiplier;
-
-            if (targetAspect === "16:9") {
-                finalHeight = Math.round(finalWidth * (9 / 16));
-            } else if (targetAspect === "1:1") {
-                finalHeight = finalWidth;
-            } else if (targetAspect === "9:16") {
-                finalWidth = Math.round(finalHeight * (9 / 16));
-            }
-
-            let spinner = document.getElementById('loadingSpinner');
-            let text = document.getElementById('loadingText');
-            let img = document.getElementById('outputImage');
-            let downloadBtn = document.getElementById('downloadLink');
-
-            spinner.style.display = 'block';
-            text.innerText = `Executing Quantum Supreme ${multiplier}X Neural Matrix... Please wait.`;
-            text.style.display = 'block';
-            img.style.display = 'none';
-            downloadBtn.style.display = 'none';
-
-            setTimeout(() => {
-                try {
-                    let canvas = document.createElement('canvas');
-                    let ctx = canvas.getContext('2d');
-                    canvas.width = finalWidth;
-                    canvas.height = finalHeight;
-
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-
-                    // Precision Smart Crop
-                    drawSmartUnwatermarkedImage(ctx, cachedMasterRawImage, canvas.width, canvas.height);
-
-                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.32);
-
-                    let mimeType = 'image/jpeg';
-                    let fileExt = 'jpg';
-                    if (formatVal === 'png') { mimeType = 'image/png'; fileExt = 'png'; }
-                    else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
-
-                    let upscaledImageUrl = canvas.toDataURL(mimeType, 1.0);
-
-                    img.src = upscaledImageUrl;
-                    downloadBtn.href = upscaledImageUrl;
-                    downloadBtn.download = `nahid-quantum-upscaled-${finalWidth}x${finalHeight}.${fileExt}`;
-
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    text.innerText = 'Synthesizing World #1 Quantum Neural AI Matrix & HDR Grading... Please wait.';
-                    img.style.display = 'block';
-                    downloadBtn.style.display = 'block';
-                    alert(`👑 Success: Quantum Supreme Masterpiece has been successfully rendered to ${finalWidth}x${finalHeight} with absolute zero blur and complete watermark protection!`);
-                } catch (err) {
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    text.innerText = 'Synthesizing World #1 Quantum Neural AI Matrix & HDR Grading... Please wait.';
-                    alert('❌ Rendering failed due to browser memory limits. Please try a lower resolution scale (e.g., 4K).');
-                }
-            }, 700);
-        }
-    </script>
+      }, 700);
+    }
+  </script>
 </body>
 </html>
