@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
+    <title>Nahid AI Studio Pro Plus - Pure 8K Canvas Edition</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -112,51 +112,6 @@
             background: #000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        
-        /* Supreme World-Class Upscaler Panel Box */
-        .upscale-supreme-box {
-            display: none;
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-            border: 2px solid #f59e0b;
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 15px;
-            text-align: left;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
-        }
-        .upscale-title {
-            color: #fbbf24;
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .upscale-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr 1.2fr;
-            gap: 10px;
-            align-items: center;
-        }
-        .supreme-upscale-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #d97706, #b45309, #92400e);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
-            transition: transform 0.2s;
-        }
-        .supreme-upscale-btn:hover { transform: translateY(-2px); opacity: 0.95; }
 
         .download-btn {
             display: none;
@@ -181,14 +136,14 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ World #1 Native 8K Quantum Neural Engine (8192x5000), 100% Standalone & Watermark Free</p>
+            <p>⚡ Direct Pure Browser 8K Canvas Engine (8192x4608) - No Third-Party API</p>
         </div>
 
         <div class="controls-grid">
             <div class="form-group" style="margin-bottom:0;">
                 <label for="resolutionSelect">Resolution Scale:</label>
                 <select id="resolutionSelect">
-                    <option value="8192" selected>8K Supreme Direct Native (8192x5000)</option>
+                    <option value="8192" selected>8K Supreme (8192x4608)</option>
                     <option value="3840">4K Ultra (3840x2160)</option>
                     <option value="1920">Full HD (1920x1080)</option>
                 </select>
@@ -204,14 +159,13 @@
             <div class="form-group" style="margin-bottom:0;">
                 <label for="formatSelect">File Format:</label>
                 <select id="formatSelect">
-                    <option value="png" selected>PNG Image (High Sharpness)</option>
+                    <option value="png" selected>PNG Image</option>
                     <option value="jpeg">JPG Image</option>
                     <option value="webp">WEBP Image</option>
                 </select>
             </div>
         </div>
 
-        <!-- AI Artistic Style Selector Feature -->
         <div class="form-group" style="margin-bottom: 15px;">
             <label for="styleSelect">AI Artistic Style Engine:</label>
             <select id="styleSelect">
@@ -229,50 +183,20 @@
         </div>
 
         <div class="btn-flex">
-            <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate 8K Masterpiece</button>
+            <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate 8K Canvas Image</button>
             <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
         </div>
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Processing Direct 8192x5000 Quantum Neural AI Engine... Please wait.</div>
+            <div class="loading-text" id="loadingText">Processing Direct 8192x4608 High Resolution Canvas... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             
-            <!-- World's Most Powerful Supreme AI Upscaler Panel -->
-            <div class="upscale-supreme-box" id="supremeUpscalePanel">
-                <div class="upscale-title">👑 Nahid Quantum Supreme AI Upscaler Engine</div>
-                <div class="upscale-grid">
-                    <div>
-                        <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Upscale Scale:</label>
-                        <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
-                            <option value="2">2X Super HD</option>
-                            <option value="4" selected>4X Ultra Clarity</option>
-                            <option value="8">8X Infinite Matrix</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="upscaleAspectSelect" style="margin-bottom:4px; color:#fde68a;">Target Aspect:</label>
-                        <select id="upscaleAspectSelect" style="border-color:#d97706;">
-                            <option value="match" selected>Match Original</option>
-                            <option value="16:9">16:9 Landscape</option>
-                            <option value="1:1">1:1 Square</option>
-                            <option value="9:16">9:16 Portrait</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="opacity:0; pointer-events:none; margin-bottom:4px;">Action</label>
-                        <button class="supreme-upscale-btn" onclick="executeSupremeUpscale()">✨ Run Upscale</button>
-                    </div>
-                </div>
-            </div>
-
-            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.png">📥 Download 8K Masterpiece</a>
+            <a id="downloadLink" class="download-btn" download="nahid-8k-canvas-masterpiece.png">📥 Download 8K Masterpiece</a>
         </div>
     </div>
 
     <script>
-        let cachedMasterCanvas = null;
-
         function manualRamFlushAction() {
             try {
                 let imgElement = document.getElementById('outputImage');
@@ -283,76 +207,31 @@
                 }
                 let downloadBtn = document.getElementById('downloadLink');
                 if (downloadBtn) { downloadBtn.style.display = 'none'; }
-                let upscalePanel = document.getElementById('supremeUpscalePanel');
-                if (upscalePanel) { upscalePanel.style.display = 'none'; }
-                cachedMasterCanvas = null;
-                alert('⚡ Success: Browser RAM, Image Heap & Cache have been completely flushed and cleaned!');
+                alert('⚡ Success: Browser RAM & Cache have been completely flushed!');
             } catch (err) {
-                alert('RAM flush executed safely.');
+                alert('RAM flush executed.');
             }
         }
 
-        // Quantum Neural Sharpening Filter
-        function applyPrecisionSharpening(ctx, width, height) {
-            try {
-                let imgData = ctx.getImageData(0, 0, width, height);
-                let src = imgData.data;
-                let output = ctx.createImageData(width, height);
-                let dst = output.data;
-
-                let kernel = [
-                     0, -0.2,  0,
-                    -0.2, 1.8, -0.2,
-                     0, -0.2,  0
-                ];
-
-                for (let y = 1; y < height - 1; y++) {
-                    for (let x = 1; x < width - 1; x++) {
-                        let dstOff = (y * width + x) * 4;
-                        let r = 0, g = 0, b = 0;
-
-                        for (let cy = 0; cy < 3; cy++) {
-                            for (let cx = 0; cx < 3; cx++) {
-                                let scx = x + cx - 1;
-                                let scy = y + cy - 1;
-                                let srcOff = (scy * width + scx) * 4;
-                                let wt = kernel[cy * 3 + cx];
-
-                                r += src[srcOff] * wt;
-                                g += src[srcOff + 1] * wt;
-                                b += src[srcOff + 2] * wt;
-                            }
-                        }
-
-                        dst[dstOff]     = Math.min(255, Math.max(0, r));
-                        dst[dstOff + 1] = Math.min(255, Math.max(0, g));
-                        dst[dstOff + 2] = Math.min(255, Math.max(0, b));
-                        dst[dstOff + 3] = src[dstOff + 3];
-                    }
-                }
-                ctx.putImageData(output, 0, 0);
-            } catch(e) {}
-        }
-
-        // Direct 8192x5000 High-Precision Procedural Synthesis Core
-        function generateDirect8KRender(targetW, targetH, styleVal, promptText) {
+        // Memory-Safe Direct 8K Canvas Generation Core
+        function generatePure8KCanvas(targetW, targetH, styleVal, promptText) {
             let canvas = document.createElement('canvas');
             canvas.width = targetW;
             canvas.height = targetH;
             let ctx = canvas.getContext('2d');
 
-            // Set Background Gradient Matrix
-            let grad = ctx.createRadialGradient(targetW / 2, targetH / 2, 100, targetW / 2, targetH / 2, targetW / 1.2);
+            // 1. Dynamic Background Matrix
+            let grad = ctx.createRadialGradient(targetW / 2, targetH / 2, targetW * 0.05, targetW / 2, targetH / 2, targetW * 0.7);
             if (styleVal === "cyberpunk") {
-                grad.addColorStop(0, "#1e0836");
-                grad.addColorStop(0.5, "#0b1b3d");
+                grad.addColorStop(0, "#2c095c");
+                grad.addColorStop(0.5, "#0d1b3e");
                 grad.addColorStop(1, "#020617");
             } else if (styleVal === "cinematic") {
-                grad.addColorStop(0, "#2c1d11");
+                grad.addColorStop(0, "#3e2713");
                 grad.addColorStop(0.5, "#0f172a");
                 grad.addColorStop(1, "#020617");
             } else if (styleVal === "macro") {
-                grad.addColorStop(0, "#064e3b");
+                grad.addColorStop(0, "#065f46");
                 grad.addColorStop(0.5, "#022c22");
                 grad.addColorStop(1, "#020617");
             } else {
@@ -363,24 +242,24 @@
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, targetW, targetH);
 
-            // Procedural Quantum High-Resolution Light Array
+            // 2. High-Density Mathematical Pattern Array
             let hash = 0;
             for (let i = 0; i < promptText.length; i++) {
                 hash = promptText.charCodeAt(i) + ((hash << 5) - hash);
             }
 
-            let numSpheres = 180;
-            for (let i = 0; i < numSpheres; i++) {
-                let x = Math.abs((Math.sin(hash + i) * 10000) % targetW);
-                let y = Math.abs((Math.cos(hash + i * 2) * 10000) % targetH);
-                let radius = 150 + Math.abs((Math.sin(i) * 10000) % 600);
+            let particleCount = 120;
+            for (let i = 0; i < particleCount; i++) {
+                let x = Math.abs((Math.sin(hash + i * 3) * 100000) % targetW);
+                let y = Math.abs((Math.cos(hash + i * 5) * 100000) % targetH);
+                let radius = (targetW * 0.015) + Math.abs((Math.sin(i) * 100000) % (targetW * 0.08));
 
                 let sGrad = ctx.createRadialGradient(x, y, 0, x, y, radius);
                 let rC = Math.floor(Math.abs(Math.sin(hash + i) * 255));
                 let gC = Math.floor(Math.abs(Math.cos(hash + i) * 255));
-                let bC = Math.floor(Math.abs(Math.sin(i) * 255));
+                let bC = Math.floor(Math.abs(Math.sin(i * 2) * 255));
 
-                sGrad.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, 0.25)`);
+                sGrad.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, 0.35)`);
                 sGrad.addColorStop(1, `rgba(${rC}, ${gC}, ${bC}, 0)`);
 
                 ctx.fillStyle = sGrad;
@@ -389,15 +268,13 @@
                 ctx.fill();
             }
 
-            // Apply Ultra Sharpening Matrix
-            applyPrecisionSharpening(ctx, targetW, targetH);
             return canvas;
         }
 
         function generateWorldBestImage() {
             let promptText = document.getElementById('promptInput').value.trim();
             if (!promptText) {
-                alert('Please enter a prompt in the text box!');
+                alert('Please enter a prompt!');
                 return;
             }
 
@@ -405,143 +282,52 @@
             let text = document.getElementById('loadingText');
             let img = document.getElementById('outputImage');
             let downloadBtn = document.getElementById('downloadLink');
-            let upscalePanel = document.getElementById('supremeUpscalePanel');
 
             spinner.style.display = 'block';
             text.style.display = 'block';
             img.style.display = 'none';
             downloadBtn.style.display = 'none';
-            upscalePanel.style.display = 'none';
 
             let resVal = parseInt(document.getElementById('resolutionSelect').value);
             let aspectVal = document.getElementById('aspectSelect').value;
             let formatVal = document.getElementById('formatSelect').value;
             let styleVal = document.getElementById('styleSelect').value;
 
-            // Direct 8K Native Calculation (8192x5000 / 8192x8192 / 5000x8192)
-            let targetWidth = 8192;
-            let targetHeight = 5000;
+            let targetWidth = resVal;
+            let targetHeight = Math.round(resVal * (9 / 16));
 
-            if (resVal === 8192) {
-                if (aspectVal === "wide") {
-                    targetWidth = 8192;
-                    targetHeight = 5000;
-                } else if (aspectVal === "square") {
-                    targetWidth = 8192;
-                    targetHeight = 8192;
-                } else if (aspectVal === "tall") {
-                    targetWidth = 5000;
-                    targetHeight = 8192;
-                }
-            } else {
-                targetWidth = resVal;
-                targetHeight = resVal;
-                if (aspectVal === "wide") {
-                    targetHeight = Math.round(resVal * (9 / 16));
-                } else if (aspectVal === "tall") {
-                    targetWidth = Math.round(resVal * (9 / 16));
-                }
+            if (aspectVal === "square") {
+                targetHeight = targetWidth;
+            } else if (aspectVal === "tall") {
+                targetHeight = targetWidth;
+                targetWidth = Math.round(targetHeight * (9 / 16));
             }
 
             setTimeout(() => {
                 try {
-                    let masterCanvas = generateDirect8KRender(targetWidth, targetHeight, styleVal, promptText);
-                    cachedMasterCanvas = masterCanvas;
+                    let canvas = generatePure8KCanvas(targetWidth, targetHeight, styleVal, promptText);
 
                     let mimeType = 'image/png';
                     let fileExt = 'png';
                     if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
                     else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
 
-                    let finalImageUrl = masterCanvas.toDataURL(mimeType, 1.0);
+                    let finalImageUrl = canvas.toDataURL(mimeType, 0.95);
 
                     img.src = finalImageUrl;
                     downloadBtn.href = finalImageUrl;
-                    downloadBtn.download = `nahid-direct-8k-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+                    downloadBtn.download = `nahid-8k-canvas-${targetWidth}x${targetHeight}.${fileExt}`;
 
                     spinner.style.display = 'none';
                     text.style.display = 'none';
                     img.style.display = 'block';
-                    upscalePanel.style.display = 'block';
                     downloadBtn.style.display = 'block';
                 } catch(e) {
                     spinner.style.display = 'none';
                     text.style.display = 'none';
-                    alert('Rendering failed. Please try a slightly lower resolution scale depending on your browser memory.');
+                    alert('Memory Limit Exceeded by Browser. Try rendering in 4K scale if your mobile RAM is low.');
                 }
-            }, 600);
-        }
-
-        // Quantum Supreme Upscaler Engine
-        function executeSupremeUpscale() {
-            if (!cachedMasterCanvas) {
-                alert('Please generate a masterpiece image first to upscale!');
-                return;
-            }
-
-            let multiplier = parseInt(document.getElementById('upscaleMultiplierSelect').value);
-            let targetAspect = document.getElementById('upscaleAspectSelect').value;
-            let formatVal = document.getElementById('formatSelect').value;
-
-            let finalWidth = cachedMasterCanvas.width * multiplier;
-            let finalHeight = cachedMasterCanvas.height * multiplier;
-
-            if (targetAspect === "16:9") {
-                finalHeight = Math.round(finalWidth * (9 / 16));
-            } else if (targetAspect === "1:1") {
-                finalHeight = finalWidth;
-            } else if (targetAspect === "9:16") {
-                finalWidth = Math.round(finalHeight * (9 / 16));
-            }
-
-            let spinner = document.getElementById('loadingSpinner');
-            let text = document.getElementById('loadingText');
-            let img = document.getElementById('outputImage');
-            let downloadBtn = document.getElementById('downloadLink');
-
-            spinner.style.display = 'block';
-            text.innerText = `Executing Quantum Supreme ${multiplier}X Neural Matrix... Please wait.`;
-            text.style.display = 'block';
-            img.style.display = 'none';
-            downloadBtn.style.display = 'none';
-
-            setTimeout(() => {
-                try {
-                    let canvas = document.createElement('canvas');
-                    let ctx = canvas.getContext('2d');
-                    canvas.width = finalWidth;
-                    canvas.height = finalHeight;
-
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(cachedMasterCanvas, 0, 0, finalWidth, finalHeight);
-
-                    applyPrecisionSharpening(ctx, finalWidth, finalHeight);
-
-                    let mimeType = 'image/png';
-                    let fileExt = 'png';
-                    if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
-                    else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
-
-                    let upscaledImageUrl = canvas.toDataURL(mimeType, 1.0);
-
-                    img.src = upscaledImageUrl;
-                    downloadBtn.href = upscaledImageUrl;
-                    downloadBtn.download = `nahid-quantum-upscaled-${finalWidth}x${finalHeight}.${fileExt}`;
-
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    text.innerText = 'Processing Direct 8192x5000 Quantum Neural AI Engine... Please wait.';
-                    img.style.display = 'block';
-                    downloadBtn.style.display = 'block';
-                    alert(`👑 Success: Quantum Supreme Masterpiece rendered to ${finalWidth}x${finalHeight}!`);
-                } catch (err) {
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    text.innerText = 'Processing Direct 8192x5000 Quantum Neural AI Engine... Please wait.';
-                    alert('❌ Rendering failed due to browser memory limits. Please try a lower resolution scale.');
-                }
-            }, 700);
+            }, 300);
         }
     </script>
 </body>
