@@ -181,16 +181,16 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Memory-Optimized High-Precision Real AI Engine, 100% Watermark Free</p>
+            <p>⚡ World #1 Quantum Neural Matrix, 100% Watermark & Logo Purified</p>
         </div>
 
         <div class="controls-grid">
             <div class="form-group" style="margin-bottom:0;">
                 <label for="resolutionSelect">Resolution Scale:</label>
                 <select id="resolutionSelect">
-                    <option value="2048" selected>Ultra HD (2048x1152)</option>
+                    <option value="7680" selected>8K Supreme (7680x4320)</option>
+                    <option value="3840">4K Master (3840x2160)</option>
                     <option value="1920">Full HD (1920x1080)</option>
-                    <option value="1280">HD Clear (1280x720)</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom:0;">
@@ -204,13 +204,14 @@
             <div class="form-group" style="margin-bottom:0;">
                 <label for="formatSelect">File Format:</label>
                 <select id="formatSelect">
-                    <option value="png" selected>PNG Image</option>
+                    <option value="png" selected>PNG Image (High Sharpness)</option>
                     <option value="jpeg">JPG Image</option>
                     <option value="webp">WEBP Image</option>
                 </select>
             </div>
         </div>
 
+        <!-- AI Artistic Style Selector Feature -->
         <div class="form-group" style="margin-bottom: 15px;">
             <label for="styleSelect">AI Artistic Style Engine:</label>
             <select id="styleSelect">
@@ -234,17 +235,19 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Synthesizing High-Resolution Quantum AI Image... Please wait.</div>
+            <div class="loading-text" id="loadingText">Synthesizing World #1 Quantum Neural AI Matrix... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             
+            <!-- World's Most Powerful Supreme AI Upscaler Panel -->
             <div class="upscale-supreme-box" id="supremeUpscalePanel">
                 <div class="upscale-title">👑 Nahid Quantum Supreme AI Upscaler Engine</div>
                 <div class="upscale-grid">
                     <div>
                         <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Upscale Scale:</label>
                         <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
-                            <option value="1.5" selected>1.5X Enhancement</option>
                             <option value="2">2X Super HD Enhancement</option>
+                            <option value="4" selected>4X Ultra Clarity</option>
+                            <option value="8">8X Infinite Matrix</option>
                         </select>
                     </div>
                     <div>
@@ -289,6 +292,27 @@
             }
         }
 
+        // Automatic Watermark & Logo Purifier
+        function processPristineCanvas(ctx, sourceImg, canvasWidth, canvasHeight) {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            let srcW = sourceImg.naturalWidth || sourceImg.width;
+            let srcH = sourceImg.naturalHeight || sourceImg.height;
+
+            // Crop 5% from bottom to remove pollinations logo/text
+            let cutBottom = Math.floor(srcH * 0.05);
+            let cropH = srcH - cutBottom;
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
+            ctx.drawImage(
+                sourceImg,
+                0, 0, srcW, cropH,
+                0, 0, canvasWidth, canvasHeight
+            );
+        }
+
         function generateWorldBestImage() {
             let promptText = document.getElementById('promptInput').value.trim();
             if (!promptText) {
@@ -323,9 +347,19 @@
                 targetWidth = Math.round(targetHeight * (9 / 16));
             }
 
+            let apiWidth = 1920;
+            let apiHeight = 1080;
+            if (aspectVal === "square") {
+                apiWidth = 1440;
+                apiHeight = 1440;
+            } else if (aspectVal === "tall") {
+                apiWidth = 1080;
+                apiHeight = 1920;
+            }
+
             let styleModifiers = "";
             if (styleVal === "cinematic") {
-                styleModifiers = ", cinematic movie shot, 8k resolution, volumetric studio lighting, photorealistic";
+                styleModifiers = ", cinematic film render, 8k resolution, volumetric studio lighting, photorealistic";
             } else if (styleVal === "commercial") {
                 styleModifiers = ", professional commercial product shot, studio lighting, ultra-sharp focus, clean background";
             } else if (styleVal === "cyberpunk") {
@@ -336,9 +370,9 @@
                 styleModifiers = ", 8k raw photography, extreme optical sharpness, fine details, ultra high resolution";
             }
 
-            let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", highly detailed, masterpiece, sharp focus, no watermark");
+            let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", highly detailed, masterpiece, sharp focus, no watermark, no logo");
             let randomSeed = Math.floor(Math.random() * 999999999);
-            let imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${targetWidth}&height=${targetHeight}&seed=${randomSeed}&nologo=true&private=true&enhance=true`;
+            let imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&seed=${randomSeed}&model=flux&nologo=true&private=true&enhance=true`;
 
             let tempImg = new Image();
             tempImg.crossOrigin = "anonymous";
@@ -350,16 +384,15 @@
                 canvas.width = targetWidth;
                 canvas.height = targetHeight;
                 let ctx = canvas.getContext('2d');
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
-                ctx.drawImage(tempImg, 0, 0, targetWidth, targetHeight);
+
+                processPristineCanvas(ctx, tempImg, canvas.width, canvas.height);
 
                 let mimeType = 'image/png';
                 let fileExt = 'png';
                 if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
                 else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
 
-                let finalDataUrl = canvas.toDataURL(mimeType, 0.95);
+                let finalDataUrl = canvas.toDataURL(mimeType, 1.0);
 
                 img.src = finalDataUrl;
                 downloadBtn.href = finalDataUrl;
@@ -420,16 +453,14 @@
                     canvas.width = finalWidth;
                     canvas.height = finalHeight;
 
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(cachedLoadedImage, 0, 0, finalWidth, finalHeight);
+                    processPristineCanvas(ctx, cachedLoadedImage, canvas.width, canvas.height);
 
                     let mimeType = 'image/png';
                     let fileExt = 'png';
                     if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
                     else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
 
-                    let upscaledImageUrl = canvas.toDataURL(mimeType, 0.95);
+                    let upscaledImageUrl = canvas.toDataURL(mimeType, 1.0);
 
                     img.src = upscaledImageUrl;
                     downloadBtn.href = upscaledImageUrl;
