@@ -181,14 +181,14 @@
     <div class="studio-card">
         <div class="header">
             <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ Memory-Optimized Quantum Neural AI Engine, 100% Watermark Free</p>
+            <p>⚡ Memory-Optimized High-Precision Real AI Engine, 100% Watermark Free</p>
         </div>
 
         <div class="controls-grid">
             <div class="form-group" style="margin-bottom:0;">
                 <label for="resolutionSelect">Resolution Scale:</label>
                 <select id="resolutionSelect">
-                    <option value="3840" selected>4K Supreme (3840x2160)</option>
+                    <option value="2048" selected>Ultra HD (2048x1152)</option>
                     <option value="1920">Full HD (1920x1080)</option>
                     <option value="1280">HD Clear (1280x720)</option>
                 </select>
@@ -234,7 +234,7 @@
 
         <div class="output-section">
             <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Synthesizing High-Resolution Quantum Neural Image... Please wait.</div>
+            <div class="loading-text" id="loadingText">Synthesizing High-Resolution Quantum AI Image... Please wait.</div>
             <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
             
             <div class="upscale-supreme-box" id="supremeUpscalePanel">
@@ -244,7 +244,7 @@
                         <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Upscale Scale:</label>
                         <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
                             <option value="1.5" selected>1.5X Enhancement</option>
-                            <option value="2">2X Super HD</option>
+                            <option value="2">2X Super HD Enhancement</option>
                         </select>
                     </div>
                     <div>
@@ -268,7 +268,7 @@
     </div>
 
     <script>
-        let cachedCanvas = null;
+        let cachedLoadedImage = null;
 
         function manualRamFlushAction() {
             try {
@@ -282,66 +282,11 @@
                 if (downloadBtn) { downloadBtn.style.display = 'none'; }
                 let upscalePanel = document.getElementById('supremeUpscalePanel');
                 if (upscalePanel) { upscalePanel.style.display = 'none'; }
-                cachedCanvas = null;
+                cachedLoadedImage = null;
                 alert('⚡ Success: Browser RAM & Memory cleaned!');
             } catch (err) {
                 alert('RAM flush executed.');
             }
-        }
-
-        function generateOptimizedRender(width, height, styleVal, promptText) {
-            let canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            let ctx = canvas.getContext('2d');
-
-            let grad = ctx.createRadialGradient(width / 2, height / 2, 50, width / 2, height / 2, width / 1.1);
-            if (styleVal === "cyberpunk") {
-                grad.addColorStop(0, "#2a085c");
-                grad.addColorStop(0.5, "#0b1b3d");
-                grad.addColorStop(1, "#020617");
-            } else if (styleVal === "cinematic") {
-                grad.addColorStop(0, "#3b2512");
-                grad.addColorStop(0.5, "#0f172a");
-                grad.addColorStop(1, "#020617");
-            } else if (styleVal === "macro") {
-                grad.addColorStop(0, "#065f46");
-                grad.addColorStop(0.5, "#022c22");
-                grad.addColorStop(1, "#020617");
-            } else {
-                grad.addColorStop(0, "#1e293b");
-                grad.addColorStop(0.5, "#0f172a");
-                grad.addColorStop(1, "#020617");
-            }
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, width, height);
-
-            let hash = 0;
-            for (let i = 0; i < promptText.length; i++) {
-                hash = promptText.charCodeAt(i) + ((hash << 5) - hash);
-            }
-
-            let numElements = 60;
-            for (let i = 0; i < numElements; i++) {
-                let x = Math.abs((Math.sin(hash + i) * 10000) % width);
-                let y = Math.abs((Math.cos(hash + i * 2) * 10000) % height);
-                let radius = 80 + Math.abs((Math.sin(i) * 10000) % 300);
-
-                let sGrad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-                let rC = Math.floor(Math.abs(Math.sin(hash + i) * 255));
-                let gC = Math.floor(Math.abs(Math.cos(hash + i) * 255));
-                let bC = Math.floor(Math.abs(Math.sin(i) * 255));
-
-                sGrad.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, 0.35)`);
-                sGrad.addColorStop(1, `rgba(${rC}, ${gC}, ${bC}, 0)`);
-
-                ctx.fillStyle = sGrad;
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            return canvas;
         }
 
         function generateWorldBestImage() {
@@ -378,37 +323,66 @@
                 targetWidth = Math.round(targetHeight * (9 / 16));
             }
 
-            setTimeout(() => {
-                try {
-                    let canvas = generateOptimizedRender(targetWidth, targetHeight, styleVal, promptText);
-                    cachedCanvas = canvas;
+            let styleModifiers = "";
+            if (styleVal === "cinematic") {
+                styleModifiers = ", cinematic movie shot, 8k resolution, volumetric studio lighting, photorealistic";
+            } else if (styleVal === "commercial") {
+                styleModifiers = ", professional commercial product shot, studio lighting, ultra-sharp focus, clean background";
+            } else if (styleVal === "cyberpunk") {
+                styleModifiers = ", cyberpunk neon lighting, futuristic atmosphere, 8k hyper-detailed masterwork";
+            } else if (styleVal === "macro") {
+                styleModifiers = ", macro photography, sharp focus, extreme details, 8k optical clarity";
+            } else {
+                styleModifiers = ", 8k raw photography, extreme optical sharpness, fine details, ultra high resolution";
+            }
 
-                    let mimeType = 'image/png';
-                    let fileExt = 'png';
-                    if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
-                    else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
+            let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", highly detailed, masterpiece, sharp focus, no watermark");
+            let randomSeed = Math.floor(Math.random() * 999999999);
+            let imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${targetWidth}&height=${targetHeight}&seed=${randomSeed}&nologo=true&private=true&enhance=true`;
 
-                    let finalImageUrl = canvas.toDataURL(mimeType, 0.92);
+            let tempImg = new Image();
+            tempImg.crossOrigin = "anonymous";
 
-                    img.src = finalImageUrl;
-                    downloadBtn.href = finalImageUrl;
-                    downloadBtn.download = `nahid-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+            tempImg.onload = function() {
+                cachedLoadedImage = tempImg;
 
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    img.style.display = 'block';
-                    upscalePanel.style.display = 'block';
-                    downloadBtn.style.display = 'block';
-                } catch(e) {
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    alert('Memory Limit Exceeded. Please choose a lower resolution.');
-                }
-            }, 300);
+                let canvas = document.createElement('canvas');
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                let ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(tempImg, 0, 0, targetWidth, targetHeight);
+
+                let mimeType = 'image/png';
+                let fileExt = 'png';
+                if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
+                else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
+
+                let finalDataUrl = canvas.toDataURL(mimeType, 0.95);
+
+                img.src = finalDataUrl;
+                downloadBtn.href = finalDataUrl;
+                downloadBtn.download = `nahid-ai-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+
+                spinner.style.display = 'none';
+                text.style.display = 'none';
+                img.style.display = 'block';
+                upscalePanel.style.display = 'block';
+                downloadBtn.style.display = 'block';
+            };
+
+            tempImg.onerror = function() {
+                spinner.style.display = 'none';
+                text.style.display = 'none';
+                alert('Image generation failed. Please try again!');
+            };
+
+            tempImg.src = imageUrl;
         }
 
         function executeSupremeUpscale() {
-            if (!cachedCanvas) {
+            if (!cachedLoadedImage) {
                 alert('Please generate an image first!');
                 return;
             }
@@ -417,8 +391,8 @@
             let targetAspect = document.getElementById('upscaleAspectSelect').value;
             let formatVal = document.getElementById('formatSelect').value;
 
-            let finalWidth = Math.round(cachedCanvas.width * multiplier);
-            let finalHeight = Math.round(cachedCanvas.height * multiplier);
+            let finalWidth = Math.round(cachedLoadedImage.width * multiplier);
+            let finalHeight = Math.round(cachedLoadedImage.height * multiplier);
 
             if (targetAspect === "16:9") {
                 finalHeight = Math.round(finalWidth * (9 / 16));
@@ -434,7 +408,7 @@
             let downloadBtn = document.getElementById('downloadLink');
 
             spinner.style.display = 'block';
-            text.innerText = `Upscaling image... Please wait.`;
+            text.innerText = `Enhancing Image... Please wait.`;
             text.style.display = 'block';
             img.style.display = 'none';
             downloadBtn.style.display = 'none';
@@ -448,18 +422,18 @@
 
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(cachedCanvas, 0, 0, finalWidth, finalHeight);
+                    ctx.drawImage(cachedLoadedImage, 0, 0, finalWidth, finalHeight);
 
                     let mimeType = 'image/png';
                     let fileExt = 'png';
                     if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
                     else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
 
-                    let upscaledImageUrl = canvas.toDataURL(mimeType, 0.92);
+                    let upscaledImageUrl = canvas.toDataURL(mimeType, 0.95);
 
                     img.src = upscaledImageUrl;
                     downloadBtn.href = upscaledImageUrl;
-                    downloadBtn.download = `nahid-upscaled-${finalWidth}x${finalHeight}.${fileExt}`;
+                    downloadBtn.download = `nahid-enhanced-${finalWidth}x${finalHeight}.${fileExt}`;
 
                     spinner.style.display = 'none';
                     text.style.display = 'none';
@@ -470,7 +444,7 @@
                     text.style.display = 'none';
                     alert('Memory Limit Exceeded during upscaling.');
                 }
-            }, 400);
+            }, 300);
         }
     </script>
 </body>
