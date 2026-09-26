@@ -204,8 +204,8 @@
             <div class="form-group" style="margin-bottom:0;">
                 <label for="formatSelect">File Format:</label>
                 <select id="formatSelect">
-                    <option value="jpeg" selected>JPG Image</option>
-                    <option value="png">PNG Image</option>
+                    <option value="png" selected>PNG Image (High Sharpness)</option>
+                    <option value="jpeg">JPG Image</option>
                     <option value="webp">WEBP Image</option>
                 </select>
             </div>
@@ -266,7 +266,7 @@
                 </div>
             </div>
 
-            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
+            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.png">📥 Download Masterpiece</a>
         </div>
     </div>
 
@@ -292,50 +292,87 @@
             }
         }
 
-        // Quantum Neural HDR, Edge Sharpening & Micro-Contrast Engine
-        function applyQuantumNeuralMatrix(ctx, width, height, strength = 1.38) {
+        // Advanced Unsharp Masking Sharpening Filter
+        function applyPrecisionSharpening(ctx, width, height) {
             try {
                 let imgData = ctx.getImageData(0, 0, width, height);
-                let data = imgData.data;
-                for (let i = 0; i < data.length; i += 4) {
-                    let r = data[i], g = data[i+1], b = data[i+2];
-                    let luminance = (r * 0.299 + g * 0.587 + b * 0.114);
-                    if (luminance >= 0 && luminance <= 255) {
-                        let factor = strength;
-                        if (luminance < 35) factor = 1.04;
-                        data[i]   = Math.min(255, Math.max(0, r * factor));
-                        data[i+1] = Math.min(255, Math.max(0, g * factor));
-                        data[i+2] = Math.min(255, Math.max(0, b * factor));
+                let src = imgData.data;
+                let output = ctx.createImageData(width, height);
+                let dst = output.data;
+
+                // Precision Edge-Detection & Sharpness Kernel
+                let kernel = [
+                     0, -0.2,  0,
+                    -0.2, 1.8, -0.2,
+                     0, -0.2,  0
+                ];
+
+                for (let y = 1; y < height - 1; y++) {
+                    for (let x = 1; x < width - 1; x++) {
+                        let dstOff = (y * width + x) * 4;
+                        let r = 0, g = 0, b = 0;
+
+                        for (let cy = 0; cy < 3; cy++) {
+                            for (let cx = 0; cx < 3; cx++) {
+                                let scx = x + cx - 1;
+                                let scy = y + cy - 1;
+                                let srcOff = (scy * width + scx) * 4;
+                                let wt = kernel[cy * 3 + cx];
+
+                                r += src[srcOff] * wt;
+                                g += src[srcOff + 1] * wt;
+                                b += src[srcOff + 2] * wt;
+                            }
+                        }
+
+                        dst[dstOff]     = Math.min(255, Math.max(0, r));
+                        dst[dstOff + 1] = Math.min(255, Math.max(0, g));
+                        dst[dstOff + 2] = Math.min(255, Math.max(0, b));
+                        dst[dstOff + 3] = src[dstOff + 3];
                     }
                 }
-                ctx.putImageData(imgData, 0, 0);
+                ctx.putImageData(output, 0, 0);
             } catch(e) {}
         }
 
-        /* 
-           ========================================================================
-           ADVANCED WATERMARK & LOGO PURIFICATION ENGINE (NO SOLID PATCHES)
-           Uses Precision Smart-Scale Cropping to cleanly eliminate bottom watermarks
-           ========================================================================
-        */
+        // High-Precision Multi-Pass Scaling for Zero-Blur Upscaling
         function processPristineCanvas(ctx, sourceImg, canvasWidth, canvasHeight) {
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
 
             let srcW = sourceImg.naturalWidth || sourceImg.width;
             let srcH = sourceImg.naturalHeight || sourceImg.height;
 
-            // Crop 6% from bottom and 2% from right to cut off watermarks completely without solid box artifacts
-            let cutBottom = Math.floor(srcH * 0.06); 
-            let cutSide = Math.floor(srcW * 0.02);
+            // Multi-pass scaling to preserve fine micro-details
+            if (canvasWidth > srcW * 1.5 || canvasHeight > srcH * 1.5) {
+                let tempCanvas = document.createElement('canvas');
+                let tempCtx = tempCanvas.getContext('2d');
+                let curW = srcW;
+                let curH = srcH;
 
-            let cropW = srcW - (cutSide * 2);
-            let cropH = srcH - cutBottom;
+                tempCanvas.width = curW;
+                tempCanvas.height = curH;
+                tempCtx.drawImage(sourceImg, 0, 0);
 
-            ctx.drawImage(
-                sourceImg,
-                cutSide, 0, cropW, cropH,
-                0, 0, canvasWidth, canvasHeight
-            );
+                while (curW < canvasWidth / 2 && curH < canvasHeight / 2) {
+                    curW *= 2;
+                    curH *= 2;
+                    let nextCanvas = document.createElement('canvas');
+                    nextCanvas.width = curW;
+                    nextCanvas.height = curH;
+                    let nextCtx = nextCanvas.getContext('2d');
+                    nextCtx.imageSmoothingEnabled = true;
+                    nextCtx.imageSmoothingQuality = 'high';
+                    nextCtx.drawImage(tempCanvas, 0, 0, tempCanvas.width, tempCanvas.height, 0, 0, curW, curH);
+                    tempCanvas = nextCanvas;
+                }
+
+                ctx.drawImage(tempCanvas, 0, 0, tempCanvas.width, tempCanvas.height, 0, 0, canvasWidth, canvasHeight);
+            } else {
+                ctx.drawImage(sourceImg, 0, 0, srcW, srcH, 0, 0, canvasWidth, canvasHeight);
+            }
         }
 
         function generateWorldBestImage() {
@@ -376,11 +413,12 @@
                 targetWidth = Math.round(resVal * (9 / 16));
             }
 
+            // Request optimal high-res base image from API (Max Native Limit ~2048x1152 for stability)
             let apiWidth = 1920;
             let apiHeight = 1080;
             if (aspectVal === "square") {
-                apiWidth = 1536;
-                apiHeight = 1536;
+                apiWidth = 1440;
+                apiHeight = 1440;
             } else if (aspectVal === "tall") {
                 apiWidth = 1080;
                 apiHeight = 1920;
@@ -388,19 +426,19 @@
 
             let styleModifiers = "";
             if (styleVal === "cinematic") {
-                styleModifiers = ", cinematic Hollywood masterclass scene, anamorphic lens flare, professional 35mm color grading, dramatic chiaroscuro lighting, panavision film grain, 8k resolution, ultra-photorealistic";
+                styleModifiers = ", cinematic film render, 8k resolution, masterclass volumetric studio lighting, photorealistic, octave render";
             } else if (styleVal === "commercial") {
-                styleModifiers = ", adobe stock certified premier commercial product photography, studio softbox rim lighting, ultra-sharp optical focus, spotless clean background setup, 8k uhd, editorial catalog perfection";
+                styleModifiers = ", professional studio product shot, 8k uhd, crystal clear focus, high detailed commercial catalog quality";
             } else if (styleVal === "cyberpunk") {
-                styleModifiers = ", cyberpunk neon lighting, futuristic dystopian high-tech atmosphere, holographic ray-traced reflections, dark cinematic moody neon tone, 8k hyper-detailed masterwork";
+                styleModifiers = ", cyberpunk glowing neon lighting, futuristic 8k hyper-detailed masterwork, Unreal Engine 5 render";
             } else if (styleVal === "macro") {
-                styleModifiers = ", extreme macro photography, microscopic surface textures, sharp multi-focus stacking, professional studio macro ring lighting, 8k pristine optical clarity";
+                styleModifiers = ", extreme macro photography, multi-focus stacking, 8k pristine optical clarity, sharp texture";
             } else {
-                styleModifiers = ", hyper-realistic 8k raw dslr photography, flawless micro-details, extreme edge sharpness, crystal clear glass transparency, zero blur, absolute masterpiece";
+                styleModifiers = ", 8k raw dslr photography, extreme optical sharpness, fine micro-details, ultra high resolution";
             }
 
-            let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, absolutely no text, no signatures, no watermark, no logos, no brand marks, pristine clean studio background";
-            let negativePromptParams = "&nologo=true&private=true&enhance=true&safe=true&no=watermark,logo,signature,text,words,brand";
+            let quantumEnhancers = styleModifiers + ", pin-sharp focus, crisp details, highly detailed, perfect composition";
+            let negativePromptParams = "&model=flux&nologo=true&private=true&enhance=true";
             let fullPrompt = encodeURIComponent(promptText + quantumEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
 
@@ -426,19 +464,16 @@
                 
                 canvas.width = targetWidth;
                 canvas.height = targetHeight;
-                
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
 
-                // Process image with clean smart cropping (no solid color block)
+                // Process multi-pass canvas scaling cleanly
                 processPristineCanvas(ctx, tempImage, canvas.width, canvas.height);
 
-                // Apply Quantum Neural HDR Matrix Filter
-                applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
+                // Apply Unsharp Masking for Ultra Sharpening
+                applyPrecisionSharpening(ctx, canvas.width, canvas.height);
 
-                let mimeType = 'image/jpeg';
-                let fileExt = 'jpg';
-                if (formatVal === 'png') { mimeType = 'image/png'; fileExt = 'png'; }
+                let mimeType = 'image/png';
+                let fileExt = 'png';
+                if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
                 else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
 
                 cachedMasterRawImage = tempImage;
@@ -465,13 +500,11 @@
                     let ctx = canvas.getContext('2d');
                     canvas.width = targetWidth;
                     canvas.height = targetHeight;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
 
                     processPristineCanvas(ctx, fallbackImage, canvas.width, canvas.height);
-                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
+                    applyPrecisionSharpening(ctx, canvas.width, canvas.height);
 
-                    let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
+                    let mimeType = (formatVal === 'jpeg') ? 'image/jpeg' : (formatVal === 'webp' ? 'image/webp' : 'image/png');
                     let fileExt = formatVal === 'jpeg' ? 'jpg' : formatVal;
                     
                     cachedMasterRawImage = fallbackImage;
@@ -501,7 +534,7 @@
             tempImage.src = primaryUrl;
         }
 
-        // Quantum Supreme Upscaler Engine
+        // Supreme AI Upscaler Engine
         function executeSupremeUpscale() {
             if (!cachedMasterRawImage) {
                 alert('Please generate a masterpiece image first to upscale!');
@@ -551,15 +584,12 @@
                     canvas.width = finalWidth;
                     canvas.height = finalHeight;
 
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-
                     processPristineCanvas(ctx, cachedMasterRawImage, canvas.width, canvas.height);
-                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.32);
+                    applyPrecisionSharpening(ctx, canvas.width, canvas.height);
 
-                    let mimeType = 'image/jpeg';
-                    let fileExt = 'jpg';
-                    if (formatVal === 'png') { mimeType = 'image/png'; fileExt = 'png'; }
+                    let mimeType = 'image/png';
+                    let fileExt = 'png';
+                    if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
                     else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
 
                     let upscaledImageUrl = canvas.toDataURL(mimeType, 1.0);
@@ -573,7 +603,7 @@
                     text.innerText = 'Synthesizing World #1 Quantum Neural AI Matrix & HDR Grading... Please wait.';
                     img.style.display = 'block';
                     downloadBtn.style.display = 'block';
-                    alert(`👑 Success: Quantum Supreme Masterpiece rendered to ${finalWidth}x${finalHeight}!`);
+                    alert(`👑 Success: Quantum Supreme Masterpiece has been successfully rendered to ${finalWidth}x${finalHeight}!`);
                 } catch (err) {
                     spinner.style.display = 'none';
                     text.style.display = 'none';
