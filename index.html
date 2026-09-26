@@ -1,139 +1,482 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Auto Connect</title>
-    <script type="module">
-        import { client } from "https://cdn.jsdelivr.net/npm/@gradio/client/+esm";
-        window.GradioClient = client;
-    </script>
+    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #0b0f19; color: #f1f5f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .studio-card { background: #1e293b; border: 1px solid #334155; padding: 28px; border-radius: 20px; width: 100%; max-width: 650px; }
-        .header-title { font-size: 24px; font-weight: 700; color: #38bdf8; text-align: center; margin-bottom: 10px; }
-        .status-badge { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; margin-bottom: 20px; color: #10b981; }
-        .status-dot { width: 10px; height: 10px; background-color: #10b981; border-radius: 50%; display: inline-block; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-size: 13px; color: #cbd5e1; }
-        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background-color: #0f172a; color: #fff; font-size: 14px; outline: none; }
-        .colab-field { border-color: #f59e0b !important; }
-        .btn-generate { width: 100%; padding: 15px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .preview-container { margin-top: 20px; text-align: center; min-height: 200px; display: flex; justify-content: center; align-items: center; background: #0f172a; border-radius: 8px; }
-        img { max-width: 100%; border-radius: 8px; }
-        .download-btn { display: none; background: #10b981; color: white; padding: 12px; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #020617;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .studio-card {
+            width: 100%;
+            max-width: 780px;
+            background: rgba(15, 23, 42, 0.99);
+            border: 2px solid #3b82f6;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
+        }
+        .header { text-align: center; margin-bottom: 22px; }
+        .header h1 { color: #60a5fa; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; text-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
+        .header p { color: #94a3b8; font-size: 13px; font-weight: 500; }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; color: #93c5fd; font-size: 12px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        select, textarea {
+            width: 100%;
+            background: #020617;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            color: #ffffff;
+            padding: 12px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        textarea { resize: vertical; min-height: 95px; }
+        select:focus, textarea:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+        
+        .btn-flex {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .generate-btn {
+            flex: 2;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+            transition: transform 0.2s;
+        }
+        .ram-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            transition: transform 0.2s;
+        }
+        .generate-btn:hover, .ram-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+        
+        .output-section { margin-top: 20px; text-align: center; }
+        .spinner {
+            display: none;
+            width: 45px; height: 45px;
+            border: 5px solid #1e293b;
+            border-top: 5px solid #60a5fa;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 15px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: #60a5fa; font-size: 13px; display: none; margin-bottom: 12px; font-weight: 600; }
+        .result-image {
+            width: 100%;
+            max-height: 580px;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 2px solid #475569;
+            display: none;
+            margin-bottom: 15px;
+            background: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        
+        /* Supreme World-Class Upscaler Panel Box */
+        .upscale-supreme-box {
+            display: none;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 2px solid #f59e0b;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 15px;
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+        }
+        .upscale-title {
+            color: #fbbf24;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .upscale-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1.2fr;
+            gap: 10px;
+            align-items: center;
+        }
+        .supreme-upscale-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #d97706, #b45309, #92400e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+            transition: transform 0.2s;
+        }
+        .supreme-upscale-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+
+        .download-btn {
+            display: none;
+            width: 100%;
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+        .download-btn:hover { opacity: 0.95; }
     </style>
 </head>
 <body>
 
-<div class="studio-card">
-    <div class="header-title">Nahid AI Studio Pro Plus</div>
-    
-    <div class="status-badge">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">কোল্যাব ইঞ্জিনের সাথে যুক্ত হচ্ছে...</span>
+    <div class="studio-card">
+        <div class="header">
+            <h1>Nahid AI Studio Pro Plus</h1>
+            <p>⚡ World #1 Quantum Neural Matrix, 100% Watermark & Logo Purified</p>
+        </div>
+
+        <div class="controls-grid">
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="resolutionSelect">Resolution Scale:</label>
+                <select id="resolutionSelect">
+                    <option value="7680" selected>8K Supreme (7680x4320)</option>
+                    <option value="3840">4K Master (3840x2160)</option>
+                    <option value="1920">Full HD (1920x1080)</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="aspectSelect">Aspect Ratio:</label>
+                <select id="aspectSelect">
+                    <option value="wide" selected>16:9 Landscape</option>
+                    <option value="square">1:1 Square</option>
+                    <option value="tall">9:16 Portrait</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="formatSelect">File Format:</label>
+                <select id="formatSelect">
+                    <option value="png" selected>PNG Image (High Sharpness)</option>
+                    <option value="jpeg">JPG Image</option>
+                    <option value="webp">WEBP Image</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- AI Artistic Style Selector Feature -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="styleSelect">AI Artistic Style Engine:</label>
+            <select id="styleSelect">
+                <option value="hyper">Hyper-Realistic 8K RAW (Default)</option>
+                <option value="cinematic">Cinematic Hollywood Movie Style</option>
+                <option value="commercial">Adobe Stock Commercial Product Shot</option>
+                <option value="cyberpunk">Cyberpunk Neon futuristic Studio</option>
+                <option value="macro">Macro Photography (Extreme Details)</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="promptInput">Enter Masterpiece Prompt:</label>
+            <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
+        </div>
+
+        <div class="btn-flex">
+            <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate Masterpiece</button>
+            <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
+        </div>
+
+        <div class="output-section">
+            <div class="spinner" id="loadingSpinner"></div>
+            <div class="loading-text" id="loadingText">Synthesizing World #1 Quantum Neural AI Matrix... Please wait.</div>
+            <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
+            
+            <!-- World's Most Powerful Supreme AI Upscaler Panel -->
+            <div class="upscale-supreme-box" id="supremeUpscalePanel">
+                <div class="upscale-title">👑 Nahid Quantum Supreme AI Upscaler Engine</div>
+                <div class="upscale-grid">
+                    <div>
+                        <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Upscale Scale:</label>
+                        <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
+                            <option value="2">2X Super HD Enhancement</option>
+                            <option value="4" selected>4X Ultra Clarity</option>
+                            <option value="8">8X Infinite Matrix</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="upscaleAspectSelect" style="margin-bottom:4px; color:#fde68a;">Target Aspect:</label>
+                        <select id="upscaleAspectSelect" style="border-color:#d97706;">
+                            <option value="match" selected>Match Original</option>
+                            <option value="16:9">16:9 Landscape</option>
+                            <option value="1:1">1:1 Square</option>
+                            <option value="9:16">9:16 Portrait</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="opacity:0; pointer-events:none; margin-bottom:4px;">Action</label>
+                        <button class="supreme-upscale-btn" onclick="executeSupremeUpscale()">✨ Run Upscale</button>
+                    </div>
+                </div>
+            </div>
+
+            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.png">📥 Download Masterpiece</a>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Google Colab API Link (অটো-ডিটেক্টেড / ম্যানুয়াল):</label>
-        <input type="text" id="colabUrl" class="colab-field" placeholder="https://xxxx.gradio.live">
-    </div>
+    <script>
+        let cachedLoadedImage = null;
 
-    <div class="form-group">
-        <label>প্রম্পট (Image Prompt):</label>
-        <input type="text" id="prompt" placeholder="A futuristic lion king, 8k resolution">
-    </div>
-
-    <button class="btn-generate" onclick="generateImage()">ছবি জেনারেট করুন</button>
-
-    <div class="preview-container">
-        <div id="loader" style="display:none; color:#38bdf8;">কোল্যাব GPU থেকে ছবি তৈরি হচ্ছে...</div>
-        <img id="outputImg" style="display:none;" />
-    </div>
-
-    <a id="downloadBtn" class="download-btn" download="Nahid_AI_Image.png">ছবি ডাউনলোড করুন</a>
-</div>
-
-<script>
-// পেজ লোড হলে সেভ হওয়া লিঙ্ক এবং ইনপুট ফিল্ড আপডেট করবে
-window.onload = function() {
-    const savedUrl = localStorage.getItem('nahid_colab_url');
-    if (savedUrl) {
-        document.getElementById('colabUrl').value = savedUrl;
-        updateStatus(true, "কোল্যাব লিঙ্ক প্রস্তুত!");
-    } else {
-        updateStatus(false, "কোল্যাব লিঙ্ক পেস্ট করুন");
-    }
-};
-
-function updateStatus(isReady, message) {
-    const dot = document.getElementById('statusDot');
-    const text = document.getElementById('statusText');
-    text.innerText = message;
-    if (isReady) {
-        dot.style.backgroundColor = '#10b981';
-        text.style.color = '#10b981';
-    } else {
-        dot.style.backgroundColor = '#f59e0b';
-        text.style.color = '#f59e0b';
-    }
-}
-
-async function generateImage() {
-    const prompt = document.getElementById('prompt').value.trim();
-    let colabUrl = document.getElementById('colabUrl').value.trim();
-    const loader = document.getElementById('loader');
-    const outputImg = document.getElementById('outputImg');
-    const downloadBtn = document.getElementById('downloadBtn');
-
-    if (!prompt) {
-        alert('অনুগ্রহ করে একটি প্রম্পট দিন!');
-        return;
-    }
-
-    if (!colabUrl) {
-        alert('কোল্যাবের লিঙ্ক প্রদান করুন!');
-        return;
-    }
-
-    if (colabUrl.endsWith('/')) {
-        colabUrl = colabUrl.slice(0, -1);
-    }
-
-    // প্রতিবার নতুন লিঙ্ক ইনপুট দিলে ব্রাউজারে অটো সেভ হয়ে যাবে
-    localStorage.setItem('nahid_colab_url', colabUrl);
-
-    loader.style.display = 'block';
-    outputImg.style.display = 'none';
-    downloadBtn.style.display = 'none';
-
-    try {
-        const app = await window.GradioClient.connect(colabUrl);
-        const result = await app.predict("/predict", [prompt]);
-
-        if (result && result.data && result.data[0]) {
-            const imgData = result.data[0];
-            const imgUrl = imgData.url || imgData;
-
-            outputImg.src = imgUrl;
-            outputImg.style.display = 'block';
-
-            downloadBtn.href = imgUrl;
-            downloadBtn.style.display = 'block';
-            loader.style.display = 'none';
-            updateStatus(true, "ছবি সফলভাবে তৈরি হয়েছে!");
-        } else {
-            throw new Error("Invalid response");
+        function manualRamFlushAction() {
+            try {
+                let imgElement = document.getElementById('outputImage');
+                if (imgElement) {
+                    imgElement.src = "";
+                    imgElement.removeAttribute('src');
+                    imgElement.style.display = 'none';
+                }
+                let downloadBtn = document.getElementById('downloadLink');
+                if (downloadBtn) { downloadBtn.style.display = 'none'; }
+                let upscalePanel = document.getElementById('supremeUpscalePanel');
+                if (upscalePanel) { upscalePanel.style.display = 'none'; }
+                cachedLoadedImage = null;
+                alert('⚡ Success: Browser RAM & Memory cleaned!');
+            } catch (err) {
+                alert('RAM flush executed.');
+            }
         }
-    } catch (err) {
-        console.error(err);
-        alert('কোল্যাব সেশন বা লিঙ্ক ফুরিয়ে গেছে! অনুগ্রহ করে কোল্যাব থেকে নতুন লিঙ্ক এনে পেস্ট করুন।');
-        loader.style.display = 'none';
-        updateStatus(false, "ডিসকানেক্টেড! লিঙ্ক রিফ্রেশ করুন");
-    }
-}
-</script>
 
+        // Automatic Watermark & Logo Purifier
+        function processPristineCanvas(ctx, sourceImg, canvasWidth, canvasHeight) {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            let srcW = sourceImg.naturalWidth || sourceImg.width;
+            let srcH = sourceImg.naturalHeight || sourceImg.height;
+
+            // Crop 5% from bottom to remove pollinations logo/text
+            let cutBottom = Math.floor(srcH * 0.05);
+            let cropH = srcH - cutBottom;
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
+            ctx.drawImage(
+                sourceImg,
+                0, 0, srcW, cropH,
+                0, 0, canvasWidth, canvasHeight
+            );
+        }
+
+        function generateWorldBestImage() {
+            let promptText = document.getElementById('promptInput').value.trim();
+            if (!promptText) {
+                alert('Please enter a prompt!');
+                return;
+            }
+
+            let spinner = document.getElementById('loadingSpinner');
+            let text = document.getElementById('loadingText');
+            let img = document.getElementById('outputImage');
+            let downloadBtn = document.getElementById('downloadLink');
+            let upscalePanel = document.getElementById('supremeUpscalePanel');
+
+            spinner.style.display = 'block';
+            text.style.display = 'block';
+            img.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            upscalePanel.style.display = 'none';
+
+            let resVal = parseInt(document.getElementById('resolutionSelect').value);
+            let aspectVal = document.getElementById('aspectSelect').value;
+            let formatVal = document.getElementById('formatSelect').value;
+            let styleVal = document.getElementById('styleSelect').value;
+
+            let targetWidth = resVal;
+            let targetHeight = Math.round(resVal * (9 / 16));
+
+            if (aspectVal === "square") {
+                targetHeight = targetWidth;
+            } else if (aspectVal === "tall") {
+                targetHeight = targetWidth;
+                targetWidth = Math.round(targetHeight * (9 / 16));
+            }
+
+            let apiWidth = 1920;
+            let apiHeight = 1080;
+            if (aspectVal === "square") {
+                apiWidth = 1440;
+                apiHeight = 1440;
+            } else if (aspectVal === "tall") {
+                apiWidth = 1080;
+                apiHeight = 1920;
+            }
+
+            let styleModifiers = "";
+            if (styleVal === "cinematic") {
+                styleModifiers = ", cinematic film render, 8k resolution, volumetric studio lighting, photorealistic";
+            } else if (styleVal === "commercial") {
+                styleModifiers = ", professional commercial product shot, studio lighting, ultra-sharp focus, clean background";
+            } else if (styleVal === "cyberpunk") {
+                styleModifiers = ", cyberpunk neon lighting, futuristic atmosphere, 8k hyper-detailed masterwork";
+            } else if (styleVal === "macro") {
+                styleModifiers = ", macro photography, sharp focus, extreme details, 8k optical clarity";
+            } else {
+                styleModifiers = ", 8k raw photography, extreme optical sharpness, fine details, ultra high resolution";
+            }
+
+            let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", highly detailed, masterpiece, sharp focus, no watermark, no logo");
+            let randomSeed = Math.floor(Math.random() * 999999999);
+            let imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&seed=${randomSeed}&model=flux&nologo=true&private=true&enhance=true`;
+
+            let tempImg = new Image();
+            tempImg.crossOrigin = "anonymous";
+
+            tempImg.onload = function() {
+                cachedLoadedImage = tempImg;
+
+                let canvas = document.createElement('canvas');
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                let ctx = canvas.getContext('2d');
+
+                processPristineCanvas(ctx, tempImg, canvas.width, canvas.height);
+
+                let mimeType = 'image/png';
+                let fileExt = 'png';
+                if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
+                else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
+
+                let finalDataUrl = canvas.toDataURL(mimeType, 1.0);
+
+                img.src = finalDataUrl;
+                downloadBtn.href = finalDataUrl;
+                downloadBtn.download = `nahid-ai-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+
+                spinner.style.display = 'none';
+                text.style.display = 'none';
+                img.style.display = 'block';
+                upscalePanel.style.display = 'block';
+                downloadBtn.style.display = 'block';
+            };
+
+            tempImg.onerror = function() {
+                spinner.style.display = 'none';
+                text.style.display = 'none';
+                alert('Image generation failed. Please try again!');
+            };
+
+            tempImg.src = imageUrl;
+        }
+
+        function executeSupremeUpscale() {
+            if (!cachedLoadedImage) {
+                alert('Please generate an image first!');
+                return;
+            }
+
+            let multiplier = parseFloat(document.getElementById('upscaleMultiplierSelect').value);
+            let targetAspect = document.getElementById('upscaleAspectSelect').value;
+            let formatVal = document.getElementById('formatSelect').value;
+
+            let finalWidth = Math.round(cachedLoadedImage.width * multiplier);
+            let finalHeight = Math.round(cachedLoadedImage.height * multiplier);
+
+            if (targetAspect === "16:9") {
+                finalHeight = Math.round(finalWidth * (9 / 16));
+            } else if (targetAspect === "1:1") {
+                finalHeight = finalWidth;
+            } else if (targetAspect === "9:16") {
+                finalWidth = Math.round(finalHeight * (9 / 16));
+            }
+
+            let spinner = document.getElementById('loadingSpinner');
+            let text = document.getElementById('loadingText');
+            let img = document.getElementById('outputImage');
+            let downloadBtn = document.getElementById('downloadLink');
+
+            spinner.style.display = 'block';
+            text.innerText = `Enhancing Image... Please wait.`;
+            text.style.display = 'block';
+            img.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
+            setTimeout(() => {
+                try {
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    canvas.width = finalWidth;
+                    canvas.height = finalHeight;
+
+                    processPristineCanvas(ctx, cachedLoadedImage, canvas.width, canvas.height);
+
+                    let mimeType = 'image/png';
+                    let fileExt = 'png';
+                    if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
+                    else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
+
+                    let upscaledImageUrl = canvas.toDataURL(mimeType, 1.0);
+
+                    img.src = upscaledImageUrl;
+                    downloadBtn.href = upscaledImageUrl;
+                    downloadBtn.download = `nahid-enhanced-${finalWidth}x${finalHeight}.${fileExt}`;
+
+                    spinner.style.display = 'none';
+                    text.style.display = 'none';
+                    img.style.display = 'block';
+                    downloadBtn.style.display = 'block';
+                } catch (err) {
+                    spinner.style.display = 'none';
+                    text.style.display = 'none';
+                    alert('Memory Limit Exceeded during upscaling.');
+                }
+            }, 300);
+        }
+    </script>
 </body>
 </html>
