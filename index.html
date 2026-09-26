@@ -292,23 +292,20 @@
             }
         }
 
-        // Automatic Watermark & Logo Purifier
+        // Pristine Canvas Renderer (No Crop / No Zoom - 100% Full Aspect Preserved)
         function processPristineCanvas(ctx, sourceImg, canvasWidth, canvasHeight) {
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
             let srcW = sourceImg.naturalWidth || sourceImg.width;
             let srcH = sourceImg.naturalHeight || sourceImg.height;
 
-            // Crop 5% from bottom to remove pollinations logo/text
-            let cutBottom = Math.floor(srcH * 0.05);
-            let cropH = srcH - cutBottom;
-
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
 
+            // Draw full image without cropping or zooming
             ctx.drawImage(
                 sourceImg,
-                0, 0, srcW, cropH,
+                0, 0, srcW, srcH,
                 0, 0, canvasWidth, canvasHeight
             );
         }
@@ -359,18 +356,18 @@
 
             let styleModifiers = "";
             if (styleVal === "cinematic") {
-                styleModifiers = ", cinematic film render, 8k resolution, volumetric studio lighting, photorealistic";
+                styleModifiers = ", cinematic film render, 8k resolution, volumetric studio lighting, photorealistic, wide shot";
             } else if (styleVal === "commercial") {
-                styleModifiers = ", professional commercial product shot, studio lighting, ultra-sharp focus, clean background";
+                styleModifiers = ", professional commercial product shot, studio lighting, ultra-sharp focus, clean background, wide view";
             } else if (styleVal === "cyberpunk") {
-                styleModifiers = ", cyberpunk neon lighting, futuristic atmosphere, 8k hyper-detailed masterwork";
+                styleModifiers = ", cyberpunk neon lighting, futuristic atmosphere, 8k hyper-detailed masterwork, full view";
             } else if (styleVal === "macro") {
                 styleModifiers = ", macro photography, sharp focus, extreme details, 8k optical clarity";
             } else {
-                styleModifiers = ", 8k raw photography, extreme optical sharpness, fine details, ultra high resolution";
+                styleModifiers = ", 8k raw photography, extreme optical sharpness, fine details, ultra high resolution, full shot";
             }
 
-            let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", highly detailed, masterpiece, sharp focus, no watermark, no logo");
+            let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", highly detailed, masterpiece, sharp focus, wide angle, full view, no watermark, no logo");
             let randomSeed = Math.floor(Math.random() * 999999999);
             let imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&seed=${randomSeed}&model=flux&nologo=true&private=true&enhance=true`;
 
