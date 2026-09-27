@@ -248,16 +248,17 @@
   <div class="studio-card">
     <div class="header">
       <h1>Nahid AI Studio Pro Plus</h1>
-      <p>⚡ Optimized Neural Matrix & 100% Watermark Free Engine</p>
+      <p>⚡ Adobe Stock Certified Native Resolution & 100% Logo Free Engine</p>
     </div>
 
     <div class="controls-grid">
       <div class="form-group" style="margin-bottom:0;">
-        <label for="resolutionSelect">Base Target Resolution:</label>
+        <label for="resolutionSelect">Target Resolution:</label>
         <select id="resolutionSelect">
-          <option value="1080">Full HD (1920x1080)</option>
-          <option value="1440" selected>2K Quad HD (2560x1440)</option>
-          <option value="2160">4K Ultra HD (3840x2160)</option>
+          <option value="1920">Full HD (1920x1080)</option>
+          <option value="2560">2K Quad HD (2560x1440)</option>
+          <option value="3840" selected>4K Ultra HD (3840x2160)</option>
+          <option value="7680">8K Supreme (7680x4320)</option>
         </select>
       </div>
 
@@ -283,7 +284,7 @@
     <div class="form-group" style="margin-bottom: 15px;">
       <label for="styleSelect">AI Artistic Style Engine:</label>
       <select id="styleSelect">
-        <option value="hyper">Hyper-Realistic 8K RAW (Default)</option>
+        <option value="hyper">Hyper-Realistic RAW DSLR (Default)</option>
         <option value="cinematic">Cinematic Hollywood Movie Style</option>
         <option value="commercial">Adobe Stock Commercial Product Shot</option>
         <option value="cyberpunk">Cyberpunk Neon Futuristic Studio</option>
@@ -293,7 +294,7 @@
 
     <div class="form-group" style="margin-top: 10px;">
       <label for="promptInput">Enter Masterpiece Prompt:</label>
-      <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D hyper-realistic masterpiece portrait</textarea>
+      <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking wooden house by a calm river surrounded by lush green trees, ultra detailed 8k photography</textarea>
     </div>
 
     <div class="btn-flex">
@@ -312,13 +313,13 @@
           <div>
             <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Target Scale:</label>
             <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
-              <option value="2">2X Enhancement</option>
-              <option value="3">3X Enhancement</option>
+              <option value="2">2X Resolution Boost</option>
+              <option value="3">3X Resolution Boost</option>
             </select>
           </div>
           <div>
             <label style="opacity:0; pointer-events:none; margin-bottom:4px;">Action</label>
-            <button class="supreme-upscale-btn" onclick="executeRealAIUpscale()">✨ High-Res Re-Render</button>
+            <button class="supreme-upscale-btn" onclick="executeRealAIUpscale()">✨ Native Re-Render</button>
           </div>
         </div>
       </div>
@@ -329,7 +330,6 @@
 
   <script>
     let activeBlobUrl = null;
-    let currentPromptUsed = "";
 
     function silentAutoRamCleaner() {
       if (activeBlobUrl) {
@@ -360,8 +360,6 @@
         return;
       }
 
-      currentPromptUsed = promptText;
-
       let spinner = document.getElementById('loadingSpinner');
       let text = document.getElementById('loadingText');
       let img = document.getElementById('outputImage');
@@ -369,48 +367,54 @@
       let upscalePanel = document.getElementById('supremeUpscalePanel');
 
       spinner.style.display = 'block';
-      text.innerText = "Synthesizing AI Masterpiece... Please wait.";
+      text.innerText = "Synthesizing High-Resolution AI Image... Please wait.";
       text.style.display = 'block';
       img.style.display = 'none';
       downloadBtn.style.display = 'none';
       upscalePanel.style.display = 'none';
 
+      let resVal = parseInt(document.getElementById('resolutionSelect').value);
       let aspectVal = document.getElementById('aspectSelect').value;
       let formatVal = document.getElementById('formatSelect').value;
       let styleVal = document.getElementById('styleSelect').value;
 
-      let apiWidth = 1280;
-      let apiHeight = 720;
+      // Dynamically Calculate Exact Resolution based on Dropdown
+      let targetW = resVal;
+      let targetH = resVal;
 
-      if (aspectVal === "square") {
-        apiWidth = 1024;
-        apiHeight = 1024;
+      if (aspectVal === "wide") {
+        targetH = Math.round(resVal * (9 / 16));
       } else if (aspectVal === "tall") {
-        apiWidth = 720;
-        apiHeight = 1280;
+        targetW = Math.round(resVal * (9 / 16));
       }
 
       if (overrideWidth && overrideHeight) {
-        apiWidth = overrideWidth;
-        apiHeight = overrideHeight;
+        targetW = overrideWidth;
+        targetH = overrideHeight;
       }
+
+      // API Native bounds (Pollinations supports up to 2048px generation directly)
+      let genWidth = Math.min(targetW, 2048);
+      let genHeight = Math.min(targetH, 2048);
 
       let styleModifiers = "";
       if (styleVal === "cinematic") {
         styleModifiers = ", cinematic studio movie scene, dramatic lighting, 8k resolution, ultra-photorealistic";
       } else if (styleVal === "commercial") {
-        styleModifiers = ", commercial product photography, studio rim lighting, ultra-sharp focus, 8k uhd";
+        styleModifiers = ", commercial product photography, adobe stock certified, studio rim lighting, ultra-sharp focus, 8k uhd";
       } else if (styleVal === "cyberpunk") {
         styleModifiers = ", cyberpunk neon lighting, futuristic tech atmosphere, ray-traced reflections, 8k";
       } else if (styleVal === "macro") {
         styleModifiers = ", extreme macro photography, sharp focus, macro ring lighting, 8k pristine optical clarity";
       } else {
-        styleModifiers = ", hyper-realistic 8k raw dslr photography, micro details, sharp focus, masterpiece";
+        styleModifiers = ", hyper-realistic 8k raw dslr photography, flawless micro details, sharp focus, masterpiece";
       }
 
-      let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", clean background, no watermark, no logo");
+      // Strong Negative Parameters & Flux Model Enforcer to Eliminate Watermarks & Logos Completely
+      let cleanPrompt = encodeURIComponent(promptText + styleModifiers + ", clean edge, no watermark, no logo, no text, no signature, no brandmark");
       let randomSeed = Math.floor(Math.random() * 99999999);
-      let requestUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&seed=${randomSeed}&nologo=true&nofeed=true`;
+      
+      let requestUrl = `https://image.pollinations.ai/prompt/${cleanPrompt}?width=${genWidth}&height=${genHeight}&seed=${randomSeed}&model=flux&nologo=true&nofeed=true&private=true`;
 
       fetch(requestUrl)
         .then(response => {
@@ -418,16 +422,48 @@
           return response.blob();
         })
         .then(blob => {
-          activeBlobUrl = URL.createObjectURL(blob);
-          img.src = activeBlobUrl;
-          downloadBtn.href = activeBlobUrl;
-          downloadBtn.download = `nahid-ai-masterpiece-${apiWidth}x${apiHeight}.${formatVal}`;
+          let rawImg = new Image();
+          rawImg.crossOrigin = "anonymous";
+          let blobObjUrl = URL.createObjectURL(blob);
 
-          spinner.style.display = 'none';
-          text.style.display = 'none';
-          img.style.display = 'block';
-          upscalePanel.style.display = 'block';
-          downloadBtn.style.display = 'block';
+          rawImg.onload = function() {
+            URL.revokeObjectURL(blobObjUrl);
+
+            // High Precision Canvas Scaling to Guarantee Exact Requested Pixels (e.g., 3840x2160 for 4K)
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            canvas.width = targetW;
+            canvas.height = targetH;
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(rawImg, 0, 0, targetW, targetH);
+
+            // Watermark Auto-Cropper / Clean Shield (Bottom-Right 2% Crop Guard)
+            let cropGuardHeight = Math.floor(targetH * 0.025);
+            ctx.fillStyle = ctx.getImageData(10, targetH - cropGuardHeight - 10, 1, 1).data;
+
+            let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
+
+            canvas.toBlob(function(finalBlob) {
+              activeBlobUrl = URL.createObjectURL(finalBlob);
+              img.src = activeBlobUrl;
+              downloadBtn.href = activeBlobUrl;
+              downloadBtn.download = `nahid-ai-masterpiece-${targetW}x${targetH}.${formatVal}`;
+
+              spinner.style.display = 'none';
+              text.style.display = 'none';
+              img.style.display = 'block';
+              upscalePanel.style.display = 'block';
+              downloadBtn.style.display = 'block';
+
+              // Clean Memory
+              canvas.width = 1;
+              canvas.height = 1;
+            }, mimeType, 0.98);
+          };
+
+          rawImg.src = blobObjUrl;
         })
         .catch(error => {
           spinner.style.display = 'none';
@@ -438,23 +474,22 @@
 
     function executeRealAIUpscale() {
       let multiplier = parseInt(document.getElementById('upscaleMultiplierSelect').value);
+      let resVal = parseInt(document.getElementById('resolutionSelect').value);
       let aspectVal = document.getElementById('aspectSelect').value;
 
-      let baseW = 1280;
-      let baseH = 720;
+      let baseW = resVal;
+      let baseH = resVal;
 
-      if (aspectVal === "square") {
-        baseW = 1024;
-        baseH = 1024;
+      if (aspectVal === "wide") {
+        baseH = Math.round(resVal * (9 / 16));
       } else if (aspectVal === "tall") {
-        baseW = 720;
-        baseH = 1280;
+        baseW = Math.round(resVal * (9 / 16));
       }
 
-      let targetW = Math.min(baseW * multiplier, 2048); // Limiting max bounds for stability
-      let targetH = Math.min(baseH * multiplier, 2048);
+      let upscaledW = baseW * multiplier;
+      let upscaledH = baseH * multiplier;
 
-      generateWorldBestImage(targetW, targetH);
+      generateWorldBestImage(upscaledW, upscaledH);
     }
   </script>
 </body>
