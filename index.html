@@ -461,12 +461,16 @@
         styleModifiers = ", hyper-realistic 8k raw dslr photography, flawless micro-details, extreme edge sharpness, crystal clear glass transparency, zero blur, absolute masterpiece";
       }
 
-      // Enterprise Quantum Anti-Artifact, Smart Negative Prompt & Clean Studio Booster
-      let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, absolutely no text, no signatures, no watermark, pristine clean studio background";
-      let negativePromptParams = "&nologo=true&private=true&enhance=true&safe=true";
+      // Enterprise Quantum Anti-Watermark, Anti-Logo & Smart Negative Prompt Booster
+      let antiWatermarkPrompt = ", no watermark, no logo, no text, no signature, no username, no brand mark, no copyright symbol, no overlay, clean edge";
+      let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, pristine clean studio background" + antiWatermarkPrompt;
+      
+      // Zero Watermark Engine URL parameters (nologo=true + nofeed=true)
+      let negativePromptParams = "&nologo=true&nofeed=true&private=true&enhance=false&safe=true";
       let fullPrompt = encodeURIComponent(promptText + quantumEnhancers);
       let randomSeed = Math.floor(Math.random() * 999999999);
 
+      // Free Public AI Inference Engines & Proxy Sources
       let primaryUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}${negativePromptParams}&seed=${randomSeed}`;
       let backupUrl = `https://pollinations.ai/p/${fullPrompt}?width=${apiWidth}&height=${apiHeight}${negativePromptParams}&seed=${randomSeed}`;
 
@@ -495,14 +499,14 @@
         // Apply Quantum Neural HDR Matrix Filter
         applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
 
-        // Absolute Bulletproof Watermark & Corner Eraser Shield
-        let wmWidth = Math.floor(canvas.width * 0.38);
-        let wmHeight = Math.floor(canvas.height * 0.14);
-        let wmX = canvas.width - wmWidth - 10;
-        let wmY = canvas.height - wmHeight - 10;
+        // Absolute Bulletproof Watermark & Corner Eraser Shield (Clean Bottom-Right Crop/Overlay Protection)
+        let wmWidth = Math.floor(canvas.width * 0.22);
+        let wmHeight = Math.floor(canvas.height * 0.08);
+        let wmX = canvas.width - wmWidth;
+        let wmY = canvas.height - wmHeight;
 
         try {
-          let sampleColor = ctx.getImageData(wmX - 35, wmY - 35, 1, 1).data;
+          let sampleColor = ctx.getImageData(wmX - 10, wmY - 10, 1, 1).data;
           ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
           ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
         } catch(e) {
@@ -548,13 +552,13 @@
           ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
           applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
 
-          let wmWidth = Math.floor(canvas.width * 0.38);
-          let wmHeight = Math.floor(canvas.height * 0.14);
-          let wmX = canvas.width - wmWidth - 10;
-          let wmY = canvas.height - wmHeight - 10;
+          let wmWidth = Math.floor(canvas.width * 0.22);
+          let wmHeight = Math.floor(canvas.height * 0.08);
+          let wmX = canvas.width - wmWidth;
+          let wmY = canvas.height - wmHeight;
 
           try {
-            let sampleColor = ctx.getImageData(wmX - 35, wmY - 35, 1, 1).data;
+            let sampleColor = ctx.getImageData(wmX - 10, wmY - 10, 1, 1).data;
             ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
             ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
           } catch(e) {
@@ -642,20 +646,23 @@
           let ctx = canvas.getContext('2d');
           canvas.width = finalWidth;
           canvas.height = finalHeight;
+          
+          // Enhanced Ultra-Sharp Canvas Smoothing & Interpolation Engine
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(cachedMasterRawImage, 0, 0, canvas.width, canvas.height);
 
+          // Advanced Edge Contrast & Sharpness Boost
           applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.32);
 
-          let wmWidth = Math.floor(canvas.width * 0.38);
-          let wmHeight = Math.floor(canvas.height * 0.14);
-          let wmX = canvas.width - wmWidth - 10;
-          let wmY = canvas.height - wmHeight - 10;
+          let wmWidth = Math.floor(canvas.width * 0.22);
+          let wmHeight = Math.floor(canvas.height * 0.08);
+          let wmX = canvas.width - wmWidth;
+          let wmY = canvas.height - wmHeight;
 
           try {
-            let sampleColor = ctx.getImageData(wmX - 35, wmY - 35, 1, 1).data;
+            let sampleColor = ctx.getImageData(wmX - 10, wmY - 10, 1, 1).data;
             ctx.fillStyle = `rgb(${sampleColor[0]}, ${sampleColor[1]}, ${sampleColor[2]})`;
             ctx.fillRect(wmX, wmY, wmWidth, wmHeight);
           } catch(e) {
