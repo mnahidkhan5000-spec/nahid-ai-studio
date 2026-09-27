@@ -1,479 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: #020617;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-        .studio-card {
-            width: 100%;
-            max-width: 780px;
-            background: rgba(15, 23, 42, 0.99);
-            border: 2px solid #3b82f6;
-            border-radius: 22px;
-            padding: 30px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
-        }
-        .header { text-align: center; margin-bottom: 22px; }
-        .header h1 { color: #60a5fa; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; text-shadow: 0 0 15px rgba(96, 165, 250, 0.5); }
-        .header p { color: #94a3b8; font-size: 13px; font-weight: 500; }
-        
-        .controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 18px;
-        }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; color: #93c5fd; font-size: 12px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        select, textarea {
-            width: 100%;
-            background: #020617;
-            border: 2px solid #334155;
-            border-radius: 12px;
-            color: #ffffff;
-            padding: 12px;
-            font-size: 13px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        textarea { resize: vertical; min-height: 95px; }
-        select:focus, textarea:focus { border-color: #60a5fa; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
-        
-        .btn-flex {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-        .generate-btn {
-            flex: 2;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
-            transition: transform 0.2s;
-        }
-        .ram-btn {
-            flex: 1;
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-            transition: transform 0.2s;
-        }
-        .generate-btn:hover, .ram-btn:hover { transform: translateY(-2px); opacity: 0.95; }
-        
-        .output-section { margin-top: 20px; text-align: center; }
-        .spinner {
-            display: none;
-            width: 45px; height: 45px;
-            border: 5px solid #1e293b;
-            border-top: 5px solid #60a5fa;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 15px auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: #60a5fa; font-size: 13px; display: none; margin-bottom: 12px; font-weight: 600; }
-        .result-image {
-            width: 100%;
-            max-height: 580px;
-            object-fit: contain;
-            border-radius: 14px;
-            border: 2px solid #475569;
-            display: none;
-            margin-bottom: 15px;
-            background: #000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        
-        /* Supreme World-Class Upscaler Panel Box */
-        .upscale-supreme-box {
-            display: none;
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-            border: 2px solid #f59e0b;
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 15px;
-            text-align: left;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
-        }
-        .upscale-title {
-            color: #fbbf24;
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .upscale-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr 1.2fr;
-            gap: 10px;
-            align-items: center;
-        }
-        .supreme-upscale-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #d97706, #b45309, #92400e);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
-            transition: transform 0.2s;
-        }
-        .supreme-upscale-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nahid AI Studio Pro Plus - Supreme Edition</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .download-btn {
-            display: none;
-            width: 100%;
-            background: linear-gradient(135deg, #059669, #047857);
-            color: white;
-            text-align: center;
-            padding: 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
-        }
-        .download-btn:hover { opacity: 0.95; }
-    </style>
+    body {
+      background-color: #020617;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .studio-card {
+      width: 100%;
+      max-width: 780px;
+      background: rgba(15, 23, 42, 0.99);
+      border: 2px solid #3b82f6;
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.98);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .header h1 {
+      color: #60a5fa;
+      font-size: 26px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+    }
+
+    .header p {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select, textarea {
+      width: 100%;
+      background: #020617;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      color: #ffffff;
+      padding: 12px;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 95px;
+    }
+
+    select:focus, textarea:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-flex {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .generate-btn {
+      flex: 2;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8, #4f46e5);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+      transition: transform 0.2s;
+    }
+
+    .ram-btn {
+      flex: 1;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .generate-btn:hover, .ram-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .output-section {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .spinner {
+      display: none;
+      width: 45px;
+      height: 45px;
+      border: 5px solid #1e293b;
+      border-top: 5px solid #60a5fa;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 15px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: #60a5fa;
+      font-size: 13px;
+      display: none;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .result-image {
+      width: 100%;
+      max-height: 580px;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 2px solid #475569;
+      display: none;
+      margin-bottom: 15px;
+      background: #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    .upscale-supreme-box {
+      display: none;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 2px solid #f59e0b;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 15px;
+      text-align: left;
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+    }
+
+    .upscale-title {
+      color: #fbbf24;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .upscale-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .supreme-upscale-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #d97706, #b45309, #92400e);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .download-btn {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: white;
+      text-align: center;
+      padding: 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+    }
+
+    .download-btn:hover {
+      opacity: 0.95;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="studio-card">
-        <div class="header">
-            <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ World #1 Quantum Neural Matrix, 100% Watermark & Logo Purified</p>
-        </div>
-
-        <div class="controls-grid">
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="resolutionSelect">Resolution Scale:</label>
-                <select id="resolutionSelect">
-                    <option value="7680" selected>8K Supreme (7680x4320)</option>
-                    <option value="3840">4K Master (3840x2160)</option>
-                    <option value="1920">Full HD (1920x1080)</option>
-                </select>
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="aspectSelect">Aspect Ratio:</label>
-                <select id="aspectSelect">
-                    <option value="wide" selected>16:9 Landscape</option>
-                    <option value="square">1:1 Square</option>
-                    <option value="tall">9:16 Portrait</option>
-                </select>
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-                <label for="formatSelect">File Format:</label>
-                <select id="formatSelect">
-                    <option value="png" selected>PNG Image (High Sharpness)</option>
-                    <option value="jpeg">JPG Image</option>
-                    <option value="webp">WEBP Image</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- AI Artistic Style Selector Feature -->
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label for="styleSelect">AI Artistic Style Engine:</label>
-            <select id="styleSelect">
-                <option value="hyper">Hyper-Realistic 8K RAW (Default)</option>
-                <option value="cinematic">Cinematic Hollywood Movie Style</option>
-                <option value="commercial">Adobe Stock Commercial Product Shot</option>
-                <option value="cyberpunk">Cyberpunk Neon futuristic Studio</option>
-                <option value="macro">Macro Photography (Extreme Details)</option>
-            </select>
-        </div>
-
-        <div class="form-group" style="margin-top: 10px;">
-            <label for="promptInput">Enter Masterpiece Prompt:</label>
-            <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D/4D hyper-realistic masterpiece portrait</textarea>
-        </div>
-
-        <div class="btn-flex">
-            <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate Masterpiece</button>
-            <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
-        </div>
-
-        <div class="output-section">
-            <div class="spinner" id="loadingSpinner"></div>
-            <div class="loading-text" id="loadingText">Synthesizing World #1 Quantum Neural AI Matrix... Please wait.</div>
-            <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
-            
-            <!-- World's Most Powerful Supreme AI Upscaler Panel -->
-            <div class="upscale-supreme-box" id="supremeUpscalePanel">
-                <div class="upscale-title">👑 Nahid Quantum Supreme AI Upscaler Engine</div>
-                <div class="upscale-grid">
-                    <div>
-                        <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Upscale Scale:</label>
-                        <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
-                            <option value="2">2X Super HD Enhancement</option>
-                            <option value="4" selected>4X Ultra Clarity</option>
-                            <option value="8">8X Infinite Matrix</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="upscaleAspectSelect" style="margin-bottom:4px; color:#fde68a;">Target Aspect:</label>
-                        <select id="upscaleAspectSelect" style="border-color:#d97706;">
-                            <option value="match" selected>Match Original</option>
-                            <option value="16:9">16:9 Landscape</option>
-                            <option value="1:1">1:1 Square</option>
-                            <option value="9:16">9:16 Portrait</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="opacity:0; pointer-events:none; margin-bottom:4px;">Action</label>
-                        <button class="supreme-upscale-btn" onclick="executeSupremeUpscale()">✨ Run Upscale</button>
-                    </div>
-                </div>
-            </div>
-
-            <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.png">📥 Download Masterpiece</a>
-        </div>
+  <div class="studio-card">
+    <div class="header">
+      <h1>Nahid AI Studio Pro Plus</h1>
+      <p>⚡ Optimized Neural Matrix & 100% Watermark Free Engine</p>
     </div>
 
-    <script>
-        let cachedLoadedImage = null;
+    <div class="controls-grid">
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="resolutionSelect">Base Target Resolution:</label>
+        <select id="resolutionSelect">
+          <option value="1080">Full HD (1920x1080)</option>
+          <option value="1440" selected>2K Quad HD (2560x1440)</option>
+          <option value="2160">4K Ultra HD (3840x2160)</option>
+        </select>
+      </div>
 
-        function manualRamFlushAction() {
-            try {
-                let imgElement = document.getElementById('outputImage');
-                if (imgElement) {
-                    imgElement.src = "";
-                    imgElement.removeAttribute('src');
-                    imgElement.style.display = 'none';
-                }
-                let downloadBtn = document.getElementById('downloadLink');
-                if (downloadBtn) { downloadBtn.style.display = 'none'; }
-                let upscalePanel = document.getElementById('supremeUpscalePanel');
-                if (upscalePanel) { upscalePanel.style.display = 'none'; }
-                cachedLoadedImage = null;
-                alert('⚡ Success: Browser RAM & Memory cleaned!');
-            } catch (err) {
-                alert('RAM flush executed.');
-            }
-        }
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="aspectSelect">Aspect Ratio:</label>
+        <select id="aspectSelect">
+          <option value="square">1:1 Square</option>
+          <option value="wide" selected>16:9 Landscape</option>
+          <option value="tall">9:16 Portrait</option>
+        </select>
+      </div>
 
-        // Pristine Canvas Renderer (No Crop / No Zoom - 100% Full Aspect Preserved)
-        function processPristineCanvas(ctx, sourceImg, canvasWidth, canvasHeight) {
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      <div class="form-group" style="margin-bottom:0;">
+        <label for="formatSelect">File Format:</label>
+        <select id="formatSelect">
+          <option value="jpeg" selected>JPG Image</option>
+          <option value="png">PNG Image</option>
+          <option value="webp">WEBP Image</option>
+        </select>
+      </div>
+    </div>
 
-            let srcW = sourceImg.naturalWidth || sourceImg.width;
-            let srcH = sourceImg.naturalHeight || sourceImg.height;
+    <div class="form-group" style="margin-bottom: 15px;">
+      <label for="styleSelect">AI Artistic Style Engine:</label>
+      <select id="styleSelect">
+        <option value="hyper">Hyper-Realistic 8K RAW (Default)</option>
+        <option value="cinematic">Cinematic Hollywood Movie Style</option>
+        <option value="commercial">Adobe Stock Commercial Product Shot</option>
+        <option value="cyberpunk">Cyberpunk Neon Futuristic Studio</option>
+        <option value="macro">Macro Photography (Extreme Details)</option>
+      </select>
+    </div>
 
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
+    <div class="form-group" style="margin-top: 10px;">
+      <label for="promptInput">Enter Masterpiece Prompt:</label>
+      <textarea id="promptInput" placeholder="Describe your imagination in detail...">A breathtaking crystal clear 3D hyper-realistic masterpiece portrait</textarea>
+    </div>
 
-            // Draw full image without cropping or zooming
-            ctx.drawImage(
-                sourceImg,
-                0, 0, srcW, srcH,
-                0, 0, canvasWidth, canvasHeight
-            );
-        }
+    <div class="btn-flex">
+      <button class="generate-btn" onclick="generateWorldBestImage()">🚀 Generate Masterpiece</button>
+      <button class="ram-btn" onclick="manualRamFlushAction()">🧹 Clear RAM</button>
+    </div>
 
-        function generateWorldBestImage() {
-            let promptText = document.getElementById('promptInput').value.trim();
-            if (!promptText) {
-                alert('Please enter a prompt!');
-                return;
-            }
+    <div class="output-section">
+      <div class="spinner" id="loadingSpinner"></div>
+      <div class="loading-text" id="loadingText">Synthesizing AI Image... Please wait.</div>
+      <img id="outputImage" class="result-image" alt="Generated AI Masterpiece">
 
-            let spinner = document.getElementById('loadingSpinner');
-            let text = document.getElementById('loadingText');
-            let img = document.getElementById('outputImage');
-            let downloadBtn = document.getElementById('downloadLink');
-            let upscalePanel = document.getElementById('supremeUpscalePanel');
+      <div class="upscale-supreme-box" id="supremeUpscalePanel">
+        <div class="upscale-title">👑 Re-Render High Resolution AI Detail</div>
+        <div class="upscale-grid">
+          <div>
+            <label for="upscaleMultiplierSelect" style="margin-bottom:4px; color:#fde68a;">Target Scale:</label>
+            <select id="upscaleMultiplierSelect" style="border-color:#d97706;">
+              <option value="2">2X Enhancement</option>
+              <option value="3">3X Enhancement</option>
+            </select>
+          </div>
+          <div>
+            <label style="opacity:0; pointer-events:none; margin-bottom:4px;">Action</label>
+            <button class="supreme-upscale-btn" onclick="executeRealAIUpscale()">✨ High-Res Re-Render</button>
+          </div>
+        </div>
+      </div>
 
-            spinner.style.display = 'block';
-            text.style.display = 'block';
-            img.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            upscalePanel.style.display = 'none';
+      <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
+    </div>
+  </div>
 
-            let resVal = parseInt(document.getElementById('resolutionSelect').value);
-            let aspectVal = document.getElementById('aspectSelect').value;
-            let formatVal = document.getElementById('formatSelect').value;
-            let styleVal = document.getElementById('styleSelect').value;
+  <script>
+    let activeBlobUrl = null;
+    let currentPromptUsed = "";
 
-            let targetWidth = resVal;
-            let targetHeight = Math.round(resVal * (9 / 16));
+    function silentAutoRamCleaner() {
+      if (activeBlobUrl) {
+        URL.revokeObjectURL(activeBlobUrl);
+        activeBlobUrl = null;
+      }
+    }
 
-            if (aspectVal === "square") {
-                targetHeight = targetWidth;
-            } else if (aspectVal === "tall") {
-                targetHeight = targetWidth;
-                targetWidth = Math.round(targetHeight * (9 / 16));
-            }
+    function manualRamFlushAction() {
+      let imgElement = document.getElementById('outputImage');
+      if (imgElement) {
+        imgElement.src = "";
+        imgElement.style.display = 'none';
+      }
+      document.getElementById('downloadLink').style.display = 'none';
+      document.getElementById('supremeUpscalePanel').style.display = 'none';
+      
+      silentAutoRamCleaner();
+      alert('⚡ RAM and Image Cache Cleared Successfully!');
+    }
 
-            let apiWidth = 1920;
-            let apiHeight = 1080;
-            if (aspectVal === "square") {
-                apiWidth = 1440;
-                apiHeight = 1440;
-            } else if (aspectVal === "tall") {
-                apiWidth = 1080;
-                apiHeight = 1920;
-            }
+    function generateWorldBestImage(overrideWidth = null, overrideHeight = null) {
+      silentAutoRamCleaner();
 
-            let styleModifiers = "";
-            if (styleVal === "cinematic") {
-                styleModifiers = ", cinematic film render, 8k resolution, volumetric studio lighting, photorealistic, wide shot";
-            } else if (styleVal === "commercial") {
-                styleModifiers = ", professional commercial product shot, studio lighting, ultra-sharp focus, clean background, wide view";
-            } else if (styleVal === "cyberpunk") {
-                styleModifiers = ", cyberpunk neon lighting, futuristic atmosphere, 8k hyper-detailed masterwork, full view";
-            } else if (styleVal === "macro") {
-                styleModifiers = ", macro photography, sharp focus, extreme details, 8k optical clarity";
-            } else {
-                styleModifiers = ", 8k raw photography, extreme optical sharpness, fine details, ultra high resolution, full shot";
-            }
+      let promptText = document.getElementById('promptInput').value.trim();
+      if (!promptText) {
+        alert('Please enter a prompt!');
+        return;
+      }
 
-            let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", highly detailed, masterpiece, sharp focus, wide angle, full view, no watermark, no logo");
-            let randomSeed = Math.floor(Math.random() * 999999999);
-            let imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&seed=${randomSeed}&model=flux&nologo=true&private=true&enhance=true`;
+      currentPromptUsed = promptText;
 
-            let tempImg = new Image();
-            tempImg.crossOrigin = "anonymous";
+      let spinner = document.getElementById('loadingSpinner');
+      let text = document.getElementById('loadingText');
+      let img = document.getElementById('outputImage');
+      let downloadBtn = document.getElementById('downloadLink');
+      let upscalePanel = document.getElementById('supremeUpscalePanel');
 
-            tempImg.onload = function() {
-                cachedLoadedImage = tempImg;
+      spinner.style.display = 'block';
+      text.innerText = "Synthesizing AI Masterpiece... Please wait.";
+      text.style.display = 'block';
+      img.style.display = 'none';
+      downloadBtn.style.display = 'none';
+      upscalePanel.style.display = 'none';
 
-                let canvas = document.createElement('canvas');
-                canvas.width = targetWidth;
-                canvas.height = targetHeight;
-                let ctx = canvas.getContext('2d');
+      let aspectVal = document.getElementById('aspectSelect').value;
+      let formatVal = document.getElementById('formatSelect').value;
+      let styleVal = document.getElementById('styleSelect').value;
 
-                processPristineCanvas(ctx, tempImg, canvas.width, canvas.height);
+      let apiWidth = 1280;
+      let apiHeight = 720;
 
-                let mimeType = 'image/png';
-                let fileExt = 'png';
-                if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
-                else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
+      if (aspectVal === "square") {
+        apiWidth = 1024;
+        apiHeight = 1024;
+      } else if (aspectVal === "tall") {
+        apiWidth = 720;
+        apiHeight = 1280;
+      }
 
-                let finalDataUrl = canvas.toDataURL(mimeType, 1.0);
+      if (overrideWidth && overrideHeight) {
+        apiWidth = overrideWidth;
+        apiHeight = overrideHeight;
+      }
 
-                img.src = finalDataUrl;
-                downloadBtn.href = finalDataUrl;
-                downloadBtn.download = `nahid-ai-masterpiece-${targetWidth}x${targetHeight}.${fileExt}`;
+      let styleModifiers = "";
+      if (styleVal === "cinematic") {
+        styleModifiers = ", cinematic studio movie scene, dramatic lighting, 8k resolution, ultra-photorealistic";
+      } else if (styleVal === "commercial") {
+        styleModifiers = ", commercial product photography, studio rim lighting, ultra-sharp focus, 8k uhd";
+      } else if (styleVal === "cyberpunk") {
+        styleModifiers = ", cyberpunk neon lighting, futuristic tech atmosphere, ray-traced reflections, 8k";
+      } else if (styleVal === "macro") {
+        styleModifiers = ", extreme macro photography, sharp focus, macro ring lighting, 8k pristine optical clarity";
+      } else {
+        styleModifiers = ", hyper-realistic 8k raw dslr photography, micro details, sharp focus, masterpiece";
+      }
 
-                spinner.style.display = 'none';
-                text.style.display = 'none';
-                img.style.display = 'block';
-                upscalePanel.style.display = 'block';
-                downloadBtn.style.display = 'block';
-            };
+      let fullPrompt = encodeURIComponent(promptText + styleModifiers + ", clean background, no watermark, no logo");
+      let randomSeed = Math.floor(Math.random() * 99999999);
+      let requestUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${apiWidth}&height=${apiHeight}&seed=${randomSeed}&nologo=true&nofeed=true`;
 
-            tempImg.onerror = function() {
-                spinner.style.display = 'none';
-                text.style.display = 'none';
-                alert('Image generation failed. Please try again!');
-            };
+      fetch(requestUrl)
+        .then(response => {
+          if (!response.ok) throw new Error('Network error');
+          return response.blob();
+        })
+        .then(blob => {
+          activeBlobUrl = URL.createObjectURL(blob);
+          img.src = activeBlobUrl;
+          downloadBtn.href = activeBlobUrl;
+          downloadBtn.download = `nahid-ai-masterpiece-${apiWidth}x${apiHeight}.${formatVal}`;
 
-            tempImg.src = imageUrl;
-        }
+          spinner.style.display = 'none';
+          text.style.display = 'none';
+          img.style.display = 'block';
+          upscalePanel.style.display = 'block';
+          downloadBtn.style.display = 'block';
+        })
+        .catch(error => {
+          spinner.style.display = 'none';
+          text.style.display = 'none';
+          alert('Failed to generate image. Please try again.');
+        });
+    }
 
-        function executeSupremeUpscale() {
-            if (!cachedLoadedImage) {
-                alert('Please generate an image first!');
-                return;
-            }
+    function executeRealAIUpscale() {
+      let multiplier = parseInt(document.getElementById('upscaleMultiplierSelect').value);
+      let aspectVal = document.getElementById('aspectSelect').value;
 
-            let multiplier = parseFloat(document.getElementById('upscaleMultiplierSelect').value);
-            let targetAspect = document.getElementById('upscaleAspectSelect').value;
-            let formatVal = document.getElementById('formatSelect').value;
+      let baseW = 1280;
+      let baseH = 720;
 
-            let finalWidth = Math.round(cachedLoadedImage.width * multiplier);
-            let finalHeight = Math.round(cachedLoadedImage.height * multiplier);
+      if (aspectVal === "square") {
+        baseW = 1024;
+        baseH = 1024;
+      } else if (aspectVal === "tall") {
+        baseW = 720;
+        baseH = 1280;
+      }
 
-            if (targetAspect === "16:9") {
-                finalHeight = Math.round(finalWidth * (9 / 16));
-            } else if (targetAspect === "1:1") {
-                finalHeight = finalWidth;
-            } else if (targetAspect === "9:16") {
-                finalWidth = Math.round(finalHeight * (9 / 16));
-            }
+      let targetW = Math.min(baseW * multiplier, 2048); // Limiting max bounds for stability
+      let targetH = Math.min(baseH * multiplier, 2048);
 
-            let spinner = document.getElementById('loadingSpinner');
-            let text = document.getElementById('loadingText');
-            let img = document.getElementById('outputImage');
-            let downloadBtn = document.getElementById('downloadLink');
-
-            spinner.style.display = 'block';
-            text.innerText = `Enhancing Image... Please wait.`;
-            text.style.display = 'block';
-            img.style.display = 'none';
-            downloadBtn.style.display = 'none';
-
-            setTimeout(() => {
-                try {
-                    let canvas = document.createElement('canvas');
-                    let ctx = canvas.getContext('2d');
-                    canvas.width = finalWidth;
-                    canvas.height = finalHeight;
-
-                    processPristineCanvas(ctx, cachedLoadedImage, canvas.width, canvas.height);
-
-                    let mimeType = 'image/png';
-                    let fileExt = 'png';
-                    if (formatVal === 'jpeg') { mimeType = 'image/jpeg'; fileExt = 'jpg'; }
-                    else if (formatVal === 'webp') { mimeType = 'image/webp'; fileExt = 'webp'; }
-
-                    let upscaledImageUrl = canvas.toDataURL(mimeType, 1.0);
-
-                    img.src = upscaledImageUrl;
-                    downloadBtn.href = upscaledImageUrl;
-                    downloadBtn.download = `nahid-enhanced-${finalWidth}x${finalHeight}.${fileExt}`;
-
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    img.style.display = 'block';
-                    downloadBtn.style.display = 'block';
-                } catch (err) {
-                    spinner.style.display = 'none';
-                    text.style.display = 'none';
-                    alert('Memory Limit Exceeded during upscaling.');
-                }
-            }, 300);
-        }
-    </script>
+      generateWorldBestImage(targetW, targetH);
+    }
+  </script>
 </body>
 </html>
