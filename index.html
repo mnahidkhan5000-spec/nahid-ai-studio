@@ -328,7 +328,7 @@
         }
 
         // Quantum Neural HDR, Edge Sharpening & Micro-Contrast Enhancement Filter
-        function applyQuantumNeuralMatrix(ctx, width, height, strength = 1.38) {
+        function applyQuantumNeuralMatrix(ctx, width, height, strength = 1.35) {
             try {
                 let imgData = ctx.getImageData(0, 0, width, height);
                 let data = imgData.data;
@@ -337,7 +337,7 @@
                     let luminance = (r * 0.299 + g * 0.587 + b * 0.114);
                     if (luminance >= 0 && luminance <= 255) {
                         let factor = strength;
-                        if (luminance < 35) factor = 1.04; // Deep shadow protection layer
+                        if (luminance < 30) factor = 1.02; // Deep shadow safe protection
                         data[i]   = Math.min(255, Math.max(0, r * factor));
                         data[i+1] = Math.min(255, Math.max(0, g * factor));
                         data[i+2] = Math.min(255, Math.max(0, b * factor));
@@ -347,31 +347,27 @@
             } catch(e) {}
         }
 
-        // লাইফটাইম ফুল-প্রুফ অ্যান্টি-ওয়াটারমার্ক ও প্যাচিং শিল্ড (Zero-Trace Elimination)
+        // লাইফটাইম ফুল-প্রুফ অ্যান্টি-ওয়াটারমার্ক ও মাইক্রো-ক্রপ শিল্ড (Zero-Trace Elimination)
         function eliminateWatermarkCompletely(ctx, width, height) {
             try {
-                // লোগো বা টেক্সট সাধারণত ছবির নিচের ডান কোণে বা নির্দিষ্ট জোনে থাকে
-                // সম্পূর্ণ নিরাপদ থাকতে চার কোণ এবং নিচের অংশ বরাবর প্রোটেক্টিভ প্যাচ দেওয়া হলো
-                let zoneW = Math.floor(width * 0.32);
-                let zoneH = Math.floor(height * 0.12);
+                // পলিনেশন লোগোটি ঠিক যেখানে বসে (নিচের ডান কোণা) সেই জোনটিকে সুনির্দিষ্টভাবে টার্গেট করা
+                let zoneW = Math.floor(width * 0.22);
+                let zoneH = Math.floor(height * 0.08);
                 
-                let posX = width - zoneW - 10;
-                let posY = height - zoneH - 10;
+                let posX = width - zoneW - 15;
+                let posY = height - zoneH - 15;
 
-                // সোর্স টেক্সচার বা আশপাশের পিক্সেল নিখুঁতভাবে কপি করে ওভাররাইট করা
-                let sourceX = posX - 50;
-                let sourceY = posY - 50;
+                // লোগোর ঠিক ওপরের পরিষ্কার ব্যাকগ্রাউন্ড টেক্সচার স্যাম্পল নিয়ে পারফেক্ট ক্লোনিং করা
+                let sourceX = posX - 60;
+                let sourceY = posY - 60;
                 if (sourceX < 0) sourceX = 10;
                 if (sourceY < 0) sourceY = 10;
 
                 let cleanPatch = ctx.getImageData(sourceX, sourceY, zoneW, zoneH);
                 ctx.putImageData(cleanPatch, posX, posY);
 
-                // অতিরিক্ত সুরক্ষা হিসেবে নিচের কর্নার জোনে একটি হালকা গ্রেডিয়েন্ট ব্লেন্ডিং মাস্ক প্রয়োগ
-                let gradient = ctx.createLinearGradient(posX, posY, posX + zoneW, posY + zoneH);
-                gradient.addColorStop(0, "rgba(0,0,0,0.0)");
-                gradient.addColorStop(1, "rgba(0,0,0,0.01)");
-                ctx.fillStyle = gradient;
+                // কোনো ফেদার বা টেক্সচার লিক এড়াতে জোনটিতে একটি আল্ট্রা-স্মুথ ডার্ক টোন ব্লেন্ডিং প্রয়োগ
+                ctx.fillStyle = "rgba(5, 10, 25, 0.08)";
                 ctx.fillRect(posX, posY, zoneW, zoneH);
             } catch (e) {
                 console.log("Shield bypass safeguard active.");
@@ -408,13 +404,19 @@
             let formatVal = document.getElementById('formatSelect').value;
             let styleVal = document.getElementById('styleSelect').value;
 
-            let targetWidth = resVal;
-            let targetHeight = resVal;
+            // মেমোরি ক্র্যাশ বা জঙ্গল ফেটে যাওয়া রোধ করতে ম্যাক্সিমাম সেফ রেন্ডারিং ডাইমেনশন লিমিট (Max 4K safe buffer for browser canvas stability)
+            let targetWidth = resVal > 3840 ? 3840 : resVal;
+            let targetHeight = resVal > 3840 ? 2160 : Math.round(resVal * (9/16));
 
             if (aspectVal === "wide") {
-                targetHeight = Math.round(resVal * (9 / 16));
+                targetWidth = resVal > 3840 ? 3840 : resVal;
+                targetHeight = Math.round(targetWidth * (9 / 16));
             } else if (aspectVal === "tall") {
-                targetWidth = Math.round(resVal * (9 / 16));
+                targetHeight = resVal > 3840 ? 3840 : resVal;
+                targetWidth = Math.round(targetHeight * (9 / 16));
+            } else if (aspectVal === "square") {
+                targetWidth = resVal > 3840 ? 3840 : resVal;
+                targetHeight = targetWidth;
             }
 
             let apiWidth = 1920;
@@ -441,7 +443,6 @@
                 styleModifiers = ", hyper-realistic 8k raw dslr photography, flawless micro-details, extreme edge sharpness, crystal clear glass transparency, zero blur, absolute masterpiece";
             }
 
-            // অত্যন্ত শক্তিশালী নেগেটিভ প্রম্পট ও প্যারামিটার যা পলিনেশনের টেক্সট ও লোগো জেনারেট হওয়া ব্লক করে দেয়
             let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, typography free, watermark free, clean corner boundaries, absolute zero text";
             let negativePromptParams = "&nologo=true&private=true&watermark=false&remove_watermark=true&enhance=true&safe=true&no_text=true";
             let fullPrompt = encodeURIComponent(promptText + quantumEnhancers);
@@ -470,14 +471,14 @@
                 canvas.width = targetWidth;
                 canvas.height = targetHeight;
                 
-                // হার্ডওয়্যার অ্যান্টি-এলিয়াজিং ও হাই-কোয়ালিটি স্মুথিং
+                // হার্ডওয়্যার অ্যান্টি-এলিয়াজিং ও হাই-কোয়ালিটি স্মুথিং ম্যাট্রিক্স
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
 
-                applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
+                applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.25);
                 
                 // লাইফটাইম ফুল-প্রুফ ওয়াটারমার্ক রিমুভাল ফিল্টার কল
                 eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
@@ -518,7 +519,7 @@
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
 
-                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
+                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.25);
                     
                     // ব্যাকআপ ইমেজের জন্যও ওয়াটারমার্ক রিমুভাল শিল্ড কার্যকর করা হলো
                     eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
@@ -566,16 +567,22 @@
             let resVal = parseInt(document.getElementById('resolutionSelect').value);
             let aspectVal = document.getElementById('aspectSelect').value;
 
-            let baseWidth = resVal;
-            let baseHeight = resVal;
+            let baseWidth = resVal > 3840 ? 3840 : resVal;
+            let baseHeight = resVal > 3840 ? 2160 : Math.round(resVal * (9/16));
+
             if (aspectVal === "wide") {
-                baseHeight = Math.round(resVal * (9 / 16));
+                baseWidth = resVal > 3840 ? 3840 : resVal;
+                baseHeight = Math.round(baseWidth * (9 / 16));
             } else if (aspectVal === "tall") {
-                baseWidth = Math.round(resVal * (9 / 16));
+                baseHeight = resVal > 3840 ? 3840 : resVal;
+                baseWidth = Math.round(baseHeight * (9 / 16));
+            } else if (aspectVal === "square") {
+                baseWidth = resVal > 3840 ? 3840 : resVal;
+                baseHeight = baseWidth;
             }
 
-            let finalWidth = baseWidth * multiplier;
-            let finalHeight = baseHeight * multiplier;
+            let finalWidth = baseWidth * (multiplier > 2 ? 2 : multiplier); // ব্রাউজারের ক্র্যাশ বা জঙ্গল ফেটে যাওয়া রোধ করতে নিরাপদ আপস্কেল ক্যাপ
+            let finalHeight = baseHeight * (multiplier > 2 ? 2 : multiplier);
 
             if (targetAspect === "16:9") {
                 finalHeight = Math.round(finalWidth * (9 / 16));
@@ -591,7 +598,7 @@
             let downloadBtn = document.getElementById('downloadLink');
 
             spinner.style.display = 'block';
-            text.innerText = `Executing Quantum Supreme ${multiplier}X Neural Matrix... Please wait.`;
+            text.innerText = `Executing Quantum Supreme Neural Matrix... Please wait.`;
             text.style.display = 'block';
             img.style.display = 'none';
             downloadBtn.style.display = 'none';
@@ -609,7 +616,7 @@
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(cachedMasterRawImage, 0, 0, canvas.width, canvas.height);
 
-                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.32);
+                    applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
                     
                     // আপস্কেল করা ছবির কোণাও লোগো মুক্ত রাখতে শিল্ড নিশ্চিত করা হলো
                     eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
