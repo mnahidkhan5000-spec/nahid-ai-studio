@@ -37,7 +37,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
         }
 
         header h1 {
@@ -53,6 +53,110 @@
             font-size: 1.2rem;
         }
 
+        /* Leonardo AI Studio Workspace */
+        .studio-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .studio-workspace h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #818cf8;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1f2937;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #6366f1;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .studio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .studio-grid { grid-template-columns: 1fr; }
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .generate-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+
+        /* Canvas Result Display Area */
+        .canvas-preview {
+            margin-top: 30px;
+            background: #090d16;
+            border: 2px dashed var(--border-color);
+            border-radius: 14px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .canvas-preview img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        /* Timeline Roadmap Styles */
         .timeline {
             position: relative;
             padding-left: 35px;
@@ -105,7 +209,6 @@
         }
 
         .timeline-item p {
-            content: '';
             color: var(--text-muted);
             font-size: 0.98rem;
         }
@@ -144,6 +247,40 @@
             <p>The Masterpiece Ecosystem: Complete Neural Architecture, DevOps, Security & Global Infrastructure</p>
         </header>
 
+        <!-- Leonardo AI Style Image Generator Workspace -->
+        <div class="studio-workspace">
+            <h2>🎨 Live AI Image Generator Studio</h2>
+            
+            <div class="form-group">
+                <label for="promptInput">Imagine your artwork (Prompt):</label>
+                <textarea id="promptInput" class="form-control" placeholder="A futuristic cyberpunk city with neon lights, highly detailed, 8k resolution, cinematic lighting..."></textarea>
+            </div>
+
+            <div class="studio-grid">
+                <div class="form-group">
+                    <label for="negativePrompt">Negative Prompt (What to exclude):</label>
+                    <input type="text" id="negativePrompt" class="form-control" value="blurry, low quality, distorted, deformed">
+                </div>
+                <div class="form-group">
+                    <label for="styleSelect">Leonardo Elements / Style:</label>
+                    <select id="styleSelect" class="form-control">
+                        <option value="cinematic">Cinematic Portrait</option>
+                        <option value="anime">Anime / Manga Masterpiece</option>
+                        <option value="cyberpunk">Cyberpunk Neon</option>
+                        <option value="photorealistic">Hyper Photorealistic (8K)</option>
+                        <option value="fantasy">Dark Fantasy Art</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="generate-btn" onclick="generateAIImage()">✨ Generate Image Canvas</button>
+
+            <div class="canvas-preview" id="canvasPreview">
+                <p>আপনার জেনারেট করা আর্টওয়ার্ক এখানে প্রদর্শিত হবে। প্রম্পট লিখে জেনারেট বাটনে ক্লিক করুন।</p>
+            </div>
+        </div>
+
+        <!-- Roadmap Timeline Section -->
         <div class="timeline">
             <!-- Phase 1 -->
             <div class="timeline-item">
@@ -225,5 +362,38 @@
         </footer>
     </div>
 
+    <script>
+        function generateAIImage() {
+            const prompt = document.getElementById('promptInput').value.trim();
+            const style = document.getElementById('styleSelect').value;
+            const previewArea = document.getElementById('canvasPreview');
+
+            if (!prompt) {
+                alert('দয়া করে আপনার প্রম্পট লিখুন!');
+                return;
+            }
+
+            previewArea.innerHTML = `
+                <div style="color: #818cf8; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">
+                    🔄 Alchemy v4 & Phoenix NLP Processing...
+                </div>
+                <p style="color: #9ca3af;">Style Selected: <span style="color:#ec4899; text-transform:uppercase;">${style}</span></p>
+                <p style="font-size: 0.9rem; color: #6b7280; margin-top: 5px;">Generating latent spaces & applying diffusion layers...</p>
+            `;
+
+            // Simulate generation response (Can be linked with Pollinations / Hugging Face or backend API)
+            setTimeout(() => {
+                // Using Pollinations AI public free API endpoint as a live sample runner
+                const encodedPrompt = encodeURIComponent(prompt + " " + style);
+                const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
+
+                previewArea.innerHTML = `
+                    <div style="margin-bottom: 15px; color: #10b981; font-weight: bold;">✔ Generation Successful!</div>
+                    <img src="${imageUrl}" alt="Generated AI Artwork" onerror="this.onerror=null; this.parentNode.innerHTML='<p style=color:red;>Failed to load image preview. Please check connection.</p>';">
+                    <p style="margin-top: 10px; font-size: 0.85rem; color: #9ca3af;">Prompt: "${prompt}"</p>
+                `;
+            }, 2500);
+        }
+    </script>
 </body>
 </html>
