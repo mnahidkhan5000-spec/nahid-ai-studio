@@ -347,43 +347,25 @@
             } catch(e) {}
         }
 
-        // ওয়াটারমার্ক বা লোগো চিরতরে রিমুভ করার স্মার্ট ব্লেন্ডিং মেথড (Seamless Edge Blending)
-        function sanitizeWatermarkZone(ctx, width, height) {
+        // লোগো বা জলছাপ সম্পূর্ণ রিমুভ করার জন্য লোগো জোনটিকে আশপাশের পিক্সেল দিয়ে পারফেক্টলি ফিল বা ওভাররাইট করার ফাংশন
+        function eliminateWatermarkCompletely(ctx, width, height) {
             try {
-                // লোগো সাধারণত যে কোণায় থাকে (নিচের ডান কোণায়) তার সঠিক এরিয়া নির্ধারণ
-                let zoneWidth = Math.floor(width * 0.22);
-                let zoneHeight = Math.floor(height * 0.08);
-                let startX = width - zoneWidth - 15;
-                let startY = height - zoneHeight - 15;
+                // লোগোটি ঠিক যে পজিশনে বসে (নিচের ডান কোণা)
+                let logoW = Math.floor(width * 0.24);
+                let logoH = Math.floor(height * 0.09);
+                let posX = width - logoW - 10;
+                let posY = height - logoH - 10;
 
-                // আশপাশের ক্লিন পিক্সেল থেকে কালার স্যাম্পল নিয়ে স্মুথ ব্লেন্ডিং করা
-                let sampleX = startX - 25;
-                let sampleY = startY - 25;
-                let sampleData = ctx.getImageData(sampleX, sampleY, 5, 5).data;
-                
-                let avgR = 0, avgG = 0, avgB = 0;
-                for (let i = 0; i < sampleData.length; i += 4) {
-                    avgR += sampleData[i];
-                    avgG += sampleData[i+1];
-                    avgB += sampleData[i+2];
-                }
-                let count = sampleData.length / 4;
-                avgR = Math.round(avgR / count);
-                avgG = Math.round(avgG / count);
-                avgB = Math.round(avgB / count);
+                // লোগোর ঠিক ওপরের বা বামের নিখুঁত পিক্সেল স্যাম্পল নিয়ে সেই জায়গাটি ঢেকে দেওয়া
+                let sourceX = posX - 30;
+                let sourceY = posY - 30;
+                if (sourceX < 0) sourceX = 10;
+                if (sourceY < 0) sourceY = 10;
 
-                // হালকা গ্রেডিয়েন্ট বা ফিউশন লেয়ার দিয়ে লোগো জোনকে প্রাকৃতিকভাবে ঢেকে দেওয়া
-                let targetArea = ctx.getImageData(startX, startY, zoneWidth, zoneHeight);
-                let tData = targetArea.data;
-                for (let i = 0; i < tData.length; i += 4) {
-                    // ব্যাকগ্রাউন্ড টেক্সচারের সাথে ব্লেন্ড করে লোগো মিশিয়ে ফেলা
-                    tData[i]   = Math.round((tData[i] * 0.2) + (avgR * 0.8));
-                    tData[i+1] = Math.round((tData[i+1] * 0.2) + (avgG * 0.8));
-                    tData[i+2] = Math.round((tData[i+2] * 0.2) + (avgB * 0.8));
-                }
-                ctx.putImageData(targetArea, startX, startY);
+                let sampleImage = ctx.getImageData(sourceX, sourceY, logoW, logoH);
+                ctx.putImageData(sampleImage, posX, posY);
             } catch (e) {
-                console.log("Sanitization safeguard active.");
+                console.log("Watermark bypass active.");
             }
         }
 
@@ -486,8 +468,8 @@
 
                 applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
                 
-                // লোগো বা জলছাপ রিমুভ করার জন্য ব্লেন্ডিং ফিল্টার কল করা হলো
-                sanitizeWatermarkZone(ctx, canvas.width, canvas.height);
+                // লোগো এবং স্কয়ার দাগ চিরতরে রিমুভ করার পারফেক্ট ফাংশন কল
+                eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
 
                 let mimeType = 'image/jpeg';
                 let fileExt = 'jpg';
@@ -526,8 +508,8 @@
 
                     applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
                     
-                    // ব্যাকআপ লোডার ছবির জন্যও ওয়াটারমার্ক রিমুভাল ফিল্টার কল করা হলো
-                    sanitizeWatermarkZone(ctx, canvas.width, canvas.height);
+                    // ব্যাকআপ ইমেজের জন্যও লোগো রিমুভাল ফিল্টার নিশ্চিত করা হলো
+                    eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
 
                     let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
                     let fileExt = formatVal === 'jpeg' ? 'jpg' : formatVal;
@@ -618,7 +600,7 @@
                     applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.32);
                     
                     // আপস্কেল করা ছবির কোণাও লোগো মুক্ত রাখতে ফিল্টার নিশ্চিত করা হলো
-                    sanitizeWatermarkZone(ctx, canvas.width, canvas.height);
+                    eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
 
                     let mimeType = 'image/jpeg';
                     let fileExt = 'jpg';
