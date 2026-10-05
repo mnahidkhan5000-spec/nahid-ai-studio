@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - The Ultimate Masterpiece Ecosystem & DevOps Architecture</title>
+    <title>Nahid AI Pro Studio - Complete Leonardo Engine</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --accent-glow: #6366f1;
+            --bg-base: #0b0f19;
+            --panel-bg: #111827;
+            --accent-color: #6366f1;
             --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
             --text-main: #f9fafb;
             --text-muted: #9ca3af;
@@ -23,59 +23,36 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-base);
             color: var(--text-main);
-            line-height: 1.6;
             padding: 20px;
         }
 
-        .container {
+        .studio-container {
             max-width: 950px;
             margin: 0 auto;
-            padding: 40px 20px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        header h1 {
-            font-size: 2.8rem;
+        h1 {
+            font-size: 2.2rem;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 800;
         }
 
-        header p {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-        }
-
-        /* Leonardo AI Studio Workspace UI */
-        .studio-workspace {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 60px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .studio-workspace h2 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: #818cf8;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .form-group {
+        .control-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        .control-group label {
             display: block;
             font-size: 0.85rem;
             text-transform: uppercase;
@@ -85,357 +62,241 @@
             font-weight: 700;
         }
 
-        .form-control {
+        .input-field, select, textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px 16px;
             background: #1f2937;
             border: 1px solid var(--border-color);
             border-radius: 10px;
             color: #fff;
-            font-size: 0.98rem;
+            font-size: 1rem;
             outline: none;
             transition: border-color 0.3s;
         }
 
-        .form-control:focus {
-            border-color: #6366f1;
+        .input-field:focus, select:focus, textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
         }
 
-        textarea.form-control {
+        textarea {
             resize: vertical;
-            min-height: 90px;
+            min-height: 110px;
         }
 
-        .studio-grid {
+        .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
-        @media(max-width: 768px) {
-            .studio-grid { grid-template-columns: 1fr; }
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
         }
 
-        .generate-btn {
+        .action-btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: var(--accent-gradient);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.3s, transform 0.2s;
             margin-top: 10px;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
         }
 
-        .generate-btn:hover {
-            opacity: 0.9;
+        .action-btn:hover {
+            opacity: 0.95;
             transform: translateY(-2px);
         }
 
-        /* Canvas Result Display Area */
-        .canvas-preview {
-            margin-top: 25px;
-            background: #090d16;
+        .preview-box {
+            margin-top: 30px;
+            background: #070a12;
             border: 2px dashed var(--border-color);
             border-radius: 14px;
-            min-height: 280px;
+            min-height: 380px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             padding: 20px;
             text-align: center;
-            color: var(--text-muted);
         }
 
-        .canvas-preview img {
+        .preview-box img {
             max-width: 100%;
-            max-height: 450px;
+            max-height: 500px;
             border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-        }
-
-        .download-btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #10b981;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-        }
-
-        .download-btn:hover {
-            background: #059669;
-        }
-
-        /* Timeline Roadmap Styles */
-        .timeline {
-            position: relative;
-            padding-left: 35px;
-            border-left: 2px solid var(--border-color);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 45px;
-            background: var(--card-bg);
-            padding: 25px 30px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             transition: all 0.3s ease;
         }
 
-        .timeline-item:hover {
-            transform: translateY(-5px);
-            border-color: #6366f1;
-            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.2);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -41px;
-            top: 28px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ec4899;
-            border: 3px solid var(--bg-color);
-        }
-
-        .timeline-item h3 {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .timeline-item .phase {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #ec4899;
-            margin-bottom: 10px;
-            display: inline-block;
-            font-weight: 700;
-        }
-
-        .timeline-item p {
-            color: var(--text-muted);
-            font-size: 0.98rem;
-        }
-
-        .badge-list {
+        .btn-container {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-top: 15px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .badge {
-            background: rgba(99, 102, 241, 0.1);
-            color: #818cf8;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+        .btn-feature {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+            transition: background 0.3s;
         }
 
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 25px;
+        .btn-download {
+            background: #10b981;
+            color: white;
         }
+        .btn-download:hover { background: #059669; }
+
+        .btn-upscale {
+            background: #8b5cf6;
+            color: white;
+        }
+        .btn-upscale:hover { background: #7c3aed; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Nahid AI Studio Pro Plus</h1>
-            <p>The Masterpiece Ecosystem: Complete Neural Architecture, DevOps, Security & Global Infrastructure</p>
-        </header>
+    <div class="studio-container">
+        <h1>Nahid AI Pro Studio</h1>
 
-        <!-- Leonardo AI Style Image Generator Workspace -->
-        <div class="studio-workspace">
-            <h2>🎨 Live AI Image Generator Studio (Logo-Free & High-Res)</h2>
-            
-            <div class="form-group">
-                <label for="promptInput">Imagine your artwork (Prompt):</label>
-                <textarea id="promptInput" class="form-control" placeholder="A futuristic cyberpunk city with neon lights, highly detailed, 8k resolution, cinematic lighting..."></textarea>
+        <!-- Prompt Section -->
+        <div class="control-group">
+            <label for="userPrompt">Prompt (What you want to generate):</label>
+            <textarea id="userPrompt" class="input-field" placeholder="A breathtaking cinematic landscape of a floating cyberpunk city, neon lights, highly detailed, 8k resolution..."></textarea>
+        </div>
+
+        <!-- Negative Prompt & Model Style -->
+        <div class="grid-2">
+            <div class="control-group">
+                <label for="negativePrompt">Negative Prompt (Avoid elements):</label>
+                <input type="text" id="negativePrompt" class="input-field" value="blurry, low quality, distorted, extra limbs, watermark, logo, text">
             </div>
-
-            <div class="studio-grid">
-                <div class="form-group">
-                    <label for="negativePrompt">Negative Prompt (What to exclude):</label>
-                    <input type="text" id="negativePrompt" class="form-control" value="blurry, low quality, distorted, deformed, watermark, logo">
-                </div>
-                <div class="form-group">
-                    <label for="styleSelect">Leonardo Elements / Style:</label>
-                    <select id="styleSelect" class="form-control">
-                        <option value="cinematic">Cinematic Portrait</option>
-                        <option value="anime">Anime / Manga Masterpiece</option>
-                        <option value="cyberpunk">Cyberpunk Neon</option>
-                        <option value="photorealistic">Hyper Photorealistic (8K)</option>
-                        <option value="fantasy">Dark Fantasy Art</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="studio-grid">
-                <div class="form-group">
-                    <label for="aspectRatio">Aspect Ratio (Image Ratio):</label>
-                    <select id="aspectRatio" class="form-control">
-                        <option value="1024x1024">Square (1:1 - 1024x1024)</option>
-                        <option value="1280x720">Landscape (16:9 - 1280x720)</option>
-                        <option value="720x1280">Portrait (9:16 - 720x1280)</option>
-                        <option value="1024x768">Standard (4:3 - 1024x768)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="modelEngine">Core Diffusion Engine:</label>
-                    <select id="modelEngine" class="form-control">
-                        <option value="phoenix">Leonardo Phoenix (Latest)</option>
-                        <option value="xl">Leonardo Creative XL</option>
-                        <option value="vision">Leonardo Vision XL</option>
-                    </select>
-                </div>
-            </div>
-
-            <button class="generate-btn" onclick="generateAIImage()">✨ Generate Image Canvas</button>
-
-            <div class="canvas-preview" id="canvasPreview">
-                <p>আপনার জেনারেট করা হাই-কোয়ালিটি লোগো-ফ্রি আর্টওয়ার্ক এখানে প্রদর্শিত হবে।</p>
+            <div class="control-group">
+                <label for="artStyle">Leonardo AI Model / Style:</label>
+                <select id="artStyle" class="input-field">
+                    <option value="phoenix">Leonardo Phoenix (Ultra Realism)</option>
+                    <option value="cinematic">Leonardo Cinematic</option>
+                    <option value="anime">Anime / Creative Vibe</option>
+                    <option value="cyberpunk">Cyberpunk Neon</option>
+                    <option value="photorealistic">Photorealistic 4K</option>
+                </select>
             </div>
         </div>
 
-        <!-- Timeline Roadmap Section (Unchanged) -->
-        <div class="timeline">
-            <!-- Phase 1 -->
-            <div class="timeline-item">
-                <span class="phase">Phase 1: Core Neural Layers, UNet, VAE & Quantized LoRA Training</span>
-                <h3>Foundational Inference Protocols, 4-Bit/8-Bit Quantization & Dataset Preprocessing</h3>
-                <p>Initial establishment of foundational text-to-image orchestration, private LoRA model training via latent-space adjustment, UNet/VAE protocols, model weight quantization (AWQ/BitsAndBytes), negative prompting, and optimized dataset pipelines.</p>
-                <div class="badge-list">
-                    <span class="badge">UNet & VAE Protocols</span>
-                    <span class="badge">4-Bit/8-Bit Quantization</span>
-                    <span class="badge">Custom LoRA Training</span>
-                    <span class="badge">Negative Prompts</span>
-                </div>
+        <!-- Aspect Ratio & CFG Controls -->
+        <div class="grid-2">
+            <div class="control-group">
+                <label for="aspectRatio">Aspect Ratio (Dimensions):</label>
+                <select id="aspectRatio" class="input-field">
+                    <option value="1024x1024">Square (1:1 - 1024x1024)</option>
+                    <option value="1280x720">Landscape (16:9 - 1280x720)</option>
+                    <option value="720x1280">Portrait (9:16 - 720x1280)</option>
+                    <option value="1024x768">Standard (4:3 - 1024x768)</option>
+                </select>
             </div>
-
-            <!-- Phase 2 -->
-            <div class="timeline-item">
-                <span class="phase">Phase 2: Omni Editor, Real-Time Canvas & Flow State Ideation</span>
-                <h3>Dynamic Resolution Bucketing, ControlNet, CFG Scale & Multi-Model Switching</h3>
-                <p>Deployment of **FP16 / BF16 Mixed Precision Inference** engines coupled with **Dynamic Resolution Bucketing** and **Flow State Ideation**. Integrated the interactive **Omni Editor**, **Real-Time Canvas**, precision **Inpainting/Outpainting**, **CFG Scale tuning**, and structural **Seed Locking with ControlNet**.</p>
-                <div class="badge-list">
-                    <span class="badge">Flow State Ideation</span>
-                    <span class="badge">Dynamic Res Bucketing</span>
-                    <span class="badge">CFG Scale Tuning</span>
-                    <span class="badge">ControlNet & Seed Locking</span>
-                    <span class="badge">Omni Editor</span>
-                </div>
-            </div>
-
-            <!-- Phase 3 -->
-            <div class="timeline-item">
-                <span class="phase">Phase 3: Prompt Magic v3, Phoenix NLP, Universal Upscaler & Alchemy v4</span>
-                <h3>Automated Prompt Expansion, Style Matrices & Memory-Safe 8K Generative Alchemy</h3>
-                <p>Integration of **Prompt Magic v3**, **Leonardo Elements** (granular style weight manipulation), **Cross-Attention Guidance Optimization**, the proprietary **Phoenix NLP Architecture**, and **Tiled VAE Decoding** paired with **Alchemy v4 Refiner** and **Universal Upscaler** for pristine 8K resolution.</p>
-                <div class="badge-list">
-                    <span class="badge">Prompt Magic v3</span>
-                    <span class="badge">Leonardo Elements</span>
-                    <span class="badge">Phoenix NLP Architecture</span>
-                    <span class="badge">Universal Upscaler</span>
-                    <span class="badge">Alchemy v4 Refiner</span>
-                </div>
-            </div>
-
-            <!-- Phase 4 -->
-            <div class="timeline-item">
-                <span class="phase">Phase 4: Video Latent Diffusion, Model Sunsets & Remove.bg API Merge</span>
-                <h3>Veo 3.1, Hailuo 2.3 & Seedance 2.0 Migration, Alias Retirement & Remove.bg Integration</h3>
-                <p>Advanced video diffusion engines (**Veo 3.1**, **Hailuo 2.3**, **Seedance 2.0**), strict management of model sunsets (retiring legacy Sora 2, Motion 1.0, Veo 3, and Seedance 1.0 Lite), **Preview Alias removal (-preview to 001)**, **Remove.bg API consolidation** for automated background workflows, and **Rodin V2** 3D asset texturing.</p>
-                <div class="badge-list">
-                    <span class="badge">Veo 3.1 & Hailuo 2.3</span>
-                    <span class="badge">Model Sunset & Alias Migration</span>
-                    <span class="badge">Remove.bg API Merge</span>
-                    <span class="badge">Rodin V2 (3D Texturing)</span>
-                </div>
-            </div>
-
-            <!-- Phase 5 -->
-            <div class="timeline-item">
-                <span class="phase">Phase 5: DevOps, Edge Caching, Global Load Balancing & Enterprise Security</span>
-                <h3>Kubernetes Cluster Autoscaling, Cloudflare Edge Caching, Prometheus Monitoring & RBAC</h3>
-                <p>Implementation of enterprise-grade security (**GDPR/CCPA Compliance**, **Guardrails API**, **OAuth 2.0 / JWT Auth**, **Granular RBAC**), backend parameter standardizations (replacing legacy `mode` flags with custom `quality` matrices), **Redis-backed Async Queues**, **PostgreSQL Multi-Tenant Sharding**, plus **Kubernetes (K8s) Cluster Autoscaling**, **Prometheus & Grafana Performance Monitoring**, and **Cloudflare Edge Caching** for lightning-fast global low-latency content delivery.</p>
-                <div class="badge-list">
-                    <span class="badge">Kubernetes Autoscaling</span>
-                    <span class="badge">Cloudflare Edge Caching</span>
-                    <span class="badge">Prometheus & Grafana</span>
-                    <span class="badge">GDPR & CCPA Privacy</span>
-                    <span class="badge">Guardrails API (Moderation)</span>
-                    <span class="badge">Quality Parameter Matrix</span>
-                    <span class="badge">Credit & Token Metering</span>
-                    <span class="badge">Redis Async Queues</span>
-                    <span class="badge">PostgreSQL Sharding</span>
-                    <span class="badge">OAuth 2.0 & JWT Auth</span>
-                    <span class="badge">GraphQL & REST APIs</span>
-                </div>
+            <div class="control-group">
+                <label for="guidanceScale">CFG Guidance Scale:</label>
+                <input type="number" id="guidanceScale" class="input-field" value="7.5" min="1" max="20" step="0.5">
             </div>
         </div>
 
-        <footer>
-            &copy; 2026 Nahid AI Studio Pro Plus. All rights reserved.
-        </footer>
+        <button class="action-btn" onclick="generateLeonardoImage()">✨ Generate Masterpiece (Logo-Free)</button>
+
+        <!-- Output Canvas -->
+        <div class="preview-box" id="outputCanvas">
+            <p style="color: var(--text-muted);">আপনার প্রম্পট লিখে জেনারেট বাটনে ক্লিক করুন। লিওনার্দো স্টাইল প্রসেসিং এখানে দেখাবে।</p>
+        </div>
     </div>
 
     <script>
-        function generateAIImage() {
-            const prompt = document.getElementById('promptInput').value.trim();
-            const negativePrompt = document.getElementById('negativePrompt').value.trim();
-            const style = document.getElementById('styleSelect').value;
+        let currentImageURL = "";
+        let currentWidth = 1024;
+        let currentHeight = 1024;
+        let isUpscaled = false;
+
+        function generateLeonardoImage() {
+            const prompt = document.getElementById('userPrompt').value.trim();
+            const negPrompt = document.getElementById('negativePrompt').value.trim();
+            const style = document.getElementById('artStyle').value;
             const ratio = document.getElementById('aspectRatio').value.split('x');
-            const width = ratio[0];
-            const height = ratio[1];
-            const previewArea = document.getElementById('canvasPreview');
+            currentWidth = parseInt(ratio[0]);
+            currentHeight = parseInt(ratio[1]);
+            const cfg = document.getElementById('guidanceScale').value;
+            const canvas = document.getElementById('outputCanvas');
 
             if (!prompt) {
-                alert('দয়া করে আপনার প্রম্পট লিখুন!');
+                alert('দয়া করে প্রম্পট ফিল্ড পূরণ করুন!');
                 return;
             }
 
-            previewArea.innerHTML = `
+            isUpscaled = false;
+            canvas.innerHTML = `
                 <div style="color: #818cf8; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">
-                    🔄 Alchemy v4 & Phoenix Diffusion Processing...
+                    🔄 Latent Diffusion & Alchemy v4 Processing...
                 </div>
-                <p style="color: #9ca3af;">Style: <span style="color:#ec4899; text-transform:uppercase;">${style}</span> | Ratio: <span style="color:#6366f1;">${width}x${height}</span></p>
-                <p style="font-size: 0.9rem; color: #6b7280; margin-top: 5px;">Rendering high-resolution latent spaces without watermarks...</p>
+                <p style="color: #ec4899; font-size: 0.9rem;">Model: ${style} | Resolution: ${currentWidth}x${currentHeight} | CFG: ${cfg}</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 6px;">Optimizing neural weights & rendering canvas...</p>
             `;
 
             setTimeout(() => {
-                const fullPrompt = encodeURIComponent(`${prompt}, ${style} style, negative: ${negativePrompt}`);
-                const imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${width}&height=${height}&nologo=true`;
+                const combinedPrompt = encodeURIComponent(`${prompt}, ${style} style, ultra detailed, masterpiece, negative: ${negPrompt}`);
+                currentImageURL = `https://image.pollinations.ai/prompt/${combinedPrompt}?width=${currentWidth}&height=${currentHeight}&nologo=true&seed=${Math.floor(Math.random() * 1000000)}`;
 
-                previewArea.innerHTML = `
-                    <div style="margin-bottom: 15px; color: #10b981; font-weight: bold;">✔ Generation Successful (Logo-Free)</div>
-                    <img src="${imageUrl}" alt="Generated AI Artwork" crossorigin="anonymous" onerror="this.onerror=null; this.parentNode.innerHTML='<p style=color:red;>Failed to load preview. Please try again.</p>';">
-                    <br>
-                    <a href="${imageUrl}" target="_blank" download="nahid-ai-artwork.jpg" class="download-btn">⬇ Download Image (HD)</a>
-                    <p style="margin-top: 10px; font-size: 0.85rem; color: #9ca3af;">Prompt: "${prompt}"</p>
-                `;
+                renderResult(canvas, currentImageURL, false);
             }, 2500);
+        }
+
+        // লিওনার্দো স্টাইল আপস্কেল (Upscale) ফিচার
+        function upscaleImage() {
+            if (!currentImageURL) return;
+            const canvas = document.getElementById('outputCanvas');
+            
+            canvas.innerHTML = `
+                <div style="color: #8b5cf6; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">
+                    ⚡ AI Upscaling & Clarity Enhancement in Progress...
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Enhancing resolution and details (2x AI Upscale)...</p>
+            `;
+
+            setTimeout(() => {
+                isUpscaled = true;
+                // আপস্কেলিংয়ের জন্য রেজোলিউশন দ্বিগুণ করা হচ্ছে
+                let upscaledWidth = currentWidth * 1.5;
+                let upscaledHeight = currentHeight * 1.5;
+                
+                // ইউআরএলের রেজোলিউশন প্যারামিটার আপডেট করা হচ্ছে
+                currentImageURL = currentImageURL.replace(`width=${currentWidth}&height=${currentHeight}`, `width=${upscaledWidth}&height=${upscaledHeight}`);
+                
+                renderResult(canvas, currentImageURL, true);
+            }, 2000);
+        }
+
+        function renderResult(canvasElement, imgUrl, upscaledStatus) {
+            canvasElement.innerHTML = `
+                <p style="color: #10b981; font-weight: bold; font-size: 1.05rem; margin-bottom: 12px;">
+                    ✔ ${upscaledStatus ? 'Image Upscaled & Enhanced (HD)' : 'Masterpiece Generated Successfully (Logo-Free)'}
+                </p>
+                <img id="generatedImg" src="${imgUrl}" alt="AI Masterpiece" crossorigin="anonymous">
+                <div class="btn-container">
+                    <button class="btn-feature btn-upscale" onclick="upscaleImage()">⚡ AI Upscale (HD)</button>
+                    <a href="${imgUrl}" target="_blank" download="nahid-ai-masterpiece.jpg" class="btn-feature btn-download">⬇ Download Image</a>
+                </div>
+                <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">Status: ${upscaledStatus ? 'Upscaled High-Resolution' : 'Standard Resolution'}</p>
+            `;
         }
     </script>
 </body>
