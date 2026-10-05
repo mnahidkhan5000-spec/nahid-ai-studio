@@ -53,18 +53,18 @@
             font-size: 1.2rem;
         }
 
-        /* Leonardo AI Studio Workspace */
+        /* Leonardo AI Studio Workspace UI */
         .studio-workspace {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border-radius: 16px;
             padding: 30px;
             margin-bottom: 60px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .studio-workspace h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 20px;
             color: #818cf8;
             border-bottom: 1px solid var(--border-color);
@@ -77,10 +77,12 @@
 
         .form-group label {
             display: block;
-            font-size: 0.9rem;
-            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ec4899;
             margin-bottom: 8px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .form-control {
@@ -90,7 +92,7 @@
             border: 1px solid var(--border-color);
             border-radius: 10px;
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.98rem;
             outline: none;
             transition: border-color 0.3s;
         }
@@ -129,17 +131,17 @@
         }
 
         .generate-btn:hover {
-            opacity: 0.95;
+            opacity: 0.9;
             transform: translateY(-2px);
         }
 
         /* Canvas Result Display Area */
         .canvas-preview {
-            margin-top: 30px;
+            margin-top: 25px;
             background: #090d16;
             border: 2px dashed var(--border-color);
             border-radius: 14px;
-            min-height: 300px;
+            min-height: 280px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -151,9 +153,26 @@
 
         .canvas-preview img {
             max-width: 100%;
-            max-height: 400px;
+            max-height: 450px;
             border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #10b981;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #059669;
         }
 
         /* Timeline Roadmap Styles */
@@ -249,7 +268,7 @@
 
         <!-- Leonardo AI Style Image Generator Workspace -->
         <div class="studio-workspace">
-            <h2>🎨 Live AI Image Generator Studio</h2>
+            <h2>🎨 Live AI Image Generator Studio (Logo-Free & High-Res)</h2>
             
             <div class="form-group">
                 <label for="promptInput">Imagine your artwork (Prompt):</label>
@@ -259,7 +278,7 @@
             <div class="studio-grid">
                 <div class="form-group">
                     <label for="negativePrompt">Negative Prompt (What to exclude):</label>
-                    <input type="text" id="negativePrompt" class="form-control" value="blurry, low quality, distorted, deformed">
+                    <input type="text" id="negativePrompt" class="form-control" value="blurry, low quality, distorted, deformed, watermark, logo">
                 </div>
                 <div class="form-group">
                     <label for="styleSelect">Leonardo Elements / Style:</label>
@@ -273,14 +292,34 @@
                 </div>
             </div>
 
+            <div class="studio-grid">
+                <div class="form-group">
+                    <label for="aspectRatio">Aspect Ratio (Image Ratio):</label>
+                    <select id="aspectRatio" class="form-control">
+                        <option value="1024x1024">Square (1:1 - 1024x1024)</option>
+                        <option value="1280x720">Landscape (16:9 - 1280x720)</option>
+                        <option value="720x1280">Portrait (9:16 - 720x1280)</option>
+                        <option value="1024x768">Standard (4:3 - 1024x768)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modelEngine">Core Diffusion Engine:</label>
+                    <select id="modelEngine" class="form-control">
+                        <option value="phoenix">Leonardo Phoenix (Latest)</option>
+                        <option value="xl">Leonardo Creative XL</option>
+                        <option value="vision">Leonardo Vision XL</option>
+                    </select>
+                </div>
+            </div>
+
             <button class="generate-btn" onclick="generateAIImage()">✨ Generate Image Canvas</button>
 
             <div class="canvas-preview" id="canvasPreview">
-                <p>আপনার জেনারেট করা আর্টওয়ার্ক এখানে প্রদর্শিত হবে। প্রম্পট লিখে জেনারেট বাটনে ক্লিক করুন।</p>
+                <p>আপনার জেনারেট করা হাই-কোয়ালিটি লোগো-ফ্রি আর্টওয়ার্ক এখানে প্রদর্শিত হবে।</p>
             </div>
         </div>
 
-        <!-- Roadmap Timeline Section -->
+        <!-- Timeline Roadmap Section (Unchanged) -->
         <div class="timeline">
             <!-- Phase 1 -->
             <div class="timeline-item">
@@ -365,7 +404,11 @@
     <script>
         function generateAIImage() {
             const prompt = document.getElementById('promptInput').value.trim();
+            const negativePrompt = document.getElementById('negativePrompt').value.trim();
             const style = document.getElementById('styleSelect').value;
+            const ratio = document.getElementById('aspectRatio').value.split('x');
+            const width = ratio[0];
+            const height = ratio[1];
             const previewArea = document.getElementById('canvasPreview');
 
             if (!prompt) {
@@ -375,21 +418,21 @@
 
             previewArea.innerHTML = `
                 <div style="color: #818cf8; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">
-                    🔄 Alchemy v4 & Phoenix NLP Processing...
+                    🔄 Alchemy v4 & Phoenix Diffusion Processing...
                 </div>
-                <p style="color: #9ca3af;">Style Selected: <span style="color:#ec4899; text-transform:uppercase;">${style}</span></p>
-                <p style="font-size: 0.9rem; color: #6b7280; margin-top: 5px;">Generating latent spaces & applying diffusion layers...</p>
+                <p style="color: #9ca3af;">Style: <span style="color:#ec4899; text-transform:uppercase;">${style}</span> | Ratio: <span style="color:#6366f1;">${width}x${height}</span></p>
+                <p style="font-size: 0.9rem; color: #6b7280; margin-top: 5px;">Rendering high-resolution latent spaces without watermarks...</p>
             `;
 
-            // Simulate generation response (Can be linked with Pollinations / Hugging Face or backend API)
             setTimeout(() => {
-                // Using Pollinations AI public free API endpoint as a live sample runner
-                const encodedPrompt = encodeURIComponent(prompt + " " + style);
-                const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
+                const fullPrompt = encodeURIComponent(`${prompt}, ${style} style, negative: ${negativePrompt}`);
+                const imageUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${width}&height=${height}&nologo=true`;
 
                 previewArea.innerHTML = `
-                    <div style="margin-bottom: 15px; color: #10b981; font-weight: bold;">✔ Generation Successful!</div>
-                    <img src="${imageUrl}" alt="Generated AI Artwork" onerror="this.onerror=null; this.parentNode.innerHTML='<p style=color:red;>Failed to load image preview. Please check connection.</p>';">
+                    <div style="margin-bottom: 15px; color: #10b981; font-weight: bold;">✔ Generation Successful (Logo-Free)</div>
+                    <img src="${imageUrl}" alt="Generated AI Artwork" crossorigin="anonymous" onerror="this.onerror=null; this.parentNode.innerHTML='<p style=color:red;>Failed to load preview. Please try again.</p>';">
+                    <br>
+                    <a href="${imageUrl}" target="_blank" download="nahid-ai-artwork.jpg" class="download-btn">⬇ Download Image (HD)</a>
                     <p style="margin-top: 10px; font-size: 0.85rem; color: #9ca3af;">Prompt: "${prompt}"</p>
                 `;
             }, 2500);
