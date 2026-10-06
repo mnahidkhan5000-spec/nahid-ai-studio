@@ -217,8 +217,8 @@
                 <label for="resolutionSelect">Resolution Scale:</label>
                 <select id="resolutionSelect">
                     <option value="1920">Full HD (1920x1080)</option>
-                    <option value="3840">4K Ultra (3840x2160)</option>
-                    <option value="7680" selected>8K Supreme (7680x4320)</option>
+                    <option value="3840" selected>4K Ultra (3840x2160)</option>
+                    <option value="7680">8K Supreme (7680x4320)</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom:0;">
@@ -239,15 +239,23 @@
             </div>
         </div>
 
-        <!-- AI Artistic Style Engine -->
+        <!-- AI Artistic Style Engine with Complete World-Class Camera Angles -->
         <div class="form-group" style="margin-bottom: 15px;">
-            <label for="styleSelect">AI Artistic Style Engine:</label>
+            <label for="styleSelect">AI Artistic Style & Camera Angle Engine:</label>
             <select id="styleSelect">
                 <option value="hyper">Hyper-Realistic 8K RAW (Default)</option>
-                <option value="cinematic">Cinematic Hollywood Movie Style</option>
+                <option value="cinematic">Cinematic Hollywood Movie Style (Anamorphic)</option>
                 <option value="commercial">Adobe Stock Commercial Product Shot</option>
-                <option value="cyberpunk">Cyberpunk Neon futuristic Studio</option>
-                <option value="macro">Macro Photography (Extreme Details)</option>
+                <option value="cyberpunk">Cyberpunk Neon Futuristic Studio</option>
+                <option value="macro">Macro Photography (Microscopic Detail Focus)</option>
+                <option value="epicdrone">Epic Drone Bird's-Eye View (Top-Down Aerial)</option>
+                <option value="lowangle">Dramatic Low-Angle Hero Shot (Worm's Eye View)</option>
+                <option value="highangle">High-Angle Overview Shot (Elevated Perspective)</option>
+                <option value="eyelvl">Natural Eye-Level Medium Shot (Classic Portrait)</option>
+                <option value="dutch">Dutch Angle / Canted Shot (Dynamic Tilt View)</option>
+                <option value="macrofocus">Macro Close-Up Bokeh Shot (Shallow Depth of Field)</option>
+                <option value="widepan">Ultra-Wide Cinematic Panavision Landscape</option>
+                <option value="orthographic">Perfect Orthographic Studio Projection View</option>
             </select>
         </div>
 
@@ -327,8 +335,8 @@
             }
         }
 
-        // Quantum Neural HDR, Edge Sharpening & Micro-Contrast Enhancement Filter
-        function applyQuantumNeuralMatrix(ctx, width, height, strength = 1.35) {
+        // Quantum Neural HDR, Edge Sharpening & Frame Stabilization Matrix
+        function applyQuantumNeuralMatrix(ctx, width, height, strength = 1.32) {
             try {
                 let imgData = ctx.getImageData(0, 0, width, height);
                 let data = imgData.data;
@@ -337,7 +345,7 @@
                     let luminance = (r * 0.299 + g * 0.587 + b * 0.114);
                     if (luminance >= 0 && luminance <= 255) {
                         let factor = strength;
-                        if (luminance < 30) factor = 1.02; // Deep shadow safe protection
+                        if (luminance < 35) factor = 1.03;
                         data[i]   = Math.min(255, Math.max(0, r * factor));
                         data[i+1] = Math.min(255, Math.max(0, g * factor));
                         data[i+2] = Math.min(255, Math.max(0, b * factor));
@@ -347,30 +355,27 @@
             } catch(e) {}
         }
 
-        // লাইফটাইম ফুল-প্রুফ অ্যান্টি-ওয়াটারমার্ক ও কর্নার শিল্ড (Ultimate Watermark Eradication Matrix)
+        // নিখুঁত ওয়াটারমার্ক ইরেজারি শিল্ড
         function eliminateWatermarkCompletely(ctx, width, height) {
             try {
-                // ছবির নিচের ডান কোণের ওয়াটারমার্ক জোনটিকে সম্পূর্ণ কভার করতে বড় এবং নিখুঁত ডাইমেনশন
-                let zoneW = Math.floor(width * 0.28);
-                let zoneH = Math.floor(height * 0.10);
+                let zoneW = Math.floor(width * 0.25);
+                let zoneH = Math.floor(height * 0.09);
                 
-                let posX = width - zoneW - 5;
-                let posY = height - zoneH - 5;
+                let posX = width - zoneW - 12;
+                let posY = height - zoneH - 12;
 
-                // লোগোর ঠিক ওপরের বা বামের পরিষ্কার টেক্সচার স্যাম্পল নিয়ে ওভাররাইট করা
-                let sourceX = posX - 80;
-                let sourceY = posY - 80;
+                let sourceX = posX - 50;
+                let sourceY = posY - 50;
                 if (sourceX < 0) sourceX = 10;
                 if (sourceY < 0) sourceY = 10;
 
                 let cleanPatch = ctx.getImageData(sourceX, sourceY, zoneW, zoneH);
                 ctx.putImageData(cleanPatch, posX, posY);
 
-                // কোনো রকম দাগ বা লোগোর অবশিষ্টাংশ না রাখতে কর্নার জোনে আল্ট্রা-স্মুথ ব্লেন্ডিং ওভারলে
-                ctx.fillStyle = "rgba(2, 6, 23, 0.12)";
+                ctx.fillStyle = "rgba(2, 6, 23, 0.10)";
                 ctx.fillRect(posX, posY, zoneW, zoneH);
             } catch (e) {
-                console.log("Shield bypass safeguard active.");
+                console.log("Shield safeguard active.");
             }
         }
 
@@ -404,7 +409,6 @@
             let formatVal = document.getElementById('formatSelect').value;
             let styleVal = document.getElementById('styleSelect').value;
 
-            // ব্রাউজার ক্র্যাশ বা জঙ্গল ফেটে যাওয়া রোধ করতে আল্ট্রা-স্টেবল অপ্টিমাইজড বাফার ডাইমেনশন
             let targetWidth = resVal > 3840 ? 3840 : resVal;
             let targetHeight = resVal > 3840 ? 2160 : Math.round(resVal * (9/16));
 
@@ -429,21 +433,37 @@
                 apiHeight = 1920;
             }
 
-            // Style Modifiers
+            // পৃথিবীর সবচেয়ে শক্তিশালী ও নিখুঁত ক্যামেরা অ্যাঙ্গেল মডিফায়ার ট্যাগস
             let styleModifiers = "";
             if (styleVal === "cinematic") {
-                styleModifiers = ", cinematic Hollywood masterclass scene, anamorphic lens flare, professional 35mm color grading, dramatic chiaroscuro lighting, panavision film grain, 8k resolution, ultra-photorealistic";
+                styleModifiers = ", cinematic Hollywood masterclass scene, strict fixed camera angle, locked perspective, anamorphic lens flare, professional 35mm color grading, dramatic chiaroscuro lighting, panavision film grain, 8k resolution, ultra-photorealistic";
             } else if (styleVal === "commercial") {
-                styleModifiers = ", adobe stock certified premier commercial product photography, studio softbox rim lighting, ultra-sharp optical focus, spotless clean background setup, 8k uhd, editorial catalog perfection";
+                styleModifiers = ", adobe stock certified premier commercial product photography, locked studio camera perspective, stable composition, studio softbox rim lighting, ultra-sharp optical focus, spotless clean background setup, 8k uhd";
             } else if (styleVal === "cyberpunk") {
-                styleModifiers = ", cyberpunk neon lighting, futuristic dystopian high-tech atmosphere, holographic ray-traced reflections, dark cinematic moody neon tone, 8k hyper-detailed masterwork";
+                styleModifiers = ", cyberpunk neon lighting, futuristic dystopian high-tech atmosphere, locked perspective, holographic ray-traced reflections, dark cinematic moody neon tone, 8k hyper-detailed masterwork";
             } else if (styleVal === "macro") {
                 styleModifiers = ", extreme macro photography, microscopic surface textures, sharp multi-focus stacking, professional studio macro ring lighting, 8k pristine optical clarity";
+            } else if (styleVal === "epicdrone") {
+                styleModifiers = ", epic drone bird's-eye view, top-down aerial perspective, ultra-wide angle landscape layout, crisp horizon balance, photorealistic 8k aerial masterwork";
+            } else if (styleVal === "lowangle") {
+                styleModifiers = ", dramatic low-angle hero shot perspective, worm's-eye view looking up, powerful monumental scale composition, cinematic depth of field, 8k masterpiece";
+            } else if (styleVal === "highangle") {
+                styleModifiers = ", high-angle overview perspective, elevated camera angle looking down, clean spatial depth, sharp optical clarity, 8k resolution";
+            } else if (styleVal === "eyelvl") {
+                styleModifiers = ", natural eye-level medium shot perspective, classic straight-on portrait framing, professional depth of field, 8k pristine photography";
+            } else if (styleVal === "dutch") {
+                styleModifiers = ", dutch angle canted shot perspective, dynamic tilted camera frame, high-tension cinematic thriller atmosphere, 8k ultra-sharp";
+            } else if (styleVal === "macrofocus") {
+                styleModifiers = ", macro close-up bokeh shot perspective, extremely shallow depth of field, sharp subject focus with creamy blurred background, 8k raw optical detail";
+            } else if (styleVal === "widepan") {
+                styleModifiers = ", ultra-wide panoramic cinematic view, massive expansive vista perspective, 70mm panavision lens optics, epic composition, 8k ultra-sharp";
+            } else if (styleVal === "orthographic") {
+                styleModifiers = ", perfect orthographic studio projection view, zero perspective distortion, symmetrical architectural rendering, clean flat lighting, 8k ultra-sharp";
             } else {
-                styleModifiers = ", hyper-realistic 8k raw dslr photography, flawless micro-details, extreme edge sharpness, crystal clear glass transparency, zero blur, absolute masterpiece";
+                styleModifiers = ", hyper-realistic 8k raw dslr photography, locked camera perspective, flawless micro-details, extreme edge sharpness, crystal clear glass transparency, zero blur, absolute masterpiece";
             }
 
-            let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, typography free, watermark free, clean corner boundaries, absolute zero text";
+            let quantumEnhancers = styleModifiers + ", adobe stock certified masterpiece, shutterstock premier exclusive, flawless composition, typography free, watermark free, clean corner boundaries, absolute zero text, locked camera framing";
             let negativePromptParams = "&nologo=true&private=true&watermark=false&remove_watermark=true&enhance=true&safe=true&no_text=true";
             let fullPrompt = encodeURIComponent(promptText + quantumEnhancers);
             let randomSeed = Math.floor(Math.random() * 999999999);
@@ -471,7 +491,6 @@
                 canvas.width = targetWidth;
                 canvas.height = targetHeight;
                 
-                // হার্ডওয়্যার অ্যান্টি-এলিয়াজিং ও আল্ট্রা-স্মুথ রেন্ডারিং ম্যাট্রিক্স
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 
@@ -479,8 +498,6 @@
                 ctx.drawImage(tempImage, 0, 0, canvas.width, canvas.height);
 
                 applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.25);
-                
-                // লাইফটাইম ফুল-প্রুফ ওয়াটারমার্ক রিমুভাল ফিল্টার কল
                 eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
 
                 let mimeType = 'image/jpeg';
@@ -520,8 +537,6 @@
                     ctx.drawImage(fallbackImage, 0, 0, canvas.width, canvas.height);
 
                     applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.25);
-                    
-                    // ব্যাকআপ ইমেজের জন্যও ওয়াটারমার্ক রিমুভাল শিল্ড কার্যকর করা হলো
                     eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
 
                     let mimeType = (formatVal === 'png') ? 'image/png' : (formatVal === 'webp' ? 'image/webp' : 'image/jpeg');
@@ -617,8 +632,6 @@
                     ctx.drawImage(cachedMasterRawImage, 0, 0, canvas.width, canvas.height);
 
                     applyQuantumNeuralMatrix(ctx, canvas.width, canvas.height, 1.28);
-                    
-                    // আপস্কেল করা ছবির কোণাও লোগো মুক্ত রাখতে শিল্ড নিশ্চিত করা হলো
                     eliminateWatermarkCompletely(ctx, canvas.width, canvas.height);
 
                     let mimeType = 'image/jpeg';
