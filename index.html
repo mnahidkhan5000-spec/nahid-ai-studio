@@ -347,27 +347,27 @@
             } catch(e) {}
         }
 
-        // লাইফটাইম ফুল-প্রুফ অ্যান্টি-ওয়াটারমার্ক ও মাইক্রো-ক্রপ শিল্ড (Zero-Trace Elimination)
+        // লাইফটাইম ফুল-প্রুফ অ্যান্টি-ওয়াটারমার্ক ও কর্নার শিল্ড (Ultimate Watermark Eradication Matrix)
         function eliminateWatermarkCompletely(ctx, width, height) {
             try {
-                // পলিনেশন লোগোটি ঠিক যেখানে বসে (নিচের ডান কোণা) সেই জোনটিকে সুনির্দিষ্টভাবে টার্গেট করা
-                let zoneW = Math.floor(width * 0.22);
-                let zoneH = Math.floor(height * 0.08);
+                // ছবির নিচের ডান কোণের ওয়াটারমার্ক জোনটিকে সম্পূর্ণ কভার করতে বড় এবং নিখুঁত ডাইমেনশন
+                let zoneW = Math.floor(width * 0.28);
+                let zoneH = Math.floor(height * 0.10);
                 
-                let posX = width - zoneW - 15;
-                let posY = height - zoneH - 15;
+                let posX = width - zoneW - 5;
+                let posY = height - zoneH - 5;
 
-                // লোগোর ঠিক ওপরের পরিষ্কার ব্যাকগ্রাউন্ড টেক্সচার স্যাম্পল নিয়ে পারফেক্ট ক্লোনিং করা
-                let sourceX = posX - 60;
-                let sourceY = posY - 60;
+                // লোগোর ঠিক ওপরের বা বামের পরিষ্কার টেক্সচার স্যাম্পল নিয়ে ওভাররাইট করা
+                let sourceX = posX - 80;
+                let sourceY = posY - 80;
                 if (sourceX < 0) sourceX = 10;
                 if (sourceY < 0) sourceY = 10;
 
                 let cleanPatch = ctx.getImageData(sourceX, sourceY, zoneW, zoneH);
                 ctx.putImageData(cleanPatch, posX, posY);
 
-                // কোনো ফেদার বা টেক্সচার লিক এড়াতে জোনটিতে একটি আল্ট্রা-স্মুথ ডার্ক টোন ব্লেন্ডিং প্রয়োগ
-                ctx.fillStyle = "rgba(5, 10, 25, 0.08)";
+                // কোনো রকম দাগ বা লোগোর অবশিষ্টাংশ না রাখতে কর্নার জোনে আল্ট্রা-স্মুথ ব্লেন্ডিং ওভারলে
+                ctx.fillStyle = "rgba(2, 6, 23, 0.12)";
                 ctx.fillRect(posX, posY, zoneW, zoneH);
             } catch (e) {
                 console.log("Shield bypass safeguard active.");
@@ -404,7 +404,7 @@
             let formatVal = document.getElementById('formatSelect').value;
             let styleVal = document.getElementById('styleSelect').value;
 
-            // মেমোরি ক্র্যাশ বা জঙ্গল ফেটে যাওয়া রোধ করতে ম্যাক্সিমাম সেফ রেন্ডারিং ডাইমেনশন লিমিট (Max 4K safe buffer for browser canvas stability)
+            // ব্রাউজার ক্র্যাশ বা জঙ্গল ফেটে যাওয়া রোধ করতে আল্ট্রা-স্টেবল অপ্টিমাইজড বাফার ডাইমেনশন
             let targetWidth = resVal > 3840 ? 3840 : resVal;
             let targetHeight = resVal > 3840 ? 2160 : Math.round(resVal * (9/16));
 
@@ -471,7 +471,7 @@
                 canvas.width = targetWidth;
                 canvas.height = targetHeight;
                 
-                // হার্ডওয়্যার অ্যান্টি-এলিয়াজিং ও হাই-কোয়ালিটি স্মুথিং ম্যাট্রিক্স
+                // হার্ডওয়্যার অ্যান্টি-এলিয়াজিং ও আল্ট্রা-স্মুথ রেন্ডারিং ম্যাট্রিক্স
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 
@@ -581,7 +581,7 @@
                 baseHeight = baseWidth;
             }
 
-            let finalWidth = baseWidth * (multiplier > 2 ? 2 : multiplier); // ব্রাউজারের ক্র্যাশ বা জঙ্গল ফেটে যাওয়া রোধ করতে নিরাপদ আপস্কেল ক্যাপ
+            let finalWidth = baseWidth * (multiplier > 2 ? 2 : multiplier);
             let finalHeight = baseHeight * (multiplier > 2 ? 2 : multiplier);
 
             if (targetAspect === "16:9") {
