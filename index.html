@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahid AI Studio Pro Plus - Ultimate Supreme Edition</title>
+    <title>Nahid AI Studio — Image &amp; HTML Workspace</title>
     <style>
         /* CSS Reset & Global Styles */
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -200,16 +200,184 @@
             box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
         }
         .download-btn:hover { opacity: 0.95; }
+        /* Embedded HTML workspace */
+        .html-workspace { margin-top: 28px; padding-top: 24px; border-top: 1px solid #334155; }
+        .html-workspace h2 { color: #93c5fd; font-size: 21px; margin-bottom: 8px; }
+        .html-help { color: #94a3b8; font-size: 13px; line-height: 1.7; margin-bottom: 16px; }
+        .html-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+        .html-toolbar button, .html-file-label { background: #1e293b; color: #e2e8f0; border: 1px solid #475569; border-radius: 9px; padding: 10px 14px; cursor: pointer; font: inherit; font-size: 13px; text-transform: none; letter-spacing: normal; margin: 0; }
+        .html-toolbar .preview-button { background: #2563eb; border-color: #2563eb; }
+        .html-toolbar button:hover, .html-file-label:hover { filter: brightness(1.2); }
+        button:focus-visible, .html-file-label:focus-within { outline: 2px solid #93c5fd; outline-offset: 3px; }
+        #htmlCode { min-height: 260px; font-family: Consolas, monospace; line-height: 1.6; tab-size: 2; }
+        .html-preview { width: 100%; height: 360px; background: white; border: 1px solid #475569; border-radius: 12px; }
+        .html-status { min-height: 24px; color: #a7f3d0; font-size: 13px; margin: 10px 0; }
+        .file-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+        @media (max-width: 560px) {
+            .studio-card { padding: 18px; }
+            .controls-grid, .upscale-grid { grid-template-columns: 1fr; }
+            .btn-flex { flex-direction: column; }
+            .html-toolbar > * { flex: 1 1 auto; text-align: center; }
+        }
     </style>
+    <link rel="stylesheet" href="studio.css">
 </head>
 <body>
+    <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/></symbol>
+            <symbol id="icon-external" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+            <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+            <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+            <symbol id="icon-subject" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></symbol>
+            <symbol id="icon-scene" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-4 5 6"/></symbol>
+            <symbol id="icon-style" viewBox="0 0 24 24"><path d="m13 14-3-3L18 3a2.1 2.1 0 0 1 3 3l-8 8Z"/><path d="M10 12c-4-2-4 4-7 6 4 3 10 1 9-4"/></symbol>
+            <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M15 8V4H4v11h4"/></symbol>
+            <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+            <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+            <symbol id="icon-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v5c0 5-4 8-8 10-4-2-8-5-8-10V6l8-3Z"/><path d="m8 12 3 3 5-6"/></symbol>
+        </defs>
+    </svg>
 
-    <div class="studio-card">
-        <!-- Header Section -->
-        <div class="header">
-            <h1>Nahid AI Studio Pro Plus</h1>
-            <p>⚡ World #1 Quantum Neural Matrix, Adobe Stock Certified & 100% Watermark Free</p>
-        </div>
+    <main class="studio-card">
+        <header class="app-header">
+            <a class="brand" href="#remix" aria-label="Nahid AI Studio হোম">
+                <span class="brand-mark" aria-hidden="true">N<span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-spark"></use></svg></span></span>
+                <div class="brand-text"><h1>NAHID <span>AI STUDIO</span></h1><small>আপনার আইডিয়া, আপনার কাজের জায়গা</small></div>
+            </a>
+            <span class="workspace-label"><span aria-hidden="true"></span> CREATIVE WORKSPACE</span>
+        </header>
+        <nav class="workspace-nav" aria-label="স্টুডিও বেছে নিন">
+            <div class="workspace-tabs" role="tablist" aria-label="কাজের জায়গা">
+                <button id="tab-whisk" type="button" role="tab" aria-selected="false" aria-controls="whisk-panel" tabindex="-1" data-workspace="whisk"><span class="tab-number">01</span> Google Whisk <span class="tab-hint"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></span></button>
+                <button id="tab-remix" type="button" role="tab" aria-selected="true" aria-controls="remix-panel" tabindex="0" data-workspace="remix"><span class="tab-number">02</span> নিজস্ব Image Studio</button>
+                <button id="tab-legacy" type="button" role="tab" aria-selected="false" aria-controls="legacy-panel" tabindex="-1" data-workspace="legacy">আগের ইমেজ টুল</button>
+                <button id="tab-html" type="button" role="tab" aria-selected="false" aria-controls="html-panel" tabindex="-1" data-workspace="html">HTML স্টুডিও <span class="tab-hint">&lt;/&gt;</span></button>
+            </div>
+        </nav>
+        <noscript><p class="connection-notice">স্টুডিও ব্যবহার করতে JavaScript চালু করুন। <a href="https://labs.google/fx/tools/whisk" target="_blank" rel="noopener noreferrer">Google Whisk আলাদা ট্যাবে খুলতে পারেন ↗</a></p></noscript>
+
+        <section id="whisk-panel" class="workspace-panel whisk-panel" role="tabpanel" aria-labelledby="tab-whisk" tabindex="0" hidden>
+            <div class="whisk-intro">
+                <div>
+                    <p class="eyebrow">01 / GOOGLE-এর নিজস্ব টুল</p>
+                    <h2>Google Whisk-এ<br><span>আইডিয়াকে ছবি বানান।</span></h2>
+                    <p class="section-description">Google-এর আসল Whisk ব্যবহার করতে নিচের বাটন চাপুন। এটি নতুন ট্যাবে খুলবে—আপনার এই স্টুডিও ও এখানকার কাজ খোলা থাকবে।</p>
+                    <a id="openWhisk" class="primary-action whisk-action" href="https://labs.google/fx/tools/whisk" target="_blank" rel="noopener noreferrer">Google Whisk খুলুন <span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></span></a>
+                    <p class="small-note">Google অ্যাকাউন্টে সাইন ইন করতে হতে পারে। দেশ, অ্যাকাউন্ট ও Google-এর শর্ত অনুযায়ী সুবিধা পাওয়া যাবে।</p>
+                </div>
+                <div class="whisk-guide">
+                    <span class="guide-caption">একটু আলাদা, দুটো কাজের জায়গা</span>
+                    <ol>
+                        <li><span>1</span><div><strong>Whisk খুলুন</strong><p>Google-এর ওয়েবসাইট নতুন ট্যাবে খুলবে।</p></div></li>
+                        <li><span>2</span><div><strong>ছবি ও নির্দেশনা দিন</strong><p>সেই ট্যাবেই Google Whisk দিয়ে কাজ করুন।</p></div></li>
+                        <li><span>3</span><div><strong>ইচ্ছেমতো ফিরে আসুন</strong><p>এই ট্যাবে ফিরে নিজস্ব Image Studio ব্যবহার করুন।</p></div></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="independence-note"><span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></span><p>এটি Whisk-এর শর্টকাট, অ্যাপের ভেতরে Google Whisk এমবেড করা হয়নি। দুই স্টুডিওর ছবি, অ্যাকাউন্ট ও ইতিহাস স্বয়ংক্রিয়ভাবে আদান-প্রদান হয় না।</p></div>
+            <button type="button" class="text-action" data-open-workspace="remix">অ্যাপের নিজস্ব Image Studio-তে যান <span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-arrow"></use></svg></span></button>
+        </section>
+
+        <section id="remix-panel" class="workspace-panel" role="tabpanel" aria-labelledby="tab-remix" tabindex="0">
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">02 / আপনার নিজস্ব IMAGE STUDIO</p>
+                    <h2>রেফারেন্স থেকে <span>নতুন কিছু।</span></h2>
+                    <p class="section-description">বিষয়, পরিবেশ আর স্টাইল মিলিয়ে নিজের ছবি বানান। এটি Google Whisk নয়—Gemini API-ভিত্তিক স্বাধীন একটি টুল।</p>
+                </div>
+                <div class="connection-summary"><span id="connectionBadge" class="connection-badge" role="status">সংযোগ পরীক্ষা হচ্ছে…</span><button id="checkConnection" class="text-action" type="button">আবার পরীক্ষা করুন <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-refresh"></use></svg></button></div>
+            </div>
+
+            <details id="connectionDetails" class="connection-notice">
+                <summary>API সংযোগ ও সেটআপ <span id="connectionShort">সংযোগের অবস্থা দেখুন</span></summary>
+                <p id="connectionMessage" role="status">সার্ভারের সংযোগ পরীক্ষা করা হচ্ছে।</p>
+                <div id="setupInstructions">
+                    <p>ছবি তৈরি চালু করতে নিজের Node.js সার্ভারে <code>.env</code> ফাইলে <code>GEMINI_API_KEY</code> এবং আলাদা, কমপক্ষে ১৬ অক্ষরের <code>STUDIO_ACCESS_TOKEN</code> দিন। এরপর <code>npm start</code> দিয়ে সার্ভার চালু করুন। বিস্তারিত প্রকল্পের <code>README.md</code> ফাইলে আছে।</p>
+                    <p>শুধু HTML ফাইল বা GitHub Pages দিয়ে এই API চলবে না। API key এখানে বা চ্যাটে দেবেন না। সেটআপ ছাড়াও রেফারেন্স সাজানো, প্রম্পট লেখা ও কপি করা যাবে।</p>
+                </div>
+                <p class="small-note">Gemini-এর ব্যবহারমূল্য, quota, মডেল ও অঞ্চলের সীমা প্রযোজ্য হতে পারে। তৈরি ছবি রেফারেন্সের হুবহু কপি হওয়ার নিশ্চয়তা নেই।</p>
+            </details>
+
+            <form id="remixForm" novalidate>
+                <fieldset id="remixInputs" class="remix-inputs">
+                    <legend class="sr-only">নতুন ছবি তৈরির উপকরণ</legend>
+                    <div class="section-label"><h3>আপনার রেফারেন্স</h3><span>সবগুলো ঐচ্ছিক · প্রতিটি সর্বোচ্চ ৫ MB</span></div>
+                    <div class="reference-grid">
+                        <article class="reference-card" data-role="subject">
+                            <div class="reference-heading"><h4>Subject <span>মূল বিষয়</span></h4><span class="reference-number">01</span></div>
+                            <p>যাকে বা যা নিয়ে ছবি বানাবেন</p>
+                            <label class="reference-drop" for="subjectFile" data-drop-role="subject">
+                                <input id="subjectFile" class="reference-file" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Subject ছবি বেছে নিন" aria-describedby="subjectFileName">
+                                <span id="subjectPlaceholder" class="reference-placeholder"><span class="reference-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-subject"></use></svg></span><strong>ছবি বেছে নিন <span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></strong><span>বা এখানে টেনে আনুন</span></span>
+                                <img id="subjectPreview" alt="Subject রেফারেন্সের প্রিভিউ" hidden>
+                                <span class="replace-image" hidden>ছবি বদলান</span>
+                            </label>
+                            <div class="reference-footer"><span id="subjectFileName">কোনো ছবি নেই</span><button id="subjectRemove" class="text-action remove-reference" type="button" aria-label="Subject ছবি সরান" hidden>সরান ×</button></div>
+                        </article>
+                        <article class="reference-card" data-role="scene">
+                            <div class="reference-heading"><h4>Scene <span>পরিবেশ</span></h4><span class="reference-number">02</span></div>
+                            <p>যে জায়গা বা পটভূমি চান</p>
+                            <label class="reference-drop" for="sceneFile" data-drop-role="scene">
+                                <input id="sceneFile" class="reference-file" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Scene ছবি বেছে নিন" aria-describedby="sceneFileName">
+                                <span id="scenePlaceholder" class="reference-placeholder"><span class="reference-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-scene"></use></svg></span><strong>ছবি বেছে নিন <span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></strong><span>বা এখানে টেনে আনুন</span></span>
+                                <img id="scenePreview" alt="Scene রেফারেন্সের প্রিভিউ" hidden>
+                                <span class="replace-image" hidden>ছবি বদলান</span>
+                            </label>
+                            <div class="reference-footer"><span id="sceneFileName">কোনো ছবি নেই</span><button id="sceneRemove" class="text-action remove-reference" type="button" aria-label="Scene ছবি সরান" hidden>সরান ×</button></div>
+                        </article>
+                        <article class="reference-card" data-role="style">
+                            <div class="reference-heading"><h4>Style <span>শৈলী</span></h4><span class="reference-number">03</span></div>
+                            <p>যে রং ও আর্ট স্টাইল চান</p>
+                            <label class="reference-drop" for="styleFile" data-drop-role="style">
+                                <input id="styleFile" class="reference-file" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Style ছবি বেছে নিন" aria-describedby="styleFileName">
+                                <span id="stylePlaceholder" class="reference-placeholder"><span class="reference-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-style"></use></svg></span><strong>ছবি বেছে নিন <span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></strong><span>বা এখানে টেনে আনুন</span></span>
+                                <img id="stylePreview" alt="Style রেফারেন্সের প্রিভিউ" hidden>
+                                <span class="replace-image" hidden>ছবি বদলান</span>
+                            </label>
+                            <div class="reference-footer"><span id="styleFileName">কোনো ছবি নেই</span><button id="styleRemove" class="text-action remove-reference" type="button" aria-label="Style ছবি সরান" hidden>সরান ×</button></div>
+                        </article>
+                    </div>
+                    <p id="uploadStatus" class="upload-status" role="status" aria-live="polite">JPG, PNG বা WEBP বেছে নিন, অথবা ঘরে টেনে আনুন।</p>
+                    <div class="compose-grid">
+                        <div class="prompt-box">
+                            <div class="field-heading"><label for="remixPrompt">কেমন ছবি চান?</label><span id="promptCount">0 / 2000</span></div>
+                            <textarea id="remixPrompt" rows="4" maxlength="2000" placeholder="যেমন: ছবির বিষয়টিকে নদীর ধারে রাখুন, বিকেলের নরম আলো ও জলরঙের স্টাইল দিন। বাংলা বা ইংরেজিতে লিখতে পারেন।" aria-describedby="remixDraftStatus"></textarea>
+                            <div class="prompt-footer"><span id="remixDraftStatus">শুধু প্রম্পট ও অনুপাত এই ব্রাউজারে সংরক্ষিত থাকবে।</span><button id="copyPrompt" class="text-action" type="button">প্রম্পট কপি <span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></span></button></div>
+                        </div>
+                        <div class="settings-box">
+                            <label for="remixAspect">ছবির অনুপাত</label>
+                            <select id="remixAspect"><option value="1:1">1:1 · Square</option><option value="16:9">16:9 · Landscape</option><option value="9:16">9:16 · Portrait</option><option value="4:3">4:3 · Landscape</option><option value="3:4">3:4 · Portrait</option></select>
+                            <div id="accessCodeGroup" hidden>
+                                <label for="studioAccessCode">Studio access code</label>
+                                <input id="studioAccessCode" type="password" autocomplete="off" spellcheck="false" maxlength="256" placeholder="সার্ভারের আলাদা access code" aria-describedby="accessCodeHelp">
+                                <p id="accessCodeHelp" class="small-note">এটি Gemini API key নয়। এই ঘরের code ব্রাউজারে সংরক্ষণ করা হয় না।</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="generation-actions">
+                        <button id="generateRemix" class="primary-action" type="submit" disabled aria-describedby="generateHint"><span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-spark"></use></svg></span> ছবি তৈরি করুন</button>
+                        <button id="resetRemix" class="secondary-action" type="button">এই কাজ মুছুন</button>
+                        <span id="generateHint" class="small-note">সংযোগ পরীক্ষা হচ্ছে…</span>
+                    </div>
+                </fieldset>
+                <div class="generation-feedback"><p id="remixStatus" role="status" aria-live="polite">অন্তত একটি ছবি অথবা প্রম্পট দিয়ে শুরু করুন।</p><button id="cancelRemix" class="secondary-action" type="button" hidden>অপেক্ষা বন্ধ করুন</button></div>
+            </form>
+
+            <section id="remixOutput" class="remix-output" aria-labelledby="resultHeading" aria-busy="false">
+                <div class="result-heading"><h3 id="resultHeading">আপনার নতুন ছবি</h3><span id="resultMeta">RESULT</span></div>
+                <div class="result-canvas">
+                    <div id="resultPlaceholder" class="result-placeholder"><span class="empty-image-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-spark"></use></svg></span><strong>এখানেই ফুটে উঠবে আপনার আইডিয়া</strong><p>ছবি তৈরি হলে প্রিভিউ দেখুন ও ডাউনলোড করে রাখুন।</p></div>
+                    <img id="remixResult" alt="আপনার নির্দেশনা ও রেফারেন্স থেকে AI দিয়ে তৈরি ছবি" hidden>
+                    <div id="remixLoading" class="remix-loading" hidden><span class="remix-spinner" aria-hidden="true"></span><strong>ছবিটি তৈরি হচ্ছে…</strong><p>অন্য স্টুডিওতে গেলেও এই অনুরোধ চলতে থাকবে।</p></div>
+                </div>
+                <div id="resultActions" class="result-actions" hidden><span>AI-তৈরি ছবি · ব্যবহার করার আগে যাচাই করুন</span><a id="remixDownload" class="secondary-action" download="nahid-image.png">ছবি ডাউনলোড করুন <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg></a></div>
+            </section>
+            <p class="privacy-note"><span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-shield"></use></svg></span> “ছবি তৈরি করুন” চাপলেই নির্বাচিত ছবি ও প্রম্পট আপনার সার্ভার হয়ে Gemini-তে পাঠানো হবে। এই অ্যাপ ছবি সার্ভারে ফাইল হিসেবে জমায় না। ট্যাব বদলালে কাজ থাকবে; পেজ রিফ্রেশ করলে ছবি আবার দিতে হবে।</p>
+        </section>
+
+        <section id="legacy-panel" class="workspace-panel legacy-panel" role="tabpanel" aria-labelledby="tab-legacy" tabindex="0" lang="en" hidden>
+            <div class="legacy-heading" lang="bn"><p class="eyebrow">আগের ইমেজ টুল</p><h2>আপনার আগের কাজের জায়গা</h2><p class="section-description">আগের টুলটি আলাদা করে রাখা হয়েছে। এটি বাহ্যিক Pollinations সেবার ওপর নির্ভর করে; নতুন Image Studio বা Whisk-এর সংযোগ ব্যবহার করে না।</p></div>
 
         <!-- Configuration Controls -->
         <div class="controls-grid">
@@ -308,8 +476,35 @@
             <!-- Download Link -->
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
-    </div>
+        </section>
+        <section id="html-panel" class="html-workspace workspace-panel" role="tabpanel" aria-labelledby="tab-html" tabindex="0" lang="bn" hidden>
+            <h2 id="htmlHeading">HTML কোড স্টুডিও</h2>
+            <p class="html-help">নিজের HTML ও CSS লিখুন, অথবা একটি টেমপ্লেট বেছে নিন। প্রিভিউ আপডেট করতে “প্রিভিউ দেখুন” চাপুন। নিরাপত্তার জন্য প্রিভিউতে JavaScript ও ফর্ম সাবমিট বন্ধ থাকে। বাহ্যিক ছবি বা স্টাইল লোড হলে ইন্টারনেট লাগতে পারে।</p>
+            <label for="htmlTemplate">নমুনা টেমপ্লেট</label>
+            <select id="htmlTemplate">
+                <option value="welcome">ওয়েলকাম পেজ</option>
+                <option value="portfolio">পোর্টফোলিও কার্ড</option>
+                <option value="landing">প্রোডাক্ট ল্যান্ডিং পেজ</option>
+            </select>
+            <div class="html-toolbar">
+                <button id="loadTemplate" type="button">টেমপ্লেট বসান</button>
+                <label class="html-file-label" for="htmlFile">HTML ফাইল খুলুন<input class="file-input" id="htmlFile" type="file" accept=".html,.htm,text/html"></label>
+            </div>
+            <label for="htmlCode">আপনার HTML কোড</label>
+            <textarea id="htmlCode" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="এখানে HTML কোড লিখুন..."></textarea>
+            <div class="html-toolbar">
+                <button id="renderHtml" class="preview-button" type="button">প্রিভিউ দেখুন</button>
+                <button id="downloadHtml" type="button">HTML ডাউনলোড</button>
+                <button id="clearHtml" type="button">কোড মুছুন</button>
+            </div>
+            <p class="html-status" id="htmlStatus" role="status" aria-live="polite"></p>
+            <label for="htmlPreview">লাইভ প্রিভিউ</label>
+            <iframe id="htmlPreview" class="html-preview" title="আপনার HTML কোডের নিরাপদ প্রিভিউ" sandbox="" referrerpolicy="no-referrer"></iframe>
+        </section>
+    </main>
 
+    <script src="html-studio.js"></script>
+    <script src="studio.js"></script>
     <!-- JavaScript Execution Engine -->
     <script>
         let cachedMasterRawImage = null;
