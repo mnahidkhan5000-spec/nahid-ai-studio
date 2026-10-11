@@ -200,6 +200,25 @@
             box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
         }
         .download-btn:hover { opacity: 0.95; }
+        /* Embedded HTML workspace */
+        .html-workspace { margin-top: 28px; padding-top: 24px; border-top: 1px solid #334155; }
+        .html-workspace h2 { color: #93c5fd; font-size: 21px; margin-bottom: 8px; }
+        .html-help { color: #94a3b8; font-size: 13px; line-height: 1.7; margin-bottom: 16px; }
+        .html-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+        .html-toolbar button, .html-file-label { background: #1e293b; color: #e2e8f0; border: 1px solid #475569; border-radius: 9px; padding: 10px 14px; cursor: pointer; font: inherit; font-size: 13px; text-transform: none; letter-spacing: normal; margin: 0; }
+        .html-toolbar .preview-button { background: #2563eb; border-color: #2563eb; }
+        .html-toolbar button:hover, .html-file-label:hover { filter: brightness(1.2); }
+        button:focus-visible, .html-file-label:focus-within { outline: 2px solid #93c5fd; outline-offset: 3px; }
+        #htmlCode { min-height: 260px; font-family: Consolas, monospace; line-height: 1.6; tab-size: 2; }
+        .html-preview { width: 100%; height: 360px; background: white; border: 1px solid #475569; border-radius: 12px; }
+        .html-status { min-height: 24px; color: #a7f3d0; font-size: 13px; margin: 10px 0; }
+        .file-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+        @media (max-width: 560px) {
+            .studio-card { padding: 18px; }
+            .controls-grid, .upscale-grid { grid-template-columns: 1fr; }
+            .btn-flex { flex-direction: column; }
+            .html-toolbar > * { flex: 1 1 auto; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -308,8 +327,33 @@
             <!-- Download Link -->
             <a id="downloadLink" class="download-btn" download="nahid-ai-masterpiece.jpg">📥 Download Masterpiece</a>
         </div>
+        <section class="html-workspace" aria-labelledby="htmlHeading" lang="bn">
+            <h2 id="htmlHeading">HTML কোড স্টুডিও</h2>
+            <p class="html-help">নিজের HTML ও CSS লিখুন, অথবা একটি টেমপ্লেট বেছে নিন। প্রিভিউ আপডেট করতে “প্রিভিউ দেখুন” চাপুন। নিরাপত্তার জন্য প্রিভিউতে JavaScript ও ফর্ম সাবমিট বন্ধ থাকে। বাহ্যিক ছবি বা স্টাইল লোড হলে ইন্টারনেট লাগতে পারে।</p>
+            <label for="htmlTemplate">নমুনা টেমপ্লেট</label>
+            <select id="htmlTemplate">
+                <option value="welcome">ওয়েলকাম পেজ</option>
+                <option value="portfolio">পোর্টফোলিও কার্ড</option>
+                <option value="landing">প্রোডাক্ট ল্যান্ডিং পেজ</option>
+            </select>
+            <div class="html-toolbar">
+                <button id="loadTemplate" type="button">টেমপ্লেট বসান</button>
+                <label class="html-file-label" for="htmlFile">HTML ফাইল খুলুন<input class="file-input" id="htmlFile" type="file" accept=".html,.htm,text/html"></label>
+            </div>
+            <label for="htmlCode">আপনার HTML কোড</label>
+            <textarea id="htmlCode" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="এখানে HTML কোড লিখুন..."></textarea>
+            <div class="html-toolbar">
+                <button id="renderHtml" class="preview-button" type="button">প্রিভিউ দেখুন</button>
+                <button id="downloadHtml" type="button">HTML ডাউনলোড</button>
+                <button id="clearHtml" type="button">কোড মুছুন</button>
+            </div>
+            <p class="html-status" id="htmlStatus" role="status" aria-live="polite"></p>
+            <label for="htmlPreview">লাইভ প্রিভিউ</label>
+            <iframe id="htmlPreview" class="html-preview" title="আপনার HTML কোডের নিরাপদ প্রিভিউ" sandbox="" referrerpolicy="no-referrer"></iframe>
+        </section>
     </div>
 
+    <script src="html-studio.js"></script>
     <!-- JavaScript Execution Engine -->
     <script>
         let cachedMasterRawImage = null;
